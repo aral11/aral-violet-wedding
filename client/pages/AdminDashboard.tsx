@@ -614,7 +614,7 @@ export default function AdminDashboard() {
         <div class="wedding-date">December 28, 2025</div>
         <div style="margin: 15px 0; font-size: 1em; color: #718096;">
             <div><strong>Church Nuptials:</strong> Mother of Sorrows Church, Udupi • 4:00 PM</div>
-            <div><strong>Reception:</strong> Sai Radha Heritage Beach Resort, Kaup ��� 7:00 PM</div>
+            <div><strong>Reception:</strong> Sai Radha Heritage Beach Resort, Kaup • 7:00 PM</div>
         </div>
         <div class="report-date">RSVP Report Generated: ${currentDate}</div>
     </div>
@@ -1831,6 +1831,138 @@ export default function AdminDashboard() {
                         <li>• If no PDF is uploaded, guests get a basic text invitation</li>
                         <li>• Maximum file size is 10MB for optimal download speed</li>
                       </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Documentation */}
+          <TabsContent value="documentation" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle className="text-olive-700">Website Documentation</CardTitle>
+                  <Button
+                    onClick={downloadDocumentation}
+                    className="bg-olive-600 hover:bg-olive-700 text-white"
+                  >
+                    <Download className="mr-2" size={16} />
+                    Download Documentation PDF
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Overview */}
+                  <Card className="border-l-4 border-l-olive-500 bg-olive-50">
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-serif text-olive-700 mb-4 flex items-center gap-2">
+                        <FileText size={20} />
+                        Complete User Guide
+                      </h3>
+                      <p className="text-sage-700 mb-4">
+                        This documentation contains everything you need to know about your wedding website,
+                        including login credentials, feature explanations, and best practices.
+                      </p>
+                      <div className="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <h4 className="font-semibold text-olive-700 mb-2">📋 What's Included:</h4>
+                          <ul className="space-y-1 text-sage-600">
+                            <li>• Login credentials for admin access</li>
+                            <li>• Complete feature walkthrough</li>
+                            <li>• Guest experience overview</li>
+                            <li>• Wedding day information</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-olive-700 mb-2">🎯 Perfect For:</h4>
+                          <ul className="space-y-1 text-sage-600">
+                            <li>• Reference during wedding planning</li>
+                            <li>• Sharing with family helpers</li>
+                            <li>• Troubleshooting guidance</li>
+                            <li>• Post-wedding documentation</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Quick Reference */}
+                  <Card className="bg-sage-50 border-sage-200">
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-serif text-olive-700 mb-4">🔑 Quick Access Information</h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-semibold text-olive-700 mb-3">Admin Login Credentials:</h4>
+                          <div className="space-y-2 text-sm">
+                            <div className="bg-white p-3 rounded border">
+                              <div><strong>Username:</strong> aral</div>
+                              <div><strong>Password:</strong> aral2025</div>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <div><strong>Username:</strong> violet</div>
+                              <div><strong>Password:</strong> violet2025</div>
+                            </div>
+                            <div className="bg-white p-3 rounded border">
+                              <div><strong>Username:</strong> couple</div>
+                              <div><strong>Password:</strong> wedding2025</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-olive-700 mb-3">Key Features:</h4>
+                          <ul className="space-y-2 text-sm text-sage-700">
+                            <li>✅ RSVP Management with PDF downloads</li>
+                            <li>✅ Photo Gallery with upload/delete</li>
+                            <li>✅ Reception Timeline creation</li>
+                            <li>✅ Custom Invitation PDF upload</li>
+                            <li>✅ Guest accommodation tracking</li>
+                            <li>✅ Bride/Groom side organization</li>
+                            <li>✅ Real-time statistics dashboard</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Important Notes */}
+                  <Card className="border-l-4 border-l-amber-500 bg-amber-50">
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-serif text-amber-700 mb-4">⚠️ Important Notes</h3>
+                      <ul className="space-y-2 text-sm text-amber-800">
+                        <li>• Keep admin credentials confidential and secure</li>
+                        <li>• Download RSVP data regularly as backup</li>
+                        <li>• Photo uploads are limited to 5MB per image</li>
+                        <li>• Wedding timeline download for guests activates on December 28, 2025</li>
+                        <li>• All data is stored locally in browser - download PDFs for permanent records</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+
+                  {/* Contact Information */}
+                  <Card className="bg-white border-sage-200">
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-serif text-olive-700 mb-4">📞 Wedding Information</h3>
+                      <div className="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <h4 className="font-semibold text-olive-700 mb-2">⛪ Church Nuptials:</h4>
+                          <div className="text-sage-700 space-y-1">
+                            <div><strong>Venue:</strong> Mother of Sorrows Church, Udupi</div>
+                            <div><strong>Time:</strong> 4:00 PM – 5:15 PM</div>
+                            <div><strong>Date:</strong> Sunday, December 28, 2025</div>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-olive-700 mb-2">🎉 Reception:</h4>
+                          <div className="text-sage-700 space-y-1">
+                            <div><strong>Venue:</strong> Sai Radha Heritage Beach Resort, Kaup</div>
+                            <div><strong>Time:</strong> 7:00 PM – 11:30 PM</div>
+                            <div><strong>Date:</strong> Sunday, December 28, 2025</div>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
