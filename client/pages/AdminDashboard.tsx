@@ -806,8 +806,13 @@ export default function AdminDashboard() {
   };
 
   const removePhoto = (index: number) => {
-    const newPhotos = uploadedPhotos.filter((_, i) => i !== index);
-    setUploadedPhotos(newPhotos);
+    if (confirm('Are you sure you want to delete this photo? This action cannot be undone.')) {
+      const newPhotos = uploadedPhotos.filter((_, i) => i !== index);
+      setUploadedPhotos(newPhotos);
+      // Immediately update localStorage
+      localStorage.setItem('wedding_photos', JSON.stringify(newPhotos));
+      console.log('Photo removed successfully');
+    }
   };
 
   const addFlowItem = () => {
