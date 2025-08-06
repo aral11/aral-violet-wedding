@@ -81,9 +81,20 @@ export default function AdminDashboard() {
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const fileUrls = Array.from(files).map(file => URL.createObjectURL(file));
-      setUploadedPhotos([...uploadedPhotos, ...fileUrls]);
+      Array.from(files).forEach(file => {
+        // Convert to base64 for persistent storage
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          if (event.target?.result) {
+            const base64String = event.target.result as string;
+            setUploadedPhotos(prev => [...prev, base64String]);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
     }
+    // Clear the input so the same file can be uploaded again if needed
+    e.target.value = '';
   };
 
   const removePhoto = (index: number) => {
