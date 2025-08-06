@@ -100,10 +100,10 @@ export default function Index() {
       }
     };
 
-    // Try API after a delay to avoid race conditions
-    const timeoutId = setTimeout(loadPhotos, 1000);
+    // Load photos immediately
+    loadPhotos();
 
-    // Check for new photos every 30 seconds when the page is focused (reduced frequency)
+    // Check for new photos every 30 seconds when the page is focused (for real-time updates)
     const interval = setInterval(() => {
       if (!document.hidden) {
         loadPhotos();
