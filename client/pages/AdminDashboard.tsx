@@ -46,6 +46,7 @@ export default function AdminDashboard() {
   });
   const [editingFlow, setEditingFlow] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   // Load data from localStorage on mount
   useEffect(() => {
