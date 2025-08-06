@@ -92,25 +92,23 @@ export default function AdminDashboard() {
         }
       }
 
-      // Load photos from API first, then fallback to localStorage
+      // Load photos from localStorage first, then try API sync
+      const savedPhotos = localStorage.getItem("wedding_photos");
+      if (savedPhotos) {
+        setUploadedPhotos(JSON.parse(savedPhotos));
+        console.log("Photos loaded from localStorage");
+      }
+
+      // Try to sync with API silently in background
       try {
         const photosFromApi = await photosApi.getAll();
         if (photosFromApi && photosFromApi.length > 0) {
           setUploadedPhotos(photosFromApi.map((photo) => photo.photoData));
-          console.log("Photos loaded from API:", photosFromApi.length);
-        } else {
-          const savedPhotos = localStorage.getItem("wedding_photos");
-          if (savedPhotos) {
-            setUploadedPhotos(JSON.parse(savedPhotos));
-            console.log("Photos loaded from localStorage");
-          }
+          console.log("Photos synced from API:", photosFromApi.length);
         }
       } catch (error) {
-        console.log("API unavailable, loading photos from localStorage");
-        const savedPhotos = localStorage.getItem("wedding_photos");
-        if (savedPhotos) {
-          setUploadedPhotos(JSON.parse(savedPhotos));
-        }
+        // Silently ignore API errors - localStorage already loaded
+        console.log("Using localStorage data (API not available)");
       }
 
       // Load wedding flow
