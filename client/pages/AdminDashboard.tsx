@@ -535,6 +535,7 @@ export default function AdminDashboard() {
                                     <p className="text-sm text-green-600">{guest.phone}</p>
                                   </div>
                                   <div className="text-sm text-green-700">
+                                    <p><strong>Side:</strong> {guest.side === 'groom' ? "Aral's (Groom)" : "Violet's (Bride)"}</p>
                                     <p><strong>Guests:</strong> {guest.guests}</p>
                                     <p><strong>Accommodation:</strong> {guest.needsAccommodation ? 'Yes' : 'No'}</p>
                                     {guest.dietaryRestrictions && (
