@@ -695,7 +695,7 @@ Please RSVP at our wedding website
             <Heart className="text-olive-400" size={20} />
           </div>
           <p className="text-olive-300 text-sm">
-            © 2025 TheVIRALWedding. Made with love for By Aral.
+            © 2025 TheVIRALWedding. Made with love By Aral D'Souza.
           </p>
         </div>
       </footer>
