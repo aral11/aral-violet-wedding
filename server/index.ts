@@ -26,6 +26,7 @@ import {
   uploadInvitation,
   deleteInvitation,
 } from "./routes/invitation";
+import { sendRSVPSMSNotification, testSMS } from "./routes/sms";
 
 export async function createServer() {
   const app = express();
