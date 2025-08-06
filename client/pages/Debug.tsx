@@ -35,7 +35,7 @@ export default function Debug() {
     } catch (error) {
       results.photos = {
         success: false,
-        error: "API not available - using localStorage fallback"
+        error: "API not available - using localStorage fallback",
       };
     }
 

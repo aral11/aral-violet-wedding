@@ -8,7 +8,9 @@ console.log("🚀 Manual GitHub Pages Deployment...");
 const getRepoName = () => {
   try {
     // Try to get from git remote
-    const remoteUrl = execSync("git remote get-url origin", { encoding: "utf8" }).trim();
+    const remoteUrl = execSync("git remote get-url origin", {
+      encoding: "utf8",
+    }).trim();
     const match = remoteUrl.match(/github\.com[:/]([^/]+)\/(.+?)(?:\.git)?$/);
     if (match) {
       return match[2];
@@ -16,9 +18,9 @@ const getRepoName = () => {
   } catch (error) {
     console.log("Could not get repo name from git remote");
   }
-  
+
   // Fallback to directory name
-  return process.cwd().split('/').pop() || "aral-violet-wedding";
+  return process.cwd().split("/").pop() || "aral-violet-wedding";
 };
 
 const repoName = getRepoName();
@@ -57,7 +59,9 @@ if (existsSync(indexPath)) {
 
   console.log("�� Manual build complete!");
   console.log("📁 Files ready for deployment in ./dist");
-  console.log(`🌐 Upload ./dist contents to: https://github.com/aral11/${repoName}/settings/pages`);
+  console.log(
+    `🌐 Upload ./dist contents to: https://github.com/aral11/${repoName}/settings/pages`,
+  );
   console.log(`📍 Your site will be at: https://aral11.github.io/${repoName}/`);
 } else {
   console.error("❌ index.html not found in dist folder");
