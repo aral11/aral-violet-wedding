@@ -78,20 +78,24 @@ export default function AdminDashboard() {
       try {
         const guests = await database.guests.getAll();
         if (guests && guests.length > 0) {
-          setGuests(guests.map(guest => ({
-            id: guest.id || Date.now().toString(),
-            name: guest.name,
-            email: guest.email,
-            phone: guest.phone || '',
-            attending: guest.attending,
-            guests: guest.guests,
-            side: guest.side,
-            message: guest.message,
-            dietaryRestrictions: guest.dietary_restrictions,
-            needsAccommodation: guest.needs_accommodation,
-            createdAt: guest.created_at || new Date().toISOString()
-          })));
-          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+          setGuests(
+            guests.map((guest) => ({
+              id: guest.id || Date.now().toString(),
+              name: guest.name,
+              email: guest.email,
+              phone: guest.phone || "",
+              attending: guest.attending,
+              guests: guest.guests,
+              side: guest.side,
+              message: guest.message,
+              dietaryRestrictions: guest.dietary_restrictions,
+              needsAccommodation: guest.needs_accommodation,
+              createdAt: guest.created_at || new Date().toISOString(),
+            })),
+          );
+          const storageType = database.isUsingSupabase()
+            ? "Supabase"
+            : "localStorage";
           console.log(`Guests loaded from ${storageType}:`, guests.length);
         }
       } catch (error) {
@@ -104,7 +108,9 @@ export default function AdminDashboard() {
         const photos = await database.photos.getAll();
         if (photos && photos.length > 0) {
           setUploadedPhotos(photos.map((photo) => photo.photo_data));
-          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+          const storageType = database.isUsingSupabase()
+            ? "Supabase"
+            : "localStorage";
           console.log(`Photos loaded from ${storageType}:`, photos.length);
         }
       } catch (error) {
@@ -116,17 +122,24 @@ export default function AdminDashboard() {
       try {
         const weddingFlowData = await database.weddingFlow.getAll();
         if (weddingFlowData && weddingFlowData.length > 0) {
-          setWeddingFlow(weddingFlowData.map(item => ({
-            id: item.id || Date.now().toString(),
-            time: item.time,
-            title: item.title,
-            description: item.description,
-            duration: item.duration,
-            type: item.type,
-            createdAt: item.created_at || new Date().toISOString()
-          })));
-          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
-          console.log(`Wedding flow loaded from ${storageType}:`, weddingFlowData.length);
+          setWeddingFlow(
+            weddingFlowData.map((item) => ({
+              id: item.id || Date.now().toString(),
+              time: item.time,
+              title: item.title,
+              description: item.description,
+              duration: item.duration,
+              type: item.type,
+              createdAt: item.created_at || new Date().toISOString(),
+            })),
+          );
+          const storageType = database.isUsingSupabase()
+            ? "Supabase"
+            : "localStorage";
+          console.log(
+            `Wedding flow loaded from ${storageType}:`,
+            weddingFlowData.length,
+          );
         } else {
           const savedFlow = localStorage.getItem("wedding_flow");
           if (savedFlow) {
@@ -944,7 +957,9 @@ export default function AdminDashboard() {
             // Update local state
             setUploadedPhotos((prev) => {
               const newPhotos = [...prev, base64String];
-              console.log(`Photo ${file.name} saved to database and added to gallery`);
+              console.log(
+                `Photo ${file.name} saved to database and added to gallery`,
+              );
               return newPhotos;
             });
             successCount++;
@@ -961,7 +976,9 @@ export default function AdminDashboard() {
           // Show success message after processing all files
           if (successCount + errorCount === files.length) {
             if (successCount > 0) {
-              const storageType = database.isUsingSupabase() ? "Supabase database" : "local storage";
+              const storageType = database.isUsingSupabase()
+                ? "Supabase database"
+                : "local storage";
               toast({
                 title: "Photos Uploaded Successfully! 📷",
                 description: `${successCount} photo${successCount !== 1 ? "s" : ""} saved to ${storageType} and synced across devices!`,
