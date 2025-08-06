@@ -400,6 +400,11 @@ Please RSVP at our wedding website
             <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">Our Memories</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-olive-600 to-sage-600 mx-auto mb-6"></div>
             <p className="text-sage-700 text-lg">Beautiful moments from our journey together</p>
+            {uploadedPhotos.length > 0 && (
+              <p className="text-sm text-sage-500 mt-2">
+                Gallery updates automatically • {uploadedPhotos.length} photo{uploadedPhotos.length !== 1 ? 's' : ''}
+              </p>
+            )}
           </div>
 
           {uploadedPhotos.length > 0 ? (
