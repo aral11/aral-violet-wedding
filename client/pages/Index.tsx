@@ -13,6 +13,7 @@ interface Guest {
   phone: string;
   attending: boolean;
   guests: number;
+  side: 'groom' | 'bride';
   message?: string;
   dietaryRestrictions?: string;
   needsAccommodation: boolean;
