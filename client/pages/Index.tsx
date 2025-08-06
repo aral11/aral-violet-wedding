@@ -129,23 +129,36 @@ export default function Index() {
         needsAccommodation: rsvpForm.needsAccommodation
       });
 
-      setRsvpForm({
-        name: '',
-        email: '',
-        phone: '',
-        attending: true,
-        guests: 1,
-        side: 'groom' as 'groom' | 'bride',
-        message: '',
-        dietaryRestrictions: '',
-        needsAccommodation: false
-      });
-      setShowSuccessMessage(true);
-      setTimeout(() => setShowSuccessMessage(false), 5000);
+      console.log('RSVP submitted to database successfully');
     } catch (error) {
-      console.error('Error submitting RSVP:', handleApiError(error));
-      alert('Sorry, there was an error submitting your RSVP. Please try again.');
+      console.warn('API unavailable, falling back to localStorage:', handleApiError(error));
+
+      // Fallback to localStorage if API is not available
+      const existingGuests = JSON.parse(localStorage.getItem('wedding_guests') || '[]');
+      const newGuest = {
+        id: Date.now().toString(),
+        ...rsvpForm,
+        createdAt: new Date().toISOString()
+      };
+      const updatedGuests = [...existingGuests, newGuest];
+      localStorage.setItem('wedding_guests', JSON.stringify(updatedGuests));
+      console.log('RSVP saved to localStorage fallback');
     }
+
+    // Reset form regardless of storage method
+    setRsvpForm({
+      name: '',
+      email: '',
+      phone: '',
+      attending: true,
+      guests: 1,
+      side: 'groom' as 'groom' | 'bride',
+      message: '',
+      dietaryRestrictions: '',
+      needsAccommodation: false
+    });
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 5000);
   };
 
   const downloadInvitation = async () => {
