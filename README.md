@@ -17,14 +17,18 @@ A beautiful, responsive wedding website built with React, TypeScript, and Supaba
 ## 🚀 Quick Deploy
 
 ### 1. Set GitHub Secrets
+
 Go to Repository Settings → Secrets → Actions and add:
+
 - `VITE_SUPABASE_URL`: `https://rqhhevyrmwgoxvjwnvuc.supabase.co`
 - `VITE_SUPABASE_ANON_KEY`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` (see PRODUCTION_SETUP.md)
 
 ### 2. Push Code
+
 Push to main branch - GitHub Actions will automatically deploy to GitHub Pages.
 
 ### 3. Enable GitHub Pages
+
 Repository Settings → Pages → Source: "GitHub Actions"
 
 **Live at:** `https://aral11.github.io/aral-violet-wedding/`
@@ -32,8 +36,9 @@ Repository Settings → Pages → Source: "GitHub Actions"
 ## 👑 Admin Access
 
 Login credentials for the wedding couple:
+
 - **Aral**: username `aral`, password `aral2025`
-- **Violet**: username `violet`, password `violet2025`  
+- **Violet**: username `violet`, password `violet2025`
 - **Couple**: username `couple`, password `wedding2025`
 
 ## 🗄️ Database
@@ -68,6 +73,7 @@ Login credentials for the wedding couple:
 ## 📞 Support
 
 For technical issues or questions:
+
 - Check `PRODUCTION_SETUP.md` for deployment details
 - Review `SUPABASE_QUICK_SETUP.md` for database setup
 - Verify `VIDEO_SETUP.md` for proposal video configuration
@@ -76,4 +82,4 @@ For technical issues or questions:
 
 **Made with ❤️ by Aral D'Souza for Aral & Violet's Wedding**
 
-*December 28, 2025 • Udupi, Karnataka, India*
+_December 28, 2025 • Udupi, Karnataka, India_

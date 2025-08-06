@@ -91,7 +91,9 @@ export default function Index() {
         const photos = await database.photos.getAll();
         if (photos && photos.length > 0) {
           setUploadedPhotos(photos.map((photo) => photo.photo_data));
-          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+          const storageType = database.isUsingSupabase()
+            ? "Supabase"
+            : "localStorage";
           console.log(`Photos loaded from ${storageType}:`, photos.length);
         }
       } catch (error) {
@@ -142,7 +144,9 @@ export default function Index() {
         needs_accommodation: rsvpForm.needsAccommodation,
       });
 
-      const storageType = database.isUsingSupabase() ? "Supabase database" : "local storage";
+      const storageType = database.isUsingSupabase()
+        ? "Supabase database"
+        : "local storage";
       console.log(`RSVP submitted to ${storageType} successfully`);
 
       toast({
