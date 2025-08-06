@@ -1428,7 +1428,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-sm border-b border-sage-200 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
             <div className="flex items-center gap-3">
               <Heart className="text-olive-600" size={24} />
               <div>
@@ -1440,21 +1440,24 @@ export default function AdminDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
               <Button
                 variant="outline"
+                size="sm"
                 onClick={() => window.open("/", "_blank")}
-                className="border-sage-300 text-sage-600 hover:bg-sage-50"
+                className="border-sage-300 text-sage-600 hover:bg-sage-50 flex-1 sm:flex-none"
               >
-                <Eye className="mr-2" size={16} />
-                View Site
+                <Eye className="mr-1 sm:mr-2" size={14} />
+                <span className="hidden sm:inline">View Site</span>
+                <span className="sm:hidden">Site</span>
               </Button>
               <Button
                 variant="outline"
+                size="sm"
                 onClick={logout}
-                className="border-red-300 text-red-600 hover:bg-red-50"
+                className="border-red-300 text-red-600 hover:bg-red-50 flex-1 sm:flex-none"
               >
-                <LogOut className="mr-2" size={16} />
+                <LogOut className="mr-1 sm:mr-2" size={14} />
                 Logout
               </Button>
             </div>
