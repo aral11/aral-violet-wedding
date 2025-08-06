@@ -153,12 +153,12 @@ export default function Index() {
     // Then try API load
     loadPhotos();
 
-    // Check for new photos every 10 seconds when the page is focused
+    // Check for new photos every 30 seconds when the page is focused (reduced frequency)
     const interval = setInterval(() => {
       if (!document.hidden) {
         loadPhotos();
       }
-    }, 10000);
+    }, 30000);
 
     // Also check when the page becomes visible
     const handleVisibilityChange = () => {
