@@ -1,10 +1,26 @@
 import { createClient } from '@supabase/supabase-js'
 
 // Supabase configuration - you'll need to add your actual values
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'YOUR_SUPABASE_URL'
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+// Only create Supabase client if environment variables are properly configured
+export const supabase = (() => {
+  if (supabaseUrl && supabaseKey &&
+      supabaseUrl !== 'YOUR_SUPABASE_URL' &&
+      supabaseKey !== 'YOUR_SUPABASE_ANON_KEY') {
+    try {
+      return createClient(supabaseUrl, supabaseKey)
+    } catch (error) {
+      console.warn('Failed to create Supabase client:', error)
+      return null
+    }
+  }
+
+  // Return null if not configured - database service will handle this gracefully
+  console.log('Supabase not configured - using localStorage fallback')
+  return null
+})()
 
 // Database types
 export interface SupabaseGuest {
