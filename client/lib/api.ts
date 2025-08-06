@@ -71,16 +71,19 @@ async function apiCall<T>(
 
     return response.json();
   } catch (error) {
-    // If fetch fails entirely, throw a more specific error
-    if (
-      error instanceof TypeError &&
-      error.message.includes("Failed to fetch")
-    ) {
-      throw new Error(
-        "API server is not available. Using localStorage fallback.",
-      );
+    // Handle all fetch-related errors gracefully
+    if (error instanceof TypeError) {
+      // This includes "Failed to fetch" and other network errors
+      throw new Error("API_UNAVAILABLE");
     }
-    throw error;
+
+    // Handle other response errors
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    // Fallback for unknown errors
+    throw new Error("API_ERROR");
   }
 }
 
