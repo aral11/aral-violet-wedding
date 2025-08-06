@@ -35,7 +35,7 @@ router.post('/send-rsvp-notification', async (req, res) => {
 📱 Phone: ${rsvpDetails.phone}
 ${attendingText}
 👥 Guests: ${rsvpDetails.guests}
-👨‍👩‍👧‍👦 Side: ${sideText}
+👨‍👩‍👧‍��� Side: ${sideText}
 
 ${rsvpDetails.message ? `💬 Message: ${rsvpDetails.message}` : ''}
 ${rsvpDetails.dietaryRestrictions ? `🍽️ Dietary: ${rsvpDetails.dietaryRestrictions}` : ''}
@@ -98,5 +98,3 @@ A&V Wedding Website 💕`;
     });
   }
 });
-
-export default router;
