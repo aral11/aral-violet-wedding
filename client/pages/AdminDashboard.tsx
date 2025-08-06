@@ -147,6 +147,13 @@ export default function AdminDashboard() {
     localStorage.setItem('wedding_flow', JSON.stringify(weddingFlow));
   }, [weddingFlow]);
 
+  // Save invitation PDF to localStorage whenever it changes
+  useEffect(() => {
+    if (invitationPDF) {
+      localStorage.setItem('wedding_invitation_pdf', invitationPDF);
+    }
+  }, [invitationPDF]);
+
   // Redirect if not authenticated (after all hooks)
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
