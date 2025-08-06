@@ -578,7 +578,9 @@ Please RSVP at our wedding website
                         poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f7fafc'/><text x='50%' y='40%' font-family='Arial' font-size='14' fill='%23718096' text-anchor='middle' dy='0.3em'>💍 Our Proposal Video</text><text x='50%' y='60%' font-family='Arial' font-size='10' fill='%23a0aec0' text-anchor='middle' dy='0.3em'>Coming Soon</text></svg>"
                         onError={() => console.log("Video failed to load")}
                         onLoadStart={() => console.log("Video started loading")}
-                        onLoadedData={() => console.log("Video loaded successfully")}
+                        onLoadedData={() =>
+                          console.log("Video loaded successfully")
+                        }
                       >
                         <source
                           src="/aral-violet-wedding/proposal-video.mp4"
@@ -587,19 +589,26 @@ Please RSVP at our wedding website
                         <source src="/proposal-video.mp4" type="video/mp4" />
                         <div className="p-8 text-center">
                           <div className="mb-4">
-                            <Camera className="mx-auto text-sage-400 mb-2" size={32} />
+                            <Camera
+                              className="mx-auto text-sage-400 mb-2"
+                              size={32}
+                            />
                             <h4 className="text-lg font-medium text-sage-700 mb-2">
                               Proposal Video Coming Soon! 💍
                             </h4>
                           </div>
                           <p className="text-sage-600 mb-4">
-                            Our surprise proposal video will be available here once uploaded.
+                            Our surprise proposal video will be available here
+                            once uploaded.
                           </p>
                           <div className="bg-sage-100 rounded-lg p-4">
                             <p className="text-sm text-sage-600">
-                              <strong>To add your video:</strong><br/>
-                              1. Add 'proposal-video.mp4' to the public folder<br/>
-                              2. Or provide a YouTube/Vimeo link for embedding<br/>
+                              <strong>To add your video:</strong>
+                              <br />
+                              1. Add 'proposal-video.mp4' to the public folder
+                              <br />
+                              2. Or provide a YouTube/Vimeo link for embedding
+                              <br />
                               3. Push to GitHub and your video will appear here!
                             </p>
                           </div>
