@@ -42,9 +42,10 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_TWILIO_ACCOUNT_SID: ${{ secrets.VITE_TWILIO_ACCOUNT_SID }}
-          VITE_TWILIO_AUTH_TOKEN: ${{ secrets.VITE_TWILIO_AUTH_TOKEN }}
-          VITE_TWILIO_PHONE_NUMBER: ${{ secrets.VITE_TWILIO_PHONE_NUMBER }}
+          # Server-side Twilio environment variables for SMS notifications
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
