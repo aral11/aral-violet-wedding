@@ -33,7 +33,10 @@ export default function Debug() {
         count: photos?.length || 0,
       };
     } catch (error) {
-      results.photos = { success: false, error: handleApiError(error) };
+      results.photos = {
+        success: false,
+        error: "API not available - using localStorage fallback"
+      };
     }
 
     try {
