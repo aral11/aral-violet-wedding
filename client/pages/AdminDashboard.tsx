@@ -901,7 +901,7 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="rsvp" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 lg:w-auto lg:grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:grid-cols-3">
             <TabsTrigger value="rsvp" className="flex items-center gap-2">
               <Users size={16} />
               RSVP Management
@@ -909,6 +909,10 @@ export default function AdminDashboard() {
             <TabsTrigger value="photos" className="flex items-center gap-2">
               <Camera size={16} />
               Photo Gallery
+            </TabsTrigger>
+            <TabsTrigger value="flow" className="flex items-center gap-2">
+              <Clock size={16} />
+              Wedding Flow
             </TabsTrigger>
           </TabsList>
 
