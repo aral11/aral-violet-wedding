@@ -4,12 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { photosApi, guestsApi, handleApiError } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 import { database } from "@/lib/database";
+import { testSMSService, isSMSConfigured } from "@/lib/sms-service";
 
 export default function Debug() {
   const [localStorageData, setLocalStorageData] = useState<any>({});
   const [apiStatus, setApiStatus] = useState<any>({});
   const [supabaseStatus, setSupabaseStatus] = useState<any>({});
   const [databaseStatus, setDatabaseStatus] = useState<any>({});
+  const [smsStatus, setSmsStatus] = useState<any>({});
 
   useEffect(() => {
     // Load localStorage data
@@ -101,6 +103,32 @@ export default function Debug() {
     }
 
     setDatabaseStatus(results);
+  };
+
+  const testSMS = async () => {
+    const results: any = {};
+
+    // Check if SMS is configured
+    results.isConfigured = isSMSConfigured();
+    results.accountSid = import.meta.env.VITE_TWILIO_ACCOUNT_SID || "Not set";
+    results.hasAuthToken = !!import.meta.env.VITE_TWILIO_AUTH_TOKEN;
+    results.phoneNumber = import.meta.env.VITE_TWILIO_PHONE_NUMBER || "Not set";
+
+    if (results.isConfigured) {
+      try {
+        results.testMessage = "Sending test SMS...";
+        const success = await testSMSService();
+        results.testMessage = success ? "✅ Test SMS sent successfully!" : "❌ Test SMS failed";
+        results.testSuccess = success;
+      } catch (error: any) {
+        results.testMessage = `❌ SMS test error: ${error.message}`;
+        results.testSuccess = false;
+      }
+    } else {
+      results.testMessage = "SMS service not configured";
+    }
+
+    setSmsStatus(results);
   };
 
   const testAPI = async () => {
