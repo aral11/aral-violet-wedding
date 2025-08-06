@@ -45,6 +45,7 @@ export default function AdminDashboard() {
     type: 'reception'
   });
   const [editingFlow, setEditingFlow] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load data from localStorage on mount
   useEffect(() => {
