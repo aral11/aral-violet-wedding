@@ -929,7 +929,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Stats Overview */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
             <CardContent className="p-6 text-center">
               <Users className="mx-auto mb-2 text-olive-600" size={32} />
@@ -937,28 +937,67 @@ export default function AdminDashboard() {
               <p className="text-sm text-sage-600">Total RSVPs</p>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
             <CardContent className="p-6 text-center">
               <Heart className="mx-auto mb-2 text-green-600" size={32} />
               <p className="text-2xl font-bold text-green-700">{attendingGuests.length}</p>
               <p className="text-sm text-sage-600">Attending</p>
+              <p className="text-xs text-green-600 mt-1">{totalGuestCount} total guests</p>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
             <CardContent className="p-6 text-center">
-              <Users className="mx-auto mb-2 text-olive-600" size={32} />
-              <p className="text-2xl font-bold text-olive-700">{totalGuestCount}</p>
-              <p className="text-sm text-sage-600">Total Guests</p>
+              <div className="flex justify-center items-center mb-2">
+                <span className="text-2xl">🏨</span>
+              </div>
+              <p className="text-2xl font-bold text-amber-700">{accommodationNeeded.length}</p>
+              <p className="text-sm text-sage-600">Need Stay</p>
+              <p className="text-xs text-amber-600 mt-1">{accommodationGuestCount} guests</p>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
             <CardContent className="p-6 text-center">
               <Camera className="mx-auto mb-2 text-olive-600" size={32} />
               <p className="text-2xl font-bold text-olive-700">{uploadedPhotos.length}</p>
               <p className="text-sm text-sage-600">Photos</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Additional Stats Row */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
+            <CardContent className="p-6 text-center">
+              <div className="flex justify-center items-center mb-2">
+                <span className="text-2xl">👰</span>
+              </div>
+              <p className="text-2xl font-bold text-purple-700">{brideSideGuests.length}</p>
+              <p className="text-sm text-sage-600">Bride's Side</p>
+              <p className="text-xs text-purple-600 mt-1">{brideSideGuests.reduce((sum, guest) => sum + guest.guests, 0)} guests</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
+            <CardContent className="p-6 text-center">
+              <div className="flex justify-center items-center mb-2">
+                <span className="text-2xl">🤵</span>
+              </div>
+              <p className="text-2xl font-bold text-blue-700">{groomSideGuests.length}</p>
+              <p className="text-sm text-sage-600">Groom's Side</p>
+              <p className="text-xs text-blue-600 mt-1">{groomSideGuests.reduce((sum, guest) => sum + guest.guests, 0)} guests</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
+            <CardContent className="p-6 text-center">
+              <div className="flex justify-center items-center mb-2">
+                <span className="text-2xl">❌</span>
+              </div>
+              <p className="text-2xl font-bold text-red-700">{notAttendingGuests.length}</p>
+              <p className="text-sm text-sage-600">Not Attending</p>
             </CardContent>
           </Card>
         </div>
