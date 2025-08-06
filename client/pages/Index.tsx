@@ -85,36 +85,18 @@ export default function Index() {
 
   // Load photos - prioritize localStorage to avoid fetch errors
   useEffect(() => {
-    // Load from localStorage immediately
-    const loadFromStorage = () => {
-      const savedPhotos = localStorage.getItem("wedding_photos");
-      if (savedPhotos) {
-        try {
-          const photos = JSON.parse(savedPhotos);
-          setUploadedPhotos(photos);
-          console.log("Photos loaded from localStorage:", photos.length);
-        } catch (parseError) {
-          console.error("Error parsing localStorage photos:", parseError);
-          setUploadedPhotos([]);
-        }
-      }
-    };
-
-    // Load immediately
-    loadFromStorage();
-
-    // Try API silently in background
+    // Load photos using new database service
     const loadPhotos = async () => {
       try {
-        const photos = await photosApi.getAll();
+        const photos = await database.photos.getAll();
         if (photos && photos.length > 0) {
-          setUploadedPhotos(photos.map((photo) => photo.photoData));
-          console.log("Photos synced from API:", photos.length);
+          setUploadedPhotos(photos.map((photo) => photo.photo_data));
+          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+          console.log(`Photos loaded from ${storageType}:`, photos.length);
         }
       } catch (error) {
-        // Silently ignore ALL API errors - localStorage already loaded
-        // Don't log specific error details to avoid console spam
-        console.log("Using localStorage data (API not available)");
+        console.log("Error loading photos:", error);
+        setUploadedPhotos([]);
       }
     };
 
