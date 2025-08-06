@@ -39,6 +39,7 @@ interface Guest {
 }
 
 export default function Index() {
+  const { toast } = useToast();
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
