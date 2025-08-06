@@ -932,25 +932,39 @@ export default function AdminDashboard() {
 
       // Convert to base64 for persistent storage
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         console.log(`File ${file.name} read successfully`);
         if (event.target?.result) {
           const base64String = event.target.result as string;
-          setUploadedPhotos((prev) => {
-            const newPhotos = [...prev, base64String];
-            // Also immediately save to localStorage
-            localStorage.setItem("wedding_photos", JSON.stringify(newPhotos));
-            console.log(`Photo ${file.name} added to gallery`);
-            return newPhotos;
-          });
-          successCount++;
+
+          try {
+            // Save photo using database service (Supabase + localStorage fallback)
+            await database.photos.create(base64String, "admin");
+
+            // Update local state
+            setUploadedPhotos((prev) => {
+              const newPhotos = [...prev, base64String];
+              console.log(`Photo ${file.name} saved to database and added to gallery`);
+              return newPhotos;
+            });
+            successCount++;
+          } catch (error) {
+            console.error(`Error saving photo ${file.name}:`, error);
+            errorCount++;
+            toast({
+              title: "Photo Upload Error",
+              description: `Error saving "${file.name}". Please try again.`,
+              variant: "destructive",
+            });
+          }
 
           // Show success message after processing all files
           if (successCount + errorCount === files.length) {
             if (successCount > 0) {
+              const storageType = database.isUsingSupabase() ? "Supabase database" : "local storage";
               toast({
                 title: "Photos Uploaded Successfully! 📷",
-                description: `${successCount} photo${successCount !== 1 ? "s" : ""} added to the wedding gallery!`,
+                description: `${successCount} photo${successCount !== 1 ? "s" : ""} saved to ${storageType} and synced across devices!`,
                 duration: 3000,
               });
             }
