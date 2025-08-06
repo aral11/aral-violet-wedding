@@ -300,16 +300,17 @@ export default function AdminDashboard() {
                     <span class="side-badge ${guest.side === 'groom' ? 'groom-side' : 'bride-side'}">
                         ${guest.side === 'groom' ? "Aral's Side" : "Violet's Side"}
                     </span>
-                    ${guest.message ? `<div class="guest-message">"${guest.message}"</div>` : ''}
+                    ${guest.message ? `<div class="guest-message">💌 "${guest.message}"</div>` : ''}
                 </div>
                 <div class="guest-details">
-                    <div><strong>Guests:</strong> ${guest.guests}</div>
-                    <div><strong>Accommodation:</strong> ${guest.needsAccommodation ? 'Yes' : 'No'}</div>
-                    ${guest.dietaryRestrictions ? `<div><strong>Dietary:</strong> ${guest.dietaryRestrictions}</div>` : ''}
+                    <div style="margin-bottom: 8px;"><strong>👥 Total Guests:</strong> ${guest.guests}</div>
+                    <div style="margin-bottom: 8px;"><strong>🏨 Accommodation:</strong> ${guest.needsAccommodation ? '✅ Required' : '❌ Not needed'}</div>
+                    ${guest.dietaryRestrictions ? `<div style="margin-bottom: 8px;"><strong>🍽️ Dietary:</strong> ${guest.dietaryRestrictions}</div>` : '<div style="margin-bottom: 8px;"><strong>🍽️ Dietary:</strong> None specified</div>'}
                 </div>
                 <div class="guest-details">
-                    <div><strong>RSVP Date:</strong></div>
-                    <div>${new Date(guest.createdAt).toLocaleDateString('en-IN')}</div>
+                    <div style="margin-bottom: 5px;"><strong>📅 RSVP Date:</strong></div>
+                    <div style="font-size: 0.9em;">${new Date(guest.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                    <div style="font-size: 0.8em; color: #a0aec0; margin-top: 5px;">${new Date(guest.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
                 </div>
             </div>
             `).join('')}
