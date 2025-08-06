@@ -1064,6 +1064,186 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Wedding Flow Management */}
+          <TabsContent value="flow" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle className="text-olive-700">Reception Timeline Management</CardTitle>
+                  <Button
+                    onClick={downloadWeddingFlow}
+                    className="bg-olive-600 hover:bg-olive-700 text-white"
+                  >
+                    <Download className="mr-2" size={16} />
+                    Download Timeline PDF
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Add New Flow Item */}
+                  <Card className="border-2 border-dashed border-sage-300">
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-serif text-olive-700 mb-4 flex items-center gap-2">
+                        <Plus size={20} />
+                        Add Timeline Event
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">Time *</label>
+                          <Input
+                            type="time"
+                            value={newFlowItem.time}
+                            onChange={(e) => setNewFlowItem({...newFlowItem, time: e.target.value})}
+                            className="border-sage-300 focus:border-olive-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">Duration</label>
+                          <Input
+                            type="text"
+                            placeholder="e.g., 30 min, 1 hour"
+                            value={newFlowItem.duration}
+                            onChange={(e) => setNewFlowItem({...newFlowItem, duration: e.target.value})}
+                            className="border-sage-300 focus:border-olive-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">Event Title *</label>
+                          <Input
+                            type="text"
+                            placeholder="e.g., Welcome Cocktails"
+                            value={newFlowItem.title}
+                            onChange={(e) => setNewFlowItem({...newFlowItem, title: e.target.value})}
+                            className="border-sage-300 focus:border-olive-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">Event Type</label>
+                          <select
+                            value={newFlowItem.type}
+                            onChange={(e) => setNewFlowItem({...newFlowItem, type: e.target.value as WeddingFlowItem['type']})}
+                            className="w-full p-2 border border-sage-300 rounded-md focus:border-olive-500"
+                          >
+                            <option value="reception">Reception</option>
+                            <option value="ceremony">Ceremony</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="meal">Meal</option>
+                            <option value="special">Special</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-sage-700 mb-2">Description</label>
+                        <Textarea
+                          placeholder="Describe what happens during this event..."
+                          value={newFlowItem.description}
+                          onChange={(e) => setNewFlowItem({...newFlowItem, description: e.target.value})}
+                          className="border-sage-300 focus:border-olive-500"
+                        />
+                      </div>
+                      <Button
+                        onClick={addFlowItem}
+                        disabled={!newFlowItem.time || !newFlowItem.title}
+                        className="mt-4 bg-sage-600 hover:bg-sage-700 text-white"
+                      >
+                        <Plus className="mr-2" size={16} />
+                        Add Event
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  {/* Current Timeline */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-serif text-olive-700">Current Reception Timeline</h3>
+                    {weddingFlow.length === 0 ? (
+                      <p className="text-center py-8 text-sage-600">No timeline events yet. Add some above to get started!</p>
+                    ) : (
+                      <div className="space-y-3">
+                        {weddingFlow.map((item) => (
+                          <Card key={item.id} className="border-l-4 border-l-olive-500">
+                            <CardContent className="p-4">
+                              {editingFlow === item.id ? (
+                                <div className="space-y-3">
+                                  <div className="grid md:grid-cols-2 gap-3">
+                                    <Input
+                                      type="time"
+                                      value={item.time}
+                                      onChange={(e) => updateFlowItem(item.id, { time: e.target.value })}
+                                    />
+                                    <Input
+                                      placeholder="Duration"
+                                      value={item.duration}
+                                      onChange={(e) => updateFlowItem(item.id, { duration: e.target.value })}
+                                    />
+                                  </div>
+                                  <Input
+                                    value={item.title}
+                                    onChange={(e) => updateFlowItem(item.id, { title: e.target.value })}
+                                  />
+                                  <Textarea
+                                    value={item.description}
+                                    onChange={(e) => updateFlowItem(item.id, { description: e.target.value })}
+                                  />
+                                  <div className="flex gap-2">
+                                    <Button size="sm" onClick={() => setEditingFlow(null)}>
+                                      Save
+                                    </Button>
+                                    <Button size="sm" variant="outline" onClick={() => setEditingFlow(null)}>
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="flex justify-between items-start">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3 mb-2">
+                                      <span className="text-lg font-bold text-olive-700">{item.time}</span>
+                                      <span className={`px-2 py-1 text-xs rounded-full text-white ${
+                                        item.type === 'ceremony' ? 'bg-olive-600' :
+                                        item.type === 'reception' ? 'bg-sage-600' :
+                                        item.type === 'entertainment' ? 'bg-gray-600' :
+                                        item.type === 'meal' ? 'bg-amber-600' :
+                                        'bg-purple-600'
+                                      }`}>
+                                        {item.type}
+                                      </span>
+                                      {item.duration && (
+                                        <span className="text-sm text-sage-500">({item.duration})</span>
+                                      )}
+                                    </div>
+                                    <h4 className="font-semibold text-sage-800 mb-1">{item.title}</h4>
+                                    <p className="text-sage-600 text-sm">{item.description}</p>
+                                  </div>
+                                  <div className="flex gap-2 ml-4">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => setEditingFlow(item.id)}
+                                    >
+                                      <Edit size={14} />
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() => removeFlowItem(item.id)}
+                                    >
+                                      <Trash2 size={14} />
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
