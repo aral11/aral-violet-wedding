@@ -577,9 +577,11 @@ Please RSVP at our wedding website
                       >
                         <source src="/aral-violet-wedding/proposal-video.mp4" type="video/mp4" />
                         <source src="/proposal-video.mp4" type="video/mp4" />
-                        <p className="text-sage-600 p-4">
-                          Your browser doesn't support HTML5 video.
-                          <a href="#" className="text-olive-600 underline">Download the video</a> instead.
+                        <p className="text-sage-600 p-4 text-center">
+                          📹 Proposal video will appear here once uploaded to the website.<br/>
+                          <span className="text-sm text-sage-500">
+                            (Add your video file as 'proposal-video.mp4' to the public folder)
+                          </span>
                         </p>
                       </video>
                     </div>
