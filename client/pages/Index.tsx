@@ -465,7 +465,8 @@ Please RSVP at our wedding website
                   } else {
                     toast({
                       title: "Wedding Timeline Coming Soon! ⏰",
-                      description: "The reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!",
+                      description:
+                        "The reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!",
                       duration: 5000,
                     });
                   }
@@ -567,7 +568,8 @@ Please RSVP at our wedding website
 
                   <div className="mt-6">
                     <p className="text-sm text-sage-600 mb-3 italic">
-                      A surprise proposal - Violet never had an idea about it! 💍
+                      A surprise proposal - Violet never had an idea about it!
+                      💍
                     </p>
                     <div className="relative rounded-lg overflow-hidden shadow-md">
                       <video
@@ -575,12 +577,18 @@ Please RSVP at our wedding website
                         className="w-full h-auto max-h-80 object-cover"
                         poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f7fafc'/><text x='50%' y='50%' font-family='Arial' font-size='16' fill='%23718096' text-anchor='middle' dy='0.3em'>Our Proposal Video</text></svg>"
                       >
-                        <source src="/aral-violet-wedding/proposal-video.mp4" type="video/mp4" />
+                        <source
+                          src="/aral-violet-wedding/proposal-video.mp4"
+                          type="video/mp4"
+                        />
                         <source src="/proposal-video.mp4" type="video/mp4" />
                         <p className="text-sage-600 p-4 text-center">
-                          📹 Proposal video will appear here once uploaded to the website.<br/>
+                          📹 Proposal video will appear here once uploaded to
+                          the website.
+                          <br />
                           <span className="text-sm text-sage-500">
-                            (Add your video file as 'proposal-video.mp4' to the public folder)
+                            (Add your video file as 'proposal-video.mp4' to the
+                            public folder)
                           </span>
                         </p>
                       </video>

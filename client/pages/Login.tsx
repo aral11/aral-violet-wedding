@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { Heart, Lock, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/contexts/AuthContext';
+import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Heart, Lock, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   // Redirect if already authenticated
@@ -21,14 +24,14 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     // Simulate loading delay
     setTimeout(() => {
       const success = login(credentials.username, credentials.password);
-      
+
       if (!success) {
-        setError('Invalid username or password. Please try again.');
+        setError("Invalid username or password. Please try again.");
       }
       setIsLoading(false);
     }, 1000);
@@ -37,17 +40,19 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 to-sage-50 flex items-center justify-center p-4">
       {/* Background Image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`
+          backgroundImage: `url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`,
         }}
       ></div>
-      
+
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <Heart className="mx-auto mb-4 text-olive-600" size={48} />
-          <h1 className="text-3xl font-serif text-olive-700 mb-2">Admin Login</h1>
+          <h1 className="text-3xl font-serif text-olive-700 mb-2">
+            Admin Login
+          </h1>
           <p className="text-sage-600">Access your wedding dashboard</p>
         </div>
 
@@ -64,17 +69,25 @@ export default function Login() {
                   {error}
                 </div>
               )}
-              
+
               <div>
                 <label className="block text-sm font-medium text-sage-700 mb-2">
                   Username
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sage-400" size={18} />
+                  <User
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sage-400"
+                    size={18}
+                  />
                   <Input
                     type="text"
                     value={credentials.username}
-                    onChange={(e) => setCredentials({...credentials, username: e.target.value})}
+                    onChange={(e) =>
+                      setCredentials({
+                        ...credentials,
+                        username: e.target.value,
+                      })
+                    }
                     placeholder="Enter your username"
                     className="pl-10 border-sage-300 focus:border-olive-500"
                     required
@@ -87,11 +100,19 @@ export default function Login() {
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sage-400" size={18} />
+                  <Lock
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sage-400"
+                    size={18}
+                  />
                   <Input
                     type="password"
                     value={credentials.password}
-                    onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+                    onChange={(e) =>
+                      setCredentials({
+                        ...credentials,
+                        password: e.target.value,
+                      })
+                    }
                     placeholder="Enter your password"
                     className="pl-10 border-sage-300 focus:border-olive-500"
                     required
@@ -99,12 +120,12 @@ export default function Login() {
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-olive-600 hover:bg-olive-700 text-white py-3"
                 disabled={isLoading}
               >
-                {isLoading ? 'Signing In...' : 'Sign In'}
+                {isLoading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
 
@@ -121,7 +142,7 @@ export default function Login() {
         <div className="text-center mt-6">
           <Button
             variant="outline"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="text-sage-600 border-sage-300 hover:bg-sage-50"
           >
             ← Back to Wedding Site

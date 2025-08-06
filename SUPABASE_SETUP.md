@@ -1,7 +1,9 @@
 # 🗄️ Supabase Database Setup for Wedding Website
 
 ## Why Supabase?
+
 Supabase is perfect for GitHub Pages hosting because:
+
 - ✅ **Free tier** - 500MB database, 2GB bandwidth
 - ✅ **Static site compatible** - REST API calls work from any frontend
 - ✅ **Real-time updates** - Guests can see live RSVP counts
@@ -11,18 +13,21 @@ Supabase is perfect for GitHub Pages hosting because:
 ## Quick Setup (Recommended)
 
 ### Option 1: Use MCP Integration
+
 1. Click [Open MCP popover](#open-mcp-popover) in your interface
-2. Connect to **Supabase MCP Server** 
+2. Connect to **Supabase MCP Server**
 3. Follow the guided setup to create your database tables
 
 ### Option 2: Manual Setup
 
 #### Step 1: Create Supabase Account
+
 1. Go to [supabase.com](https://supabase.com)
 2. Sign up with GitHub (recommended)
 3. Create a new project: "aral-violet-wedding"
 
 #### Step 2: Create Database Tables
+
 Execute this SQL in Supabase SQL Editor:
 
 ```sql
@@ -91,27 +96,30 @@ CREATE POLICY "Admin can do everything on invitations" ON invitations FOR ALL US
 ```
 
 #### Step 3: Get API Keys
+
 1. Go to Project Settings → API
 2. Copy your:
    - **Project URL** (e.g., `https://xxxxx.supabase.co`)
    - **Anon public key**
 
 #### Step 4: Add to Your Wedding Website
+
 1. Install Supabase client: `npm install @supabase/supabase-js`
 2. Create `client/lib/supabase.ts`:
 
 ```typescript
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = 'YOUR_SUPABASE_URL'
-const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'
+const supabaseUrl = "YOUR_SUPABASE_URL";
+const supabaseKey = "YOUR_SUPABASE_ANON_KEY";
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey);
 ```
 
 3. Update your API functions to use Supabase instead of localStorage
 
 ## Benefits After Setup
+
 - ✅ **Real-time RSVP tracking** - See responses immediately
 - ✅ **Shared photo gallery** - All guests see the same photos
 - ✅ **Data persistence** - No more localStorage limitations
@@ -119,6 +127,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey)
 - ✅ **Backup** - Your wedding data is safely stored in the cloud
 
 ## Current Status
+
 Your wedding website currently uses localStorage as the primary storage with API fallbacks. This works perfectly for GitHub Pages, but Supabase would provide better data persistence and real-time features.
 
 **Recommendation**: Keep the current localStorage system working (it's solid!), and add Supabase as an enhancement when you have time.
@@ -126,6 +135,7 @@ Your wedding website currently uses localStorage as the primary storage with API
 ---
 
 Would you like me to help integrate Supabase into your wedding website? I can either:
+
 1. Use the MCP integration to set it up automatically
 2. Help you code the integration manually
 3. Keep the current system (it works great as-is!)
