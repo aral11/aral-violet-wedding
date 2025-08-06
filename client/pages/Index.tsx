@@ -202,28 +202,18 @@ export default function Index() {
       year: "numeric",
     });
 
-    // Try to get wedding flow from API first, then localStorage
+    // Get wedding flow using database service
     let flowItems: any[] = [];
     try {
-      const flowFromApi = await weddingFlowApi.getAll();
-      if (flowFromApi && flowFromApi.length > 0) {
-        flowItems = flowFromApi;
-        console.log("Wedding flow loaded from API for download");
-      } else {
-        const savedFlow = localStorage.getItem("wedding_flow");
-        if (savedFlow) {
-          flowItems = JSON.parse(savedFlow);
-          console.log("Wedding flow loaded from localStorage for download");
-        }
+      const flowFromDatabase = await database.weddingFlow.getAll();
+      if (flowFromDatabase && flowFromDatabase.length > 0) {
+        flowItems = flowFromDatabase;
+        const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+        console.log(`Wedding flow loaded from ${storageType} for download`);
       }
     } catch (error) {
-      const savedFlow = localStorage.getItem("wedding_flow");
-      if (savedFlow) {
-        flowItems = JSON.parse(savedFlow);
-        console.log(
-          "Wedding flow loaded from localStorage for download (API failed)",
-        );
-      }
+      console.log("Error loading wedding flow for download:", error);
+      flowItems = [];
     }
 
     const getTypeIcon = (type: string) => {
