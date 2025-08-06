@@ -118,7 +118,9 @@ export default function Debug() {
       try {
         results.testMessage = "Sending test SMS...";
         const success = await testSMSService();
-        results.testMessage = success ? "✅ Test SMS sent successfully!" : "❌ Test SMS failed";
+        results.testMessage = success
+          ? "✅ Test SMS sent successfully!"
+          : "❌ Test SMS failed";
         results.testSuccess = success;
       } catch (error: any) {
         results.testMessage = `❌ SMS test error: ${error.message}`;
@@ -398,7 +400,13 @@ export default function Debug() {
           <CardContent>
             <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
               {JSON.stringify(
-                { localStorageData, apiStatus, supabaseStatus, databaseStatus, smsStatus },
+                {
+                  localStorageData,
+                  apiStatus,
+                  supabaseStatus,
+                  databaseStatus,
+                  smsStatus,
+                },
                 null,
                 2,
               )}

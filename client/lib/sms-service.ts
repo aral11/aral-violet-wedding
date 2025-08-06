@@ -4,7 +4,7 @@ export interface RSVPDetails {
   phone: string;
   attending: boolean;
   guests: number;
-  side: 'groom' | 'bride';
+  side: "groom" | "bride";
   message?: string;
   dietaryRestrictions?: string;
   needsAccommodation: boolean;
@@ -12,27 +12,29 @@ export interface RSVPDetails {
 
 const API_BASE = "/api";
 
-export const sendRSVPNotification = async (rsvpDetails: RSVPDetails): Promise<boolean> => {
+export const sendRSVPNotification = async (
+  rsvpDetails: RSVPDetails,
+): Promise<boolean> => {
   try {
     const response = await fetch(`${API_BASE}/sms/send-rsvp-notification`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ rsvpDetails }),
     });
 
     if (!response.ok) {
-      console.error('SMS API error:', response.status, response.statusText);
+      console.error("SMS API error:", response.status, response.statusText);
       return false;
     }
 
     const result = await response.json();
-    console.log('SMS API response:', result);
-    
+    console.log("SMS API response:", result);
+
     return result.success || false;
   } catch (error) {
-    console.error('Failed to send SMS notification:', error);
+    console.error("Failed to send SMS notification:", error);
     return false;
   }
 };
@@ -40,23 +42,27 @@ export const sendRSVPNotification = async (rsvpDetails: RSVPDetails): Promise<bo
 export const testSMSService = async (): Promise<boolean> => {
   try {
     const response = await fetch(`${API_BASE}/sms/test`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
     if (!response.ok) {
-      console.error('SMS test API error:', response.status, response.statusText);
+      console.error(
+        "SMS test API error:",
+        response.status,
+        response.statusText,
+      );
       return false;
     }
 
     const result = await response.json();
-    console.log('SMS test API response:', result);
-    
+    console.log("SMS test API response:", result);
+
     return result.success || false;
   } catch (error) {
-    console.error('Failed to test SMS service:', error);
+    console.error("Failed to test SMS service:", error);
     return false;
   }
 };

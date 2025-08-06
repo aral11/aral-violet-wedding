@@ -1,30 +1,36 @@
 # 📱 SMS Notifications Setup for Wedding Website
 
 ## Overview
+
 Your wedding website now supports SMS notifications to family members whenever someone submits an RSVP!
 
 **Note**: SMS functionality has been implemented server-side to avoid browser compatibility issues. The client-side code now calls server API endpoints for SMS operations.
 
 ## Notification Recipients
+
 SMS notifications will be sent to:
+
 - `+918105003858`
-- `+917276700997` 
+- `+917276700997`
 - `+919731832609`
 
 ## Setup Instructions
 
 ### Step 1: Create Twilio Account
+
 1. Go to [twilio.com](https://www.twilio.com)
 2. Sign up for a free account
 3. Complete phone verification
 
 ### Step 2: Get Twilio Credentials
+
 1. Go to [Twilio Console](https://console.twilio.com)
 2. From your dashboard, copy:
    - **Account SID** (starts with `AC`)
    - **Auth Token** (click the eye icon to reveal)
 
 ### Step 3: Get Phone Number
+
 1. In Twilio Console, go to **Phone Numbers** → **Manage** → **Buy a number**
 2. Choose a number (free trial gives you one number)
 3. Copy the phone number (format: `+1234567890`)
@@ -38,6 +44,7 @@ For development, the system logs SMS messages to the console instead of sending 
 **For production deployment**, you would need to:
 
 1. Set up server environment variables (not client-side):
+
 ```bash
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=your_auth_token_here
@@ -45,6 +52,7 @@ TWILIO_PHONE_NUMBER=+1234567890
 ```
 
 2. Install Twilio on the server:
+
 ```bash
 npm install twilio
 ```
@@ -54,6 +62,7 @@ npm install twilio
 ### Step 5: Test SMS Notifications
 
 After configuring, test the system:
+
 1. Go to your website debug page: `/debug`
 2. Check console logs when submitting an RSVP
 3. Verify SMS messages are sent to the family phone numbers
@@ -63,7 +72,7 @@ After configuring, test the system:
 When an RSVP is submitted, family members receive:
 
 ```
-🎉 NEW RSVP RECEIVED! 
+🎉 NEW RSVP RECEIVED!
 
 👤 Name: John Doe
 📧 Email: john@example.com
@@ -95,16 +104,19 @@ TheVIRALWedding - A&V 💕
 ## Troubleshooting
 
 ### SMS Not Sending?
+
 1. Check server console logs for SMS notification attempts
 2. Verify API endpoints are responding (`/api/sms/test`)
 3. Check browser network tab for API call failures
 4. Server logs will show the SMS message content that would be sent
 
 ### Development vs Production:
+
 - **Development**: SMS messages are logged to server console only
 - **Production**: Would require actual Twilio configuration on server
 
 ### API Issues?
+
 - Check browser dev tools → Network tab for `/api/sms/` calls
 - Server console shows detailed SMS notification logs
 - Test SMS functionality via `/debug` page

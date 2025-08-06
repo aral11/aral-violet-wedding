@@ -167,7 +167,9 @@ export default function Index() {
           });
 
           if (smsSuccess) {
-            console.log("✅ SMS notifications sent successfully to family members");
+            console.log(
+              "✅ SMS notifications sent successfully to family members",
+            );
           } else {
             console.log("⚠️ SMS notifications failed to send");
           }
