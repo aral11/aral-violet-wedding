@@ -117,12 +117,13 @@ export default function Index() {
     const updatedGuests = [...existingGuests, newGuest];
     localStorage.setItem('wedding_guests', JSON.stringify(updatedGuests));
     
-    setRsvpForm({ 
-      name: '', 
-      email: '', 
+    setRsvpForm({
+      name: '',
+      email: '',
       phone: '',
-      attending: true, 
-      guests: 1, 
+      attending: true,
+      guests: 1,
+      side: 'groom' as 'groom' | 'bride',
       message: '',
       dietaryRestrictions: '',
       needsAccommodation: false
