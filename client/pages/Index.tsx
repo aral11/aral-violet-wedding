@@ -148,7 +148,7 @@ export default function Index() {
     e.preventDefault();
 
     try {
-      await guestsApi.create({
+      await database.guests.create({
         name: rsvpForm.name,
         email: rsvpForm.email,
         phone: rsvpForm.phone,
@@ -156,15 +156,16 @@ export default function Index() {
         guests: rsvpForm.guests,
         side: rsvpForm.side,
         message: rsvpForm.message || undefined,
-        dietaryRestrictions: rsvpForm.dietaryRestrictions || undefined,
-        needsAccommodation: rsvpForm.needsAccommodation,
+        dietary_restrictions: rsvpForm.dietaryRestrictions || undefined,
+        needs_accommodation: rsvpForm.needsAccommodation,
       });
 
-      console.log("RSVP submitted to database successfully");
+      const storageType = database.isUsingSupabase() ? "Supabase database" : "local storage";
+      console.log(`RSVP submitted to ${storageType} successfully`);
 
       toast({
         title: "RSVP Submitted Successfully! 🎉",
-        description: `Thank you ${rsvpForm.name}! We can't wait to celebrate with you on December 28, 2025!`,
+        description: `Thank you ${rsvpForm.name}! We can't wait to celebrate with you on December 28, 2025!${database.isUsingSupabase() ? " ✨ Synced across all devices!" : ""}`,
         duration: 5000,
       });
     } catch (error) {
@@ -465,7 +466,7 @@ Please RSVP at our wedding website
                     downloadWeddingFlow();
                   } else {
                     toast({
-                      title: "Wedding Timeline Coming Soon! ⏰",
+                      title: "Wedding Timeline Coming Soon! ���",
                       description:
                         "The reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!",
                       duration: 5000,
