@@ -48,24 +48,141 @@ export default function AdminDashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
 
-  // Load data from localStorage on mount
+  // Load data from API and localStorage on mount
   useEffect(() => {
-    const savedGuests = localStorage.getItem('wedding_guests');
-    const savedPhotos = localStorage.getItem('wedding_photos');
-    const savedFlow = localStorage.getItem('wedding_flow');
-    const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
+    const loadAllData = async () => {
+      // Load guests from API first, then fallback to localStorage
+      try {
+        const guestsFromApi = await guestsApi.getAll();
+        if (guestsFromApi && guestsFromApi.length > 0) {
+          setGuests(guestsFromApi);
+          console.log('Guests loaded from API:', guestsFromApi.length);
+        } else {
+          const savedGuests = localStorage.getItem('wedding_guests');
+          if (savedGuests) {
+            setGuests(JSON.parse(savedGuests));
+            console.log('Guests loaded from localStorage');
+          }
+        }
+      } catch (error) {
+        console.log('API unavailable, loading guests from localStorage');
+        const savedGuests = localStorage.getItem('wedding_guests');
+        if (savedGuests) {
+          setGuests(JSON.parse(savedGuests));
+        }
+      }
 
-    if (savedGuests) {
-      setGuests(JSON.parse(savedGuests));
-    }
+      // Load photos from API first, then fallback to localStorage
+      try {
+        const photosFromApi = await photosApi.getAll();
+        if (photosFromApi && photosFromApi.length > 0) {
+          setUploadedPhotos(photosFromApi.map(photo => photo.photoData));
+          console.log('Photos loaded from API:', photosFromApi.length);
+        } else {
+          const savedPhotos = localStorage.getItem('wedding_photos');
+          if (savedPhotos) {
+            setUploadedPhotos(JSON.parse(savedPhotos));
+            console.log('Photos loaded from localStorage');
+          }
+        }
+      } catch (error) {
+        console.log('API unavailable, loading photos from localStorage');
+        const savedPhotos = localStorage.getItem('wedding_photos');
+        if (savedPhotos) {
+          setUploadedPhotos(JSON.parse(savedPhotos));
+        }
+      }
 
-    if (savedPhotos) {
-      setUploadedPhotos(JSON.parse(savedPhotos));
-    }
+      // Load wedding flow
+      try {
+        const flowFromApi = await weddingFlowApi.getAll();
+        if (flowFromApi && flowFromApi.length > 0) {
+          setWeddingFlow(flowFromApi);
+          console.log('Wedding flow loaded from API:', flowFromApi.length);
+        } else {
+          const savedFlow = localStorage.getItem('wedding_flow');
+          if (savedFlow) {
+            setWeddingFlow(JSON.parse(savedFlow));
+          } else {
+            // Set default flow
+            const defaultFlow: WeddingFlowItem[] = [
+              {
+                id: '1',
+                time: '7:00 PM',
+                title: 'Welcome & Cocktails',
+                description: 'Guests arrive and enjoy welcome drinks and appetizers',
+                duration: '30 min',
+                type: 'reception'
+              },
+              {
+                id: '2',
+                time: '7:30 PM',
+                title: 'Grand Entrance',
+                description: 'Introduction of the newly married couple',
+                duration: '10 min',
+                type: 'ceremony'
+              },
+              {
+                id: '3',
+                time: '8:00 PM',
+                title: 'Dinner Service',
+                description: 'Multi-cuisine buffet dinner',
+                duration: '60 min',
+                type: 'meal'
+              },
+              {
+                id: '4',
+                time: '9:00 PM',
+                title: 'Cultural Performances',
+                description: 'Traditional dance and music performances',
+                duration: '45 min',
+                type: 'entertainment'
+              },
+              {
+                id: '5',
+                time: '10:00 PM',
+                title: 'Cake Cutting',
+                description: 'Wedding cake cutting ceremony',
+                duration: '15 min',
+                type: 'special'
+              },
+              {
+                id: '6',
+                time: '10:30 PM',
+                title: 'Dancing & Celebration',
+                description: 'Open dance floor for all guests',
+                duration: '60 min',
+                type: 'entertainment'
+              },
+              {
+                id: '7',
+                time: '11:30 PM',
+                title: 'Send-off',
+                description: 'Farewell and thank you to all guests',
+                duration: '',
+                type: 'ceremony'
+              }
+            ];
+            setWeddingFlow(defaultFlow);
+            localStorage.setItem('wedding_flow', JSON.stringify(defaultFlow));
+          }
+        }
+      } catch (error) {
+        console.log('API unavailable, loading wedding flow from localStorage');
+        const savedFlow = localStorage.getItem('wedding_flow');
+        if (savedFlow) {
+          setWeddingFlow(JSON.parse(savedFlow));
+        }
+      }
 
-    if (savedInvitation) {
-      setInvitationPDF(savedInvitation);
-    }
+      // Load invitation PDF
+      const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
+      if (savedInvitation) {
+        setInvitationPDF(savedInvitation);
+      }
+    };
+
+    loadAllData();
 
     if (savedFlow) {
       setWeddingFlow(JSON.parse(savedFlow));
