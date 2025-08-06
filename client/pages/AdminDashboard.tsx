@@ -112,12 +112,21 @@ export default function AdminDashboard() {
         setUploadedPhotos([]);
       }
 
-      // Load wedding flow
+      // Load wedding flow using database service
       try {
-        const flowFromApi = await weddingFlowApi.getAll();
-        if (flowFromApi && flowFromApi.length > 0) {
-          setWeddingFlow(flowFromApi);
-          console.log("Wedding flow loaded from API:", flowFromApi.length);
+        const weddingFlowData = await database.weddingFlow.getAll();
+        if (weddingFlowData && weddingFlowData.length > 0) {
+          setWeddingFlow(weddingFlowData.map(item => ({
+            id: item.id || Date.now().toString(),
+            time: item.time,
+            title: item.title,
+            description: item.description,
+            duration: item.duration,
+            type: item.type,
+            createdAt: item.created_at || new Date().toISOString()
+          })));
+          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+          console.log(`Wedding flow loaded from ${storageType}:`, weddingFlowData.length);
         } else {
           const savedFlow = localStorage.getItem("wedding_flow");
           if (savedFlow) {
