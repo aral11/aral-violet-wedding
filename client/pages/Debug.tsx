@@ -343,6 +343,52 @@ export default function Debug() {
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>SMS Notifications</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <Button onClick={testSMS}>Test SMS Service</Button>
+                {smsStatus.isConfigured !== undefined && (
+                  <div>
+                    <strong>Configured:</strong>{" "}
+                    {smsStatus.isConfigured ? "✅ Yes" : "❌ No"}
+                  </div>
+                )}
+                {smsStatus.accountSid && (
+                  <div>
+                    <strong>Account SID:</strong> {smsStatus.accountSid}
+                  </div>
+                )}
+                {smsStatus.hasAuthToken !== undefined && (
+                  <div>
+                    <strong>Auth Token:</strong>{" "}
+                    {smsStatus.hasAuthToken ? "✅ Set" : "❌ Missing"}
+                  </div>
+                )}
+                {smsStatus.phoneNumber && (
+                  <div>
+                    <strong>Phone Number:</strong> {smsStatus.phoneNumber}
+                  </div>
+                )}
+                {smsStatus.testMessage && (
+                  <div>
+                    <strong>Test Result:</strong> {smsStatus.testMessage}
+                  </div>
+                )}
+                <div className="text-sm text-gray-600">
+                  <strong>Notification Numbers:</strong>
+                  <ul className="mt-1">
+                    <li>+918105003858</li>
+                    <li>+917276700997</li>
+                    <li>+919731832609</li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <Card>
