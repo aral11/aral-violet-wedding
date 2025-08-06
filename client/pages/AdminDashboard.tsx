@@ -162,12 +162,16 @@ export default function AdminDashboard() {
             padding: 0;
         }
         .guest-item {
-            padding: 20px 25px;
+            padding: 25px;
             border-bottom: 1px solid #e2e8f0;
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 3fr 2fr 1.5fr;
+            gap: 25px;
             align-items: start;
+            transition: background-color 0.2s;
+        }
+        .guest-item:hover {
+            background-color: #f8fafc;
         }
         .guest-item:last-child {
             border-bottom: none;
