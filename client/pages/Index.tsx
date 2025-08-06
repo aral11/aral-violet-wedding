@@ -280,7 +280,7 @@ export default function Index() {
 ✨ Wedding cake cutting ceremony
 
 10:30 PM | Dancing & Celebration (60 min)
-��� Open dance floor for all guests
+🎵 Open dance floor for all guests
 
 11:30 PM | Send-off
 💒 Farewell and thank you to all guests`;
@@ -584,31 +584,7 @@ Please RSVP at our wedding website
                           allowFullScreen
                         ></iframe>
 
-                        {/* Fallback content when no video ID is provided */}
-                        <div className="absolute inset-0 bg-sage-50 flex items-center justify-center rounded-lg">
-                          <div className="text-center p-8">
-                            <div className="mb-4">
-                              <Camera className="mx-auto text-sage-400 mb-2" size={40} />
-                              <h4 className="text-xl font-medium text-sage-700 mb-2">
-                                Surprise Proposal Video 💍
-                              </h4>
-                            </div>
-                            <p className="text-sage-600 mb-4">
-                              "The moment that changed everything forever..."
-                            </p>
-                            <div className="bg-white rounded-lg p-4 shadow-sm">
-                              <p className="text-sm text-sage-600 mb-2">
-                                <strong>🎥 To add your YouTube video:</strong>
-                              </p>
-                              <ol className="text-xs text-sage-500 text-left space-y-1">
-                                <li>1. Upload your proposal video to YouTube</li>
-                                <li>2. Copy the video ID from the URL</li>
-                                <li>3. Replace 'YOUR_VIDEO_ID' in the code</li>
-                                <li>4. Your video will appear here beautifully!</li>
-                              </ol>
-                            </div>
-                          </div>
-                        </div>
+                        {/* Video will load here */}
                       </div>
                     </div>
                   </div>
