@@ -37,11 +37,13 @@ const App = () => (
 // Prevent createRoot warning during hot reloads
 const container = document.getElementById("root")!;
 
-// Track the root at module level to prevent multiple createRoot calls
-let root: ReturnType<typeof createRoot> | null = null;
-
-if (!root) {
-  root = createRoot(container);
+// Use global variable to track root across hot reloads
+declare global {
+  var __REACT_ROOT__: ReturnType<typeof createRoot> | undefined;
 }
 
-root.render(<App />);
+if (!globalThis.__REACT_ROOT__) {
+  globalThis.__REACT_ROOT__ = createRoot(container);
+}
+
+globalThis.__REACT_ROOT__.render(<App />);
