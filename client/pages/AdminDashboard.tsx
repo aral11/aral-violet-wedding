@@ -239,7 +239,11 @@ export default function AdminDashboard() {
     <div class="header">
         <div class="logo">❤️ TheVIRALWedding</div>
         <div class="couple-names">Aral & Violet</div>
-        <div class="wedding-date">December 28, 2025 • Udupi, Karnataka, India</div>
+        <div class="wedding-date">December 28, 2025</div>
+        <div style="margin: 15px 0; font-size: 1em; color: #718096;">
+            <div><strong>Church Nuptials:</strong> Mother of Sorrows Church, Udupi • 4:00 PM</div>
+            <div><strong>Reception:</strong> Sai Radha Beach Resort, Kaup • 7:00 PM</div>
+        </div>
         <div class="report-date">RSVP Report Generated: ${currentDate}</div>
     </div>
 
