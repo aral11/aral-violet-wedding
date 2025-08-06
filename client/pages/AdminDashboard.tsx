@@ -940,9 +940,11 @@ export default function AdminDashboard() {
           // Show success message after processing all files
           if (successCount + errorCount === files.length) {
             if (successCount > 0) {
-              alert(
-                `Successfully uploaded ${successCount} photo${successCount !== 1 ? "s" : ""}!`,
-              );
+              toast({
+                title: "Photos Uploaded Successfully! 📷",
+                description: `${successCount} photo${successCount !== 1 ? "s" : ""} added to the wedding gallery!`,
+                duration: 3000,
+              });
             }
           }
         }
