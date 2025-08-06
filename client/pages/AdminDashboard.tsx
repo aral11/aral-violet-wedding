@@ -887,6 +887,10 @@ export default function AdminDashboard() {
   const attendingGuests = guests.filter(g => g.attending);
   const notAttendingGuests = guests.filter(g => !g.attending);
   const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
+  const accommodationNeeded = attendingGuests.filter(g => g.needsAccommodation);
+  const accommodationGuestCount = accommodationNeeded.reduce((sum, guest) => sum + guest.guests, 0);
+  const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
+  const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 to-sage-50">
