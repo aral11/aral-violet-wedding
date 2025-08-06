@@ -917,28 +917,36 @@ Please RSVP at our wedding website
                   <label className="block text-sm font-medium text-sage-700 mb-2">
                     Which side are you from? *
                   </label>
-                  <div className="flex gap-6">
-                    <label className="flex items-center">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                    <label className="flex items-center cursor-pointer p-3 border-2 border-sage-200 rounded-lg hover:border-olive-400 transition-colors">
                       <input
                         type="radio"
                         checked={rsvpForm.side === "groom"}
-                        onChange={() =>
-                          setRsvpForm({ ...rsvpForm, side: "groom" })
-                        }
-                        className="mr-2 text-olive-600"
+                        onChange={() => {
+                          setRsvpForm({ ...rsvpForm, side: "groom" });
+                          console.log("Selected: Groom's side (Aral)");
+                        }}
+                        className="mr-3 text-olive-600"
                       />
-                      Groom's Side (Aral's)
+                      <div>
+                        <div className="font-medium text-olive-700">Groom's Family & Friends</div>
+                        <div className="text-sm text-sage-600">Aral's side</div>
+                      </div>
                     </label>
-                    <label className="flex items-center">
+                    <label className="flex items-center cursor-pointer p-3 border-2 border-sage-200 rounded-lg hover:border-olive-400 transition-colors">
                       <input
                         type="radio"
                         checked={rsvpForm.side === "bride"}
-                        onChange={() =>
-                          setRsvpForm({ ...rsvpForm, side: "bride" })
-                        }
-                        className="mr-2 text-olive-600"
+                        onChange={() => {
+                          setRsvpForm({ ...rsvpForm, side: "bride" });
+                          console.log("Selected: Bride's side (Violet)");
+                        }}
+                        className="mr-3 text-olive-600"
                       />
-                      Bride's Side (Violet's)
+                      <div>
+                        <div className="font-medium text-olive-700">Bride's Family & Friends</div>
+                        <div className="text-sm text-sage-600">Violet's side</div>
+                      </div>
                     </label>
                   </div>
                 </div>
