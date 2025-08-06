@@ -1,13 +1,6 @@
-#!/usr/bin/env node
-
-/**
- * Build script for GitHub Pages deployment
- * Ensures proper static file generation and fallback routes
- */
-
-import { execSync } from 'child_process';
-import { writeFileSync, readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+const { execSync } = require('child_process');
+const { writeFileSync, readFileSync, existsSync } = require('fs');
+const { join } = require('path');
 
 console.log('🚀 Building for GitHub Pages...');
 
@@ -31,11 +24,7 @@ if (existsSync(indexPath)) {
   const indexContent = readFileSync(indexPath, 'utf8');
   writeFileSync(notFoundPath, indexContent);
   console.log('✅ Created 404.html for SPA routing');
-  
-  // Also create a .nojekyll file to ensure GitHub Pages serves all files
-  writeFileSync(join(distPath, '.nojekyll'), '');
-  console.log('✅ Created .nojekyll file');
-  
+
   console.log('🎉 GitHub Pages build complete!');
   console.log('📁 Files ready for deployment in ./dist');
 } else {
