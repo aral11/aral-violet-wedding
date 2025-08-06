@@ -568,8 +568,9 @@ export default function AdminDashboard() {
                                     <p className="text-sm text-red-600">{guest.phone}</p>
                                   </div>
                                   <div className="text-sm text-red-700">
+                                    <p><strong>Side:</strong> {guest.side === 'groom' ? "Aral's (Groom)" : "Violet's (Bride)"}</p>
                                     {guest.message && (
-                                      <p className="italic">"{guest.message}"</p>
+                                      <p className="italic mt-2">"{guest.message}"</p>
                                     )}
                                   </div>
                                 </div>
