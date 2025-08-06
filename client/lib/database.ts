@@ -2,8 +2,7 @@ import { supabase, SupabaseGuest, SupabasePhoto, SupabaseWeddingFlow, SupabaseIn
 
 // Check if Supabase is properly configured
 const isSupabaseConfigured = () => {
-  return supabase.supabaseUrl !== 'YOUR_SUPABASE_URL' && 
-         supabase.supabaseKey !== 'YOUR_SUPABASE_ANON_KEY'
+  return supabase !== null && supabase !== undefined
 }
 
 // Guest Database Service
