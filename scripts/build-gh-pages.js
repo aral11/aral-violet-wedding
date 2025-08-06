@@ -1,6 +1,6 @@
-const { execSync } = require("child_process");
-const { writeFileSync, readFileSync, existsSync } = require("fs");
-const { join } = require("path");
+import { execSync } from "child_process";
+import { writeFileSync, readFileSync, existsSync } from "fs";
+import { join } from "path";
 
 console.log("🚀 Building for GitHub Pages...");
 
