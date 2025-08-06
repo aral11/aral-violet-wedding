@@ -150,6 +150,35 @@ export default function Index() {
         : "local storage";
       console.log(`RSVP submitted to ${storageType} successfully`);
 
+      // Send SMS notifications to family members
+      if (isSMSConfigured()) {
+        try {
+          console.log("Sending SMS notifications to family members...");
+          const smsSuccess = await sendRSVPNotification({
+            name: rsvpForm.name,
+            email: rsvpForm.email,
+            phone: rsvpForm.phone,
+            attending: rsvpForm.attending,
+            guests: rsvpForm.guests,
+            side: rsvpForm.side,
+            message: rsvpForm.message,
+            dietaryRestrictions: rsvpForm.dietaryRestrictions,
+            needsAccommodation: rsvpForm.needsAccommodation,
+          });
+
+          if (smsSuccess) {
+            console.log("✅ SMS notifications sent successfully to family members");
+          } else {
+            console.log("⚠️ SMS notifications failed to send");
+          }
+        } catch (smsError) {
+          console.error("SMS notification error:", smsError);
+          // Don't fail the RSVP submission if SMS fails
+        }
+      } else {
+        console.log("📱 SMS service not configured - skipping notifications");
+      }
+
       toast({
         title: "RSVP Submitted Successfully! 🎉",
         description: `Thank you ${rsvpForm.name}! We can't wait to celebrate with you on December 28, 2025!${database.isUsingSupabase() ? " ✨ Synced across all devices!" : ""}`,
