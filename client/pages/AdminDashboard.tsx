@@ -71,45 +71,45 @@ export default function AdminDashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
 
-  // Load data from API and localStorage on mount
+  // Load data using database service (Supabase + localStorage fallback)
   useEffect(() => {
     const loadAllData = async () => {
-      // Load guests from localStorage first, then try API sync
-      const savedGuests = localStorage.getItem("wedding_guests");
-      if (savedGuests) {
-        setGuests(JSON.parse(savedGuests));
-        console.log("Guests loaded from localStorage");
-      }
-
-      // Try to sync with API silently in background
+      // Load guests using database service
       try {
-        const guestsFromApi = await guestsApi.getAll();
-        if (guestsFromApi && guestsFromApi.length > 0) {
-          setGuests(guestsFromApi);
-          console.log("Guests synced from API:", guestsFromApi.length);
+        const guests = await database.guests.getAll();
+        if (guests && guests.length > 0) {
+          setGuests(guests.map(guest => ({
+            id: guest.id || Date.now().toString(),
+            name: guest.name,
+            email: guest.email,
+            phone: guest.phone || '',
+            attending: guest.attending,
+            guests: guest.guests,
+            side: guest.side,
+            message: guest.message,
+            dietaryRestrictions: guest.dietary_restrictions,
+            needsAccommodation: guest.needs_accommodation,
+            createdAt: guest.created_at || new Date().toISOString()
+          })));
+          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+          console.log(`Guests loaded from ${storageType}:`, guests.length);
         }
       } catch (error) {
-        // Silently ignore API errors - localStorage already loaded
-        console.log("Using localStorage guest data (API not available)");
+        console.log("Error loading guests:", error);
+        setGuests([]);
       }
 
-      // Load photos from localStorage first, then try API sync
-      const savedPhotos = localStorage.getItem("wedding_photos");
-      if (savedPhotos) {
-        setUploadedPhotos(JSON.parse(savedPhotos));
-        console.log("Photos loaded from localStorage");
-      }
-
-      // Try to sync with API silently in background
+      // Load photos using database service
       try {
-        const photosFromApi = await photosApi.getAll();
-        if (photosFromApi && photosFromApi.length > 0) {
-          setUploadedPhotos(photosFromApi.map((photo) => photo.photoData));
-          console.log("Photos synced from API:", photosFromApi.length);
+        const photos = await database.photos.getAll();
+        if (photos && photos.length > 0) {
+          setUploadedPhotos(photos.map((photo) => photo.photo_data));
+          const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+          console.log(`Photos loaded from ${storageType}:`, photos.length);
         }
       } catch (error) {
-        // Silently ignore API errors - localStorage already loaded
-        console.log("Using localStorage data (API not available)");
+        console.log("Error loading photos:", error);
+        setUploadedPhotos([]);
       }
 
       // Load wedding flow
