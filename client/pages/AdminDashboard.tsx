@@ -1038,7 +1038,7 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="rsvp" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:grid-cols-5">
             <TabsTrigger value="rsvp" className="flex items-center gap-2">
               <Users size={16} />
               RSVP Management
@@ -1054,6 +1054,10 @@ export default function AdminDashboard() {
             <TabsTrigger value="invitation" className="flex items-center gap-2">
               <FileText size={16} />
               Invitation
+            </TabsTrigger>
+            <TabsTrigger value="documentation" className="flex items-center gap-2">
+              <FileText size={16} />
+              Documentation
             </TabsTrigger>
           </TabsList>
 
@@ -1434,7 +1438,7 @@ export default function AdminDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-semibold text-lg mb-2">
-                            {invitationPDF ? '✅ Custom Invitation Active' : '⚠️ Using Default Text Invitation'}
+                            {invitationPDF ? '✅ Custom Invitation Active' : '��️ Using Default Text Invitation'}
                           </h4>
                           <p className="text-sm text-gray-600">
                             {invitationPDF
