@@ -3,6 +3,8 @@
 ## Overview
 Your wedding website now supports SMS notifications to family members whenever someone submits an RSVP!
 
+**Note**: SMS functionality has been implemented server-side to avoid browser compatibility issues. The client-side code now calls server API endpoints for SMS operations.
+
 ## Notification Recipients
 SMS notifications will be sent to:
 - `+918105003858`
@@ -29,27 +31,25 @@ SMS notifications will be sent to:
 
 ### Step 4: Configure Environment Variables
 
-Set these in your development environment:
+**Current Status**: SMS functionality is implemented but requires server-side Twilio configuration in production.
 
+For development, the system logs SMS messages to the console instead of sending actual SMS.
+
+**For production deployment**, you would need to:
+
+1. Set up server environment variables (not client-side):
 ```bash
-VITE_TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-VITE_TWILIO_AUTH_TOKEN=your_auth_token_here
-VITE_TWILIO_PHONE_NUMBER=+1234567890
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=your_auth_token_here
+TWILIO_PHONE_NUMBER=+1234567890
 ```
 
-**For Builder.io development environment:**
-Use the DevServerControl tool to set these variables:
-
-```javascript
-// Set Twilio Account SID
-DevServerControl.set_env_variable(["VITE_TWILIO_ACCOUNT_SID", "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]);
-
-// Set Twilio Auth Token  
-DevServerControl.set_env_variable(["VITE_TWILIO_AUTH_TOKEN", "your_auth_token_here"]);
-
-// Set Twilio Phone Number
-DevServerControl.set_env_variable(["VITE_TWILIO_PHONE_NUMBER", "+1234567890"]);
+2. Install Twilio on the server:
+```bash
+npm install twilio
 ```
+
+3. Update the server SMS service to use actual Twilio instead of console logging.
 
 ### Step 5: Test SMS Notifications
 
@@ -95,20 +95,19 @@ TheVIRALWedding - A&V 💕
 ## Troubleshooting
 
 ### SMS Not Sending?
-1. Check Twilio console for error logs
-2. Verify phone number format includes country code
-3. Ensure Twilio account has sufficient balance
-4. Check browser console for error messages
+1. Check server console logs for SMS notification attempts
+2. Verify API endpoints are responding (`/api/sms/test`)
+3. Check browser network tab for API call failures
+4. Server logs will show the SMS message content that would be sent
 
-### Phone Number Issues?
-- Indian numbers must include `+91` prefix
-- Remove any spaces or special characters
-- Format: `+919876543210`
+### Development vs Production:
+- **Development**: SMS messages are logged to server console only
+- **Production**: Would require actual Twilio configuration on server
 
-### Environment Variables Not Working?
-- Ensure variables start with `VITE_`
-- Restart development server after adding variables
-- Check browser dev tools → Console for configuration status
+### API Issues?
+- Check browser dev tools → Network tab for `/api/sms/` calls
+- Server console shows detailed SMS notification logs
+- Test SMS functionality via `/debug` page
 
 ## Benefits
 
