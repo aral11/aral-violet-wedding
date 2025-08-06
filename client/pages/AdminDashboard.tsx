@@ -767,42 +767,70 @@ export default function AdminDashboard() {
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Photo upload function called');
     const files = e.target.files;
-    if (files && files.length > 0) {
-      // Process each file
-      Array.from(files).forEach(file => {
-        // Check file type
-        if (!file.type.startsWith('image/')) {
-          alert('Please upload only image files.');
-          return;
-        }
 
-        // Check file size (limit to 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          alert('Please upload images smaller than 5MB.');
-          return;
-        }
-
-        // Convert to base64 for persistent storage
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          if (event.target?.result) {
-            const base64String = event.target.result as string;
-            setUploadedPhotos(prev => {
-              const newPhotos = [...prev, base64String];
-              // Also immediately save to localStorage
-              localStorage.setItem('wedding_photos', JSON.stringify(newPhotos));
-              return newPhotos;
-            });
-          }
-        };
-        reader.onerror = () => {
-          alert('Error reading file. Please try again.');
-        };
-        reader.readAsDataURL(file);
-      });
+    if (!files || files.length === 0) {
+      console.log('No files selected');
+      return;
     }
-    // Clear the input so the same file can be uploaded again if needed
+
+    console.log(`Processing ${files.length} files`);
+    let successCount = 0;
+    let errorCount = 0;
+
+    // Process each file
+    Array.from(files).forEach((file, index) => {
+      console.log(`Processing file ${index + 1}: ${file.name}, Type: ${file.type}, Size: ${file.size}`);
+
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        console.error(`File ${file.name} is not an image`);
+        alert(`"${file.name}" is not an image file. Please upload only image files.`);
+        errorCount++;
+        return;
+      }
+
+      // Check file size (limit to 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        console.error(`File ${file.name} is too large`);
+        alert(`"${file.name}" is too large. Please upload images smaller than 5MB.`);
+        errorCount++;
+        return;
+      }
+
+      // Convert to base64 for persistent storage
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        console.log(`File ${file.name} read successfully`);
+        if (event.target?.result) {
+          const base64String = event.target.result as string;
+          setUploadedPhotos(prev => {
+            const newPhotos = [...prev, base64String];
+            // Also immediately save to localStorage
+            localStorage.setItem('wedding_photos', JSON.stringify(newPhotos));
+            console.log(`Photo ${file.name} added to gallery`);
+            return newPhotos;
+          });
+          successCount++;
+
+          // Show success message after processing all files
+          if (successCount + errorCount === files.length) {
+            if (successCount > 0) {
+              alert(`Successfully uploaded ${successCount} photo${successCount !== 1 ? 's' : ''}!`);
+            }
+          }
+        }
+      };
+      reader.onerror = (error) => {
+        console.error(`Error reading file ${file.name}:`, error);
+        alert(`Error reading "${file.name}". Please try again.`);
+        errorCount++;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Clear the input so the same files can be uploaded again if needed
     e.target.value = '';
   };
 
