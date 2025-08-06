@@ -253,6 +253,26 @@ Please RSVP at our wedding website
                 RSVP Now
               </Button>
             </div>
+            <div className="flex justify-center">
+              <Button
+                onClick={() => {
+                  const today = new Date();
+                  const weddingDate = new Date('2025-12-28');
+                  if (today >= weddingDate) {
+                    // Download wedding flow functionality here
+                    alert('Wedding timeline download will be available!');
+                  } else {
+                    alert('Wedding reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!');
+                  }
+                }}
+                disabled={new Date() < new Date('2025-12-28')}
+                variant="outline"
+                className="bg-white/80 hover:bg-white border-sage-400 text-sage-600 hover:text-sage-700 px-6 py-2 text-sm font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Clock className="mr-2" size={16} />
+                Download Reception Timeline
+              </Button>
+            </div>
           </div>
 
           {/* Countdown */}
