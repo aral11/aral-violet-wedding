@@ -54,6 +54,7 @@ interface WeddingFlowItem {
 
 export default function AdminDashboard() {
   const { isAuthenticated, logout, user } = useAuth();
+  const { toast } = useToast();
   const [guests, setGuests] = useState<Guest[]>([]);
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [weddingFlow, setWeddingFlow] = useState<WeddingFlowItem[]>([]);
