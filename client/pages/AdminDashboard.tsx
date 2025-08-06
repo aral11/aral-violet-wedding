@@ -24,20 +24,15 @@ export default function AdminDashboard() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
 
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
   // Load data from localStorage on mount
   useEffect(() => {
     const savedGuests = localStorage.getItem('wedding_guests');
     const savedPhotos = localStorage.getItem('wedding_photos');
-    
+
     if (savedGuests) {
       setGuests(JSON.parse(savedGuests));
     }
-    
+
     if (savedPhotos) {
       setUploadedPhotos(JSON.parse(savedPhotos));
     }
@@ -52,6 +47,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     localStorage.setItem('wedding_photos', JSON.stringify(uploadedPhotos));
   }, [uploadedPhotos]);
+
+  // Redirect if not authenticated (after all hooks)
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   const downloadGuestList = () => {
     const csvContent = [
