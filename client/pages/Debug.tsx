@@ -8,6 +8,8 @@ import { database } from "@/lib/database";
 export default function Debug() {
   const [localStorageData, setLocalStorageData] = useState<any>({});
   const [apiStatus, setApiStatus] = useState<any>({});
+  const [supabaseStatus, setSupabaseStatus] = useState<any>({});
+  const [databaseStatus, setDatabaseStatus] = useState<any>({});
 
   useEffect(() => {
     // Load localStorage data
