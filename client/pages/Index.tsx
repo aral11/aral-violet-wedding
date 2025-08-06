@@ -208,7 +208,9 @@ export default function Index() {
       const flowFromDatabase = await database.weddingFlow.getAll();
       if (flowFromDatabase && flowFromDatabase.length > 0) {
         flowItems = flowFromDatabase;
-        const storageType = database.isUsingSupabase() ? "Supabase" : "localStorage";
+        const storageType = database.isUsingSupabase()
+          ? "Supabase"
+          : "localStorage";
         console.log(`Wedding flow loaded from ${storageType} for download`);
       }
     } catch (error) {

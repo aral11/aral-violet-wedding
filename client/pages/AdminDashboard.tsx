@@ -1018,7 +1018,9 @@ export default function AdminDashboard() {
           id: Date.now().toString(),
         };
         setWeddingFlow(
-          [...weddingFlow, flowItem].sort((a, b) => a.time.localeCompare(b.time)),
+          [...weddingFlow, flowItem].sort((a, b) =>
+            a.time.localeCompare(b.time),
+          ),
         );
 
         // Clear form
@@ -1030,7 +1032,9 @@ export default function AdminDashboard() {
           type: "reception",
         });
 
-        const storageType = database.isUsingSupabase() ? "Supabase database" : "local storage";
+        const storageType = database.isUsingSupabase()
+          ? "Supabase database"
+          : "local storage";
         toast({
           title: "Event Added Successfully! 📅",
           description: `Event saved to ${storageType} and synced across devices!`,
