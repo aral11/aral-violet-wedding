@@ -22,6 +22,15 @@ interface Guest {
   createdAt: string;
 }
 
+interface WeddingFlowItem {
+  id: string;
+  time: string;
+  title: string;
+  description: string;
+  duration?: string;
+  type: 'ceremony' | 'reception' | 'entertainment' | 'meal' | 'special';
+}
+
 export default function AdminDashboard() {
   const { isAuthenticated, logout, user } = useAuth();
   const [guests, setGuests] = useState<Guest[]>([]);
@@ -365,7 +374,7 @@ export default function AdminDashboard() {
                     ${guest.message ? `<div class="guest-message">💌 "${guest.message}"</div>` : ''}
                 </div>
                 <div class="guest-details">
-                    <div style="color: #e53e3e; font-weight: bold;">��� Not Attending</div>
+                    <div style="color: #e53e3e; font-weight: bold;">❌ Not Attending</div>
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 5px;"><strong>📅 RSVP Date:</strong></div>
