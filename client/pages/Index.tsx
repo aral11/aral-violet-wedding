@@ -630,6 +630,42 @@ Please RSVP at our wedding website
                 Gallery updates automatically • {uploadedPhotos.length} photo{uploadedPhotos.length !== 1 ? 's' : ''}
               </p>
             )}
+            <div className="mt-4">
+              <Button
+                onClick={() => {
+                  const loadPhotos = async () => {
+                    try {
+                      const photos = await photosApi.getAll();
+                      if (photos && photos.length > 0) {
+                        setUploadedPhotos(photos.map(photo => photo.photoData));
+                        console.log('Photos refreshed from API:', photos.length);
+                      } else {
+                        const savedPhotos = localStorage.getItem('wedding_photos');
+                        if (savedPhotos) {
+                          const photos = JSON.parse(savedPhotos);
+                          setUploadedPhotos(photos);
+                          console.log('Photos refreshed from localStorage:', photos.length);
+                        }
+                      }
+                    } catch (error) {
+                      console.log('Refresh failed, using localStorage');
+                      const savedPhotos = localStorage.getItem('wedding_photos');
+                      if (savedPhotos) {
+                        const photos = JSON.parse(savedPhotos);
+                        setUploadedPhotos(photos);
+                      }
+                    }
+                  };
+                  loadPhotos();
+                }}
+                variant="outline"
+                size="sm"
+                className="border-sage-300 text-sage-600 hover:bg-sage-50"
+              >
+                <Camera className="mr-2" size={16} />
+                Refresh Gallery
+              </Button>
+            </div>
           </div>
 
           {uploadedPhotos.length > 0 ? (
