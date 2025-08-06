@@ -1566,48 +1566,50 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="rsvp" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1 h-auto p-1">
-            <TabsTrigger
-              value="rsvp"
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
-            >
-              <Users size={14} />
-              <span className="hidden sm:inline">RSVP Management</span>
-              <span className="sm:hidden">RSVP</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="photos"
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
-            >
-              <Camera size={14} />
-              <span className="hidden sm:inline">Photo Gallery</span>
-              <span className="sm:hidden">Photos</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="flow"
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
-            >
-              <Clock size={14} />
-              <span className="hidden sm:inline">Wedding Flow</span>
-              <span className="sm:hidden">Flow</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="invitation"
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
-            >
-              <FileText size={14} />
-              <span className="hidden sm:inline">Invitation</span>
-              <span className="sm:hidden">PDF</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="documentation"
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2 col-span-2 sm:col-span-1"
-            >
-              <FileText size={14} />
-              <span className="hidden sm:inline">Documentation</span>
-              <span className="sm:hidden">Docs</span>
-            </TabsTrigger>
-          </TabsList>
+          <div className="w-full overflow-x-auto scrollbar-hide">
+            <TabsList className="flex w-max min-w-full sm:grid sm:w-full sm:grid-cols-5 gap-1 h-auto p-1">
+              <TabsTrigger
+                value="rsvp"
+                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+              >
+                <Users size={12} />
+                <span className="hidden xs:inline sm:hidden">RSVP</span>
+                <span className="hidden sm:inline">RSVP Management</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="photos"
+                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+              >
+                <Camera size={12} />
+                <span className="hidden xs:inline sm:hidden">Photos</span>
+                <span className="hidden sm:inline">Photo Gallery</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="flow"
+                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+              >
+                <Clock size={12} />
+                <span className="hidden xs:inline sm:hidden">Flow</span>
+                <span className="hidden sm:inline">Wedding Flow</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="invitation"
+                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+              >
+                <FileText size={12} />
+                <span className="hidden xs:inline sm:hidden">PDF</span>
+                <span className="hidden sm:inline">Invitation</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="documentation"
+                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+              >
+                <FileText size={12} />
+                <span className="hidden xs:inline sm:hidden">Docs</span>
+                <span className="hidden sm:inline">Documentation</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* RSVP Management */}
           <TabsContent value="rsvp" className="space-y-6">
