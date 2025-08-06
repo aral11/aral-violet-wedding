@@ -51,6 +51,7 @@ export default function AdminDashboard() {
     const savedGuests = localStorage.getItem('wedding_guests');
     const savedPhotos = localStorage.getItem('wedding_photos');
     const savedFlow = localStorage.getItem('wedding_flow');
+    const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
 
     if (savedGuests) {
       setGuests(JSON.parse(savedGuests));
@@ -58,6 +59,10 @@ export default function AdminDashboard() {
 
     if (savedPhotos) {
       setUploadedPhotos(JSON.parse(savedPhotos));
+    }
+
+    if (savedInvitation) {
+      setInvitationPDF(savedInvitation);
     }
 
     if (savedFlow) {
