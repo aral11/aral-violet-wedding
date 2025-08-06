@@ -26,6 +26,83 @@ export default function Debug() {
     });
   }, []);
 
+  const testSupabase = async () => {
+    const results: any = {};
+
+    // Check if Supabase client is configured
+    if (!supabase) {
+      setSupabaseStatus({
+        configured: false,
+        error: "Supabase client not configured - check environment variables"
+      });
+      return;
+    }
+
+    results.configured = true;
+    results.url = import.meta.env.VITE_SUPABASE_URL || "Not set";
+    results.hasKey = !!import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    try {
+      // Test connection by checking guests table
+      const { data, error, count } = await supabase
+        .from('guests')
+        .select('*', { count: 'exact' });
+
+      if (error) {
+        results.connection = {
+          success: false,
+          error: error.message,
+          code: error.code
+        };
+
+        if (error.code === 'PGRST116') {
+          results.tablesExist = false;
+          results.message = "Tables don't exist - need to run SQL setup";
+        }
+      } else {
+        results.connection = {
+          success: true,
+          guestCount: count || 0
+        };
+        results.tablesExist = true;
+      }
+    } catch (err: any) {
+      results.connection = {
+        success: false,
+        error: err.message
+      };
+    }
+
+    setSupabaseStatus(results);
+  };
+
+  const testDatabase = async () => {
+    const results: any = {};
+
+    // Get storage status
+    results.storageStatus = database.getStorageStatus();
+    results.isUsingSupabase = database.isUsingSupabase();
+
+    try {
+      // Test database service
+      const guests = await database.guests.getAll();
+      const photos = await database.photos.getAll();
+      const weddingFlow = await database.weddingFlow.getAll();
+
+      results.data = {
+        guests: guests.length,
+        photos: photos.length,
+        weddingFlow: weddingFlow.length
+      };
+      results.success = true;
+    } catch (error: any) {
+      results.success = false;
+      results.error = error.message;
+    }
+
+    setDatabaseStatus(results);
+  };
+
   const testAPI = async () => {
     const results: any = {};
 
