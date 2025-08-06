@@ -837,6 +837,38 @@ export default function AdminDashboard() {
     setWeddingFlow(weddingFlow.filter(item => item.id !== id));
   };
 
+  const handleInvitationUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Check if it's a PDF
+      if (file.type !== 'application/pdf') {
+        alert('Please upload a PDF file for the invitation.');
+        return;
+      }
+
+      // Check file size (limit to 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        alert('Please upload a PDF smaller than 10MB.');
+        return;
+      }
+
+      // Convert to base64 for storage
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          const base64String = event.target.result as string;
+          setInvitationPDF(base64String);
+        }
+      };
+      reader.onerror = () => {
+        alert('Error reading PDF file. Please try again.');
+      };
+      reader.readAsDataURL(file);
+    }
+    // Clear the input
+    e.target.value = '';
+  };
+
   const attendingGuests = guests.filter(g => g.attending);
   const notAttendingGuests = guests.filter(g => !g.attending);
   const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
