@@ -36,7 +36,12 @@ const App = () => (
 
 // Prevent createRoot warning during hot reloads
 const container = document.getElementById("root")!;
-if (!container._reactRootContainer) {
-  const root = createRoot(container);
-  root.render(<App />);
+
+// Track the root at module level to prevent multiple createRoot calls
+let root: ReturnType<typeof createRoot> | null = null;
+
+if (!root) {
+  root = createRoot(container);
 }
+
+root.render(<App />);
