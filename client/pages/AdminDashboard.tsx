@@ -1370,7 +1370,7 @@ export default function AdminDashboard() {
         <div class="section-content">
             <h3>Event Details</h3>
             <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                <strong>📅 Date:</strong> Sunday, December 28, 2025<br><br>
+                <strong>�� Date:</strong> Sunday, December 28, 2025<br><br>
 
                 <strong>⛪ Church Nuptials:</strong><br>
                 📍 Mother of Sorrows Church, Udupi<br>
@@ -2281,16 +2281,17 @@ export default function AdminDashboard() {
           <TabsContent value="documentation" className="space-y-6">
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
               <CardHeader>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                   <CardTitle className="text-olive-700">
                     Website Documentation
                   </CardTitle>
                   <Button
                     onClick={downloadDocumentation}
-                    className="bg-olive-600 hover:bg-olive-700 text-white"
+                    className="bg-olive-600 hover:bg-olive-700 text-white w-full sm:w-auto"
                   >
                     <Download className="mr-2" size={16} />
-                    Download Documentation PDF
+                    <span className="hidden sm:inline">Download Documentation PDF</span>
+                    <span className="sm:hidden">Download PDF</span>
                   </Button>
                 </div>
               </CardHeader>
