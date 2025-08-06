@@ -951,7 +951,12 @@ export default function AdminDashboard() {
       };
       reader.onerror = (error) => {
         console.error(`Error reading file ${file.name}:`, error);
-        alert(`Error reading "${file.name}". Please try again.`);
+        toast({
+          title: "Photo Upload Error",
+          description: `Error reading "${file.name}". Please try again.`,
+          variant: "destructive",
+          duration: 3000,
+        });
         errorCount++;
       };
       reader.readAsDataURL(file);
