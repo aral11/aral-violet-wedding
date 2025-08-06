@@ -1000,22 +1000,50 @@ export default function AdminDashboard() {
     }
   };
 
-  const addFlowItem = () => {
+  const addFlowItem = async () => {
     if (newFlowItem.time && newFlowItem.title) {
-      const flowItem: WeddingFlowItem = {
-        ...newFlowItem,
-        id: Date.now().toString(),
-      };
-      setWeddingFlow(
-        [...weddingFlow, flowItem].sort((a, b) => a.time.localeCompare(b.time)),
-      );
-      setNewFlowItem({
-        time: "",
-        title: "",
-        description: "",
-        duration: "",
-        type: "reception",
-      });
+      try {
+        // Save to database service
+        await database.weddingFlow.create({
+          time: newFlowItem.time,
+          title: newFlowItem.title,
+          description: newFlowItem.description,
+          duration: newFlowItem.duration,
+          type: newFlowItem.type,
+        });
+
+        // Update local state
+        const flowItem: WeddingFlowItem = {
+          ...newFlowItem,
+          id: Date.now().toString(),
+        };
+        setWeddingFlow(
+          [...weddingFlow, flowItem].sort((a, b) => a.time.localeCompare(b.time)),
+        );
+
+        // Clear form
+        setNewFlowItem({
+          time: "",
+          title: "",
+          description: "",
+          duration: "",
+          type: "reception",
+        });
+
+        const storageType = database.isUsingSupabase() ? "Supabase database" : "local storage";
+        toast({
+          title: "Event Added Successfully! 📅",
+          description: `Event saved to ${storageType} and synced across devices!`,
+          duration: 3000,
+        });
+      } catch (error) {
+        console.error("Error adding wedding flow item:", error);
+        toast({
+          title: "Error Adding Event",
+          description: "Failed to save event. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -2235,7 +2263,7 @@ export default function AdminDashboard() {
                           invitation
                         </li>
                         <li>
-                          �� Maximum file size is 10MB for optimal download speed
+                          • Maximum file size is 10MB for optimal download speed
                         </li>
                       </ul>
                     </CardContent>
