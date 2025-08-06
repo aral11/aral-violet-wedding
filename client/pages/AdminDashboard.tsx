@@ -614,7 +614,7 @@ export default function AdminDashboard() {
         <div class="wedding-date">December 28, 2025</div>
         <div style="margin: 15px 0; font-size: 1em; color: #718096;">
             <div><strong>Church Nuptials:</strong> Mother of Sorrows Church, Udupi • 4:00 PM</div>
-            <div><strong>Reception:</strong> Sai Radha Heritage Beach Resort, Kaup • 7:00 PM</div>
+            <div><strong>Reception:</strong> Sai Radha Heritage Beach Resort, Kaup ��� 7:00 PM</div>
         </div>
         <div class="report-date">RSVP Report Generated: ${currentDate}</div>
     </div>
@@ -916,6 +916,347 @@ export default function AdminDashboard() {
 
     // Clear the input
     e.target.value = '';
+  };
+
+  const downloadDocumentation = () => {
+    const currentDate = new Date().toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Website Documentation - Aral & Violet</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #84a178;
+            padding: 30px;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .couple-names {
+            font-size: 2.5em;
+            color: #5a6c57;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .section {
+            background: white;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .section-header {
+            background: #5a6c57;
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .section-content {
+            padding: 25px;
+        }
+        .credential-box {
+            background: #f7fafc;
+            border: 2px solid #84a178;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 8px;
+        }
+        .warning-box {
+            background: #fef5e7;
+            border: 2px solid #f6d55c;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h3 {
+            color: #5a6c57;
+            border-bottom: 2px solid #84a178;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .logo {
+            color: #5a6c57;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .section, .header, .footer {
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">📚 Wedding Website Documentation</div>
+        <div class="couple-names">Aral & Violet</div>
+        <div style="font-size: 1.2em; color: #718096;">Complete User Guide & Admin Manual</div>
+        <div style="font-size: 0.9em; color: #a0aec0; margin-top: 15px;">Generated: ${currentDate}</div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">🌐 Website Overview</div>
+        <div class="section-content">
+            <p><strong>Website Purpose:</strong> A comprehensive wedding website for Aral & Violet's wedding celebration on December 28, 2025.</p>
+
+            <h3>Key Features</h3>
+            <ul class="feature-list">
+                <li>Beautiful wedding invitation with venue details</li>
+                <li>RSVP management system with guest tracking</li>
+                <li>Photo gallery for wedding memories</li>
+                <li>Reception timeline management</li>
+                <li>Guest accommodation tracking</li>
+                <li>Side-by-side guest organization (Bride/Groom)</li>
+                <li>Professional PDF downloads for planning</li>
+            </ul>
+
+            <h3>Website Sections</h3>
+            <ul class="feature-list">
+                <li><strong>Hero Section:</strong> Wedding details, countdown timer, invitation download</li>
+                <li><strong>Our Story:</strong> Love story narrative in beautiful card layout</li>
+                <li><strong>Wedding Details:</strong> Church nuptials and reception information</li>
+                <li><strong>Photo Gallery:</strong> Wedding memories (view-only for guests)</li>
+                <li><strong>RSVP Form:</strong> Complete guest information collection</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">🔐 Admin Access Credentials</div>
+        <div class="section-content">
+            <div class="warning-box">
+                <strong>⚠️ CONFIDENTIAL:</strong> Keep these credentials secure and do not share publicly.
+            </div>
+
+            <h3>Login Credentials</h3>
+            <div class="credential-box">
+                <strong>Username:</strong> aral<br>
+                <strong>Password:</strong> aral2025
+            </div>
+
+            <div class="credential-box">
+                <strong>Username:</strong> violet<br>
+                <strong>Password:</strong> violet2025
+            </div>
+
+            <div class="credential-box">
+                <strong>Username:</strong> couple<br>
+                <strong>Password:</strong> wedding2025
+            </div>
+
+            <h3>Admin Dashboard Access</h3>
+            <ul class="feature-list">
+                <li>Access via small "Admin" button in top-right corner of website</li>
+                <li>Or directly navigate to: /login</li>
+                <li>After login, you'll be redirected to: /admin</li>
+                <li>Session persists across browser sessions</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">⚙️ Admin Dashboard Features</div>
+        <div class="section-content">
+            <h3>1. RSVP Management</h3>
+            <ul class="feature-list">
+                <li>View all guest responses with detailed information</li>
+                <li>Download professional PDF reports</li>
+                <li>Track attendance, accommodation needs, dietary restrictions</li>
+                <li>Separate tracking for bride's side vs groom's side</li>
+                <li>Statistics overview with real-time counts</li>
+            </ul>
+
+            <h3>2. Photo Gallery Management</h3>
+            <ul class="feature-list">
+                <li>Upload multiple wedding photos (5MB limit per photo)</li>
+                <li>Photos automatically appear on public website</li>
+                <li>Delete photos with confirmation</li>
+                <li>Supports all common image formats</li>
+            </ul>
+
+            <h3>3. Wedding Reception Timeline</h3>
+            <ul class="feature-list">
+                <li>Create and manage reception schedule</li>
+                <li>Add events with time, duration, description</li>
+                <li>Categorize events (ceremony, reception, entertainment, meal, special)</li>
+                <li>Download beautiful timeline PDF</li>
+                <li>Real-time editing and reordering</li>
+            </ul>
+
+            <h3>4. Invitation Management</h3>
+            <ul class="feature-list">
+                <li>Upload custom PDF invitation (10MB limit)</li>
+                <li>Replace default text invitation with your design</li>
+                <li>Preview and remove uploaded invitations</li>
+                <li>Guests download your custom PDF automatically</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">👥 Guest Experience</div>
+        <div class="section-content">
+            <h3>Public Website Features</h3>
+            <ul class="feature-list">
+                <li><strong>Wedding Information:</strong> Date, time, venue details with Google Maps links</li>
+                <li><strong>Invitation Download:</strong> Custom PDF or default invitation</li>
+                <li><strong>RSVP Form:</strong> Complete form with all necessary details</li>
+                <li><strong>Photo Gallery:</strong> View wedding photos (no upload ability)</li>
+                <li><strong>Reception Timeline:</strong> Will be available on wedding day (Dec 28, 2025)</li>
+            </ul>
+
+            <h3>RSVP Information Collected</h3>
+            <ul class="feature-list">
+                <li>Guest name(s) and contact information</li>
+                <li>Attendance confirmation</li>
+                <li>Number of guests attending</li>
+                <li>Bride's side or Groom's side affiliation</li>
+                <li>Accommodation requirements for out-of-town guests</li>
+                <li>Dietary restrictions and allergies</li>
+                <li>Personal messages and wishes</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">📅 Wedding Day Information</div>
+        <div class="section-content">
+            <h3>Event Details</h3>
+            <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <strong>📅 Date:</strong> Sunday, December 28, 2025<br><br>
+
+                <strong>⛪ Church Nuptials:</strong><br>
+                📍 Mother of Sorrows Church, Udupi<br>
+                🕐 4:00 PM – 5:15 PM<br>
+                🗺️ <a href="https://g.co/kgs/kCfjJUM">Google Maps Directions</a><br><br>
+
+                <strong>🎉 Reception:</strong><br>
+                📍 Sai Radha Heritage Beach Resort, Kaup<br>
+                🕐 7:00 PM – 11:30 PM<br>
+                🗺️ <a href="https://g.co/kgs/MHHZo7T">Google Maps Directions</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">💡 Tips & Best Practices</div>
+        <div class="section-content">
+            <h3>For Administrators</h3>
+            <ul class="feature-list">
+                <li>Regularly download RSVP reports for planning purposes</li>
+                <li>Upload photos regularly to keep guests engaged</li>
+                <li>Update wedding timeline as needed leading up to the event</li>
+                <li>Monitor accommodation requests for planning</li>
+                <li>Keep backup copies of downloaded data</li>
+            </ul>
+
+            <h3>Data Management</h3>
+            <ul class="feature-list">
+                <li>All data is stored securely in browser localStorage</li>
+                <li>Photos and RSVPs sync between admin and public views</li>
+                <li>Download PDFs regularly as backups</li>
+                <li>Data persists across browser sessions</li>
+            </ul>
+
+            <h3>Guest Communication</h3>
+            <ul class="feature-list">
+                <li>Share the main website URL with guests for RSVPs</li>
+                <li>Reception timeline becomes available automatically on wedding day</li>
+                <li>Encourage guests to submit RSVPs early for planning</li>
+                <li>Use RSVP data to coordinate with vendors and venue</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">🆘 Support & Troubleshooting</div>
+        <div class="section-content">
+            <h3>Common Issues</h3>
+            <ul class="feature-list">
+                <li><strong>File Upload Issues:</strong> Ensure files meet size limits (5MB photos, 10MB PDFs)</li>
+                <li><strong>Login Problems:</strong> Use exact credentials listed above, check caps lock</li>
+                <li><strong>Data Not Syncing:</strong> Refresh browser or clear cache</li>
+                <li><strong>PDF Downloads:</strong> Ensure popup blockers are disabled</li>
+            </ul>
+
+            <h3>Browser Compatibility</h3>
+            <ul class="feature-list">
+                <li>Works best in Chrome, Firefox, Safari, Edge</li>
+                <li>Mobile responsive design for all devices</li>
+                <li>JavaScript must be enabled</li>
+                <li>Modern browser required for full functionality</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="logo">❤️ TheVIRALWedding</div>
+        <div style="font-size: 1.2em; margin: 10px 0;">Aral & Violet • December 28, 2025</div>
+        <div style="color: #718096;">With hearts full of joy and blessings from above</div>
+        <div style="margin-top: 15px; font-size: 0.9em; color: #a0aec0;">
+            © 2025 TheVIRALWedding. Made with love for By Aral.
+        </div>
+    </div>
+</body>
+</html>
+    `;
+
+    // Create a new window and print
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+
+      // Auto-download as PDF
+      setTimeout(() => {
+        printWindow.print();
+      }, 1000);
+    }
   };
 
   const attendingGuests = guests.filter(g => g.attending);
@@ -1438,7 +1779,7 @@ export default function AdminDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-semibold text-lg mb-2">
-                            {invitationPDF ? '✅ Custom Invitation Active' : '��️ Using Default Text Invitation'}
+                            {invitationPDF ? '✅ Custom Invitation Active' : '⚠️ Using Default Text Invitation'}
                           </h4>
                           <p className="text-sm text-gray-600">
                             {invitationPDF
