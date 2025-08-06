@@ -227,27 +227,8 @@ export default function AdminDashboard() {
     loadAllData();
   }, []);
 
-  // Save guests to localStorage whenever guests state changes
-  useEffect(() => {
-    localStorage.setItem("wedding_guests", JSON.stringify(guests));
-  }, [guests]);
-
-  // Save photos to localStorage whenever photos state changes
-  useEffect(() => {
-    localStorage.setItem("wedding_photos", JSON.stringify(uploadedPhotos));
-  }, [uploadedPhotos]);
-
-  // Save wedding flow to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("wedding_flow", JSON.stringify(weddingFlow));
-  }, [weddingFlow]);
-
-  // Save invitation PDF to localStorage whenever it changes
-  useEffect(() => {
-    if (invitationPDF) {
-      localStorage.setItem("wedding_invitation_pdf", invitationPDF);
-    }
-  }, [invitationPDF]);
+  // Data persistence is now handled by the database service (Supabase + localStorage fallback)
+  // No need for manual localStorage saving since database service handles this automatically
 
   // Redirect if not authenticated (after all hooks)
   if (!isAuthenticated) {
@@ -2254,7 +2235,7 @@ export default function AdminDashboard() {
                           invitation
                         </li>
                         <li>
-                          • Maximum file size is 10MB for optimal download speed
+                          �� Maximum file size is 10MB for optimal download speed
                         </li>
                       </ul>
                     </CardContent>
