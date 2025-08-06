@@ -29,11 +29,23 @@ function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
     apply: "serve", // Only apply during development (serve mode)
-    configureServer(server) {
-      const app = createServer();
+    async configureServer(server) {
+      try {
+        console.log('Initializing Express server...');
+        const app = await createServer();
+        console.log('Express server initialized successfully');
 
-      // Add Express app as middleware to Vite dev server
-      server.middlewares.use(app);
+        // Add Express app as middleware to Vite dev server
+        server.middlewares.use(app);
+      } catch (error) {
+        console.error('Failed to initialize Express server:', error);
+        // Create a fallback middleware that returns JSON errors
+        server.middlewares.use('/api', (req, res, next) => {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Database connection failed. Server running without database.' }));
+        });
+      }
     },
   };
 }
