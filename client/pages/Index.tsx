@@ -750,35 +750,25 @@ Please RSVP at our wedding website
                 onClick={() => {
                   const loadPhotos = async () => {
                     try {
-                      const photos = await photosApi.getAll();
+                      const photos = await database.photos.getAll();
                       if (photos && photos.length > 0) {
                         setUploadedPhotos(
-                          photos.map((photo) => photo.photoData),
+                          photos.map((photo) => photo.photo_data),
                         );
+                        const storageType = database.isUsingSupabase()
+                          ? "Supabase"
+                          : "localStorage";
                         console.log(
-                          "Photos refreshed from API:",
+                          `Photos refreshed from ${storageType}:`,
                           photos.length,
                         );
                       } else {
-                        const savedPhotos =
-                          localStorage.getItem("wedding_photos");
-                        if (savedPhotos) {
-                          const photos = JSON.parse(savedPhotos);
-                          setUploadedPhotos(photos);
-                          console.log(
-                            "Photos refreshed from localStorage:",
-                            photos.length,
-                          );
-                        }
+                        console.log("No photos found");
+                        setUploadedPhotos([]);
                       }
                     } catch (error) {
-                      console.log("Refresh failed, using localStorage");
-                      const savedPhotos =
-                        localStorage.getItem("wedding_photos");
-                      if (savedPhotos) {
-                        const photos = JSON.parse(savedPhotos);
-                        setUploadedPhotos(photos);
-                      }
+                      console.log("Refresh failed:", error);
+                      setUploadedPhotos([]);
                     }
                   };
                   loadPhotos();
