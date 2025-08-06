@@ -340,7 +340,7 @@ Please RSVP at our wedding website
               <CardContent className="p-8 text-center">
                 <Calendar className="mx-auto mb-4 text-olive-600" size={48} />
                 <h3 className="text-2xl font-serif text-olive-700 mb-4">Church Nuptials</h3>
-                <div className="space-y-2 text-sage-700">
+                <div className="space-y-3 text-sage-700">
                   <p className="flex items-center justify-center gap-2">
                     <Calendar size={16} />
                     Sunday, December 28, 2025
@@ -349,10 +349,20 @@ Please RSVP at our wedding website
                     <Clock size={16} />
                     4:00 PM – 5:15 PM
                   </p>
-                  <p className="flex items-center justify-center gap-2">
-                    <MapPin size={16} />
-                    Udupi, Karnataka
-                  </p>
+                  <div className="space-y-2">
+                    <p className="flex items-center justify-center gap-2">
+                      <MapPin size={16} />
+                      Mother of Sorrows Church
+                    </p>
+                    <p className="text-sm text-sage-600">Udupi, Karnataka</p>
+                    <Button
+                      size="sm"
+                      onClick={() => window.open('https://maps.google.com/maps?q=Mother+of+Sorrows+Church+Udupi', '_blank')}
+                      className="bg-olive-600 hover:bg-olive-700 text-white mt-2"
+                    >
+                      Get Directions
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -362,7 +372,7 @@ Please RSVP at our wedding website
               <CardContent className="p-8 text-center">
                 <Heart className="mx-auto mb-4 text-olive-600" size={48} />
                 <h3 className="text-2xl font-serif text-olive-700 mb-4">Reception</h3>
-                <div className="space-y-2 text-sage-700">
+                <div className="space-y-3 text-sage-700">
                   <p className="flex items-center justify-center gap-2">
                     <Calendar size={16} />
                     Sunday, December 28, 2025
@@ -371,10 +381,20 @@ Please RSVP at our wedding website
                     <Clock size={16} />
                     7:00 PM – 11:30 PM
                   </p>
-                  <p className="flex items-center justify-center gap-2">
-                    <MapPin size={16} />
-                    Udupi, Karnataka
-                  </p>
+                  <div className="space-y-2">
+                    <p className="flex items-center justify-center gap-2">
+                      <MapPin size={16} />
+                      Sai Radha Beach Resort
+                    </p>
+                    <p className="text-sm text-sage-600">Kaup, Karnataka</p>
+                    <Button
+                      size="sm"
+                      onClick={() => window.open('https://maps.google.com/maps?q=Sai+Radha+Beach+Resort+Kaup', '_blank')}
+                      className="bg-olive-600 hover:bg-olive-700 text-white mt-2"
+                    >
+                      Get Directions
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
