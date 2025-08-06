@@ -34,6 +34,7 @@ export default function Index() {
     phone: '',
     attending: true,
     guests: 1,
+    side: 'groom' as 'groom' | 'bride',
     message: '',
     dietaryRestrictions: '',
     needsAccommodation: false
