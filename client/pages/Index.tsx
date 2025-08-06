@@ -190,6 +190,96 @@ export default function Index() {
     setTimeout(() => setShowSuccessMessage(false), 5000);
   };
 
+  const downloadWeddingFlow = async () => {
+    const currentDate = new Date().toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    // Try to get wedding flow from API first, then localStorage
+    let flowItems: any[] = [];
+    try {
+      const flowFromApi = await weddingFlowApi.getAll();
+      if (flowFromApi && flowFromApi.length > 0) {
+        flowItems = flowFromApi;
+        console.log('Wedding flow loaded from API for download');
+      } else {
+        const savedFlow = localStorage.getItem('wedding_flow');
+        if (savedFlow) {
+          flowItems = JSON.parse(savedFlow);
+          console.log('Wedding flow loaded from localStorage for download');
+        }
+      }
+    } catch (error) {
+      const savedFlow = localStorage.getItem('wedding_flow');
+      if (savedFlow) {
+        flowItems = JSON.parse(savedFlow);
+        console.log('Wedding flow loaded from localStorage for download (API failed)');
+      }
+    }
+
+    const getTypeIcon = (type: string) => {
+      switch (type) {
+        case 'ceremony': return '💒';
+        case 'reception': return '🎉';
+        case 'entertainment': return '🎵';
+        case 'meal': return '🍽️';
+        case 'special': return '✨';
+        default: return '📋';
+      }
+    };
+
+    const scheduleContent = flowItems.length > 0
+      ? flowItems.map(item =>
+          `${item.time} | ${item.title}${item.duration ? ` (${item.duration})` : ''}\n${getTypeIcon(item.type)} ${item.description}`
+        ).join('\n\n')
+      : `7:00 PM | Welcome & Cocktails (30 min)
+🎉 Guests arrive and enjoy welcome drinks and appetizers
+
+7:30 PM | Grand Entrance (10 min)
+💒 Introduction of the newly married couple
+
+8:00 PM | Dinner Service (60 min)
+🍽️ Multi-cuisine buffet dinner
+
+9:00 PM | Cultural Performances (45 min)
+🎵 Traditional dance and music performances
+
+10:00 PM | Cake Cutting (15 min)
+✨ Wedding cake cutting ceremony
+
+10:30 PM | Dancing & Celebration (60 min)
+🎵 Open dance floor for all guests
+
+11:30 PM | Send-off
+💒 Farewell and thank you to all guests`;
+
+    const weddingFlowContent = `
+WEDDING RECEPTION TIMELINE
+=========================
+
+Date: Sunday, December 28, 2025
+Venue: Sai Radha Heritage Beach Resort, Kaup
+Generated on: ${currentDate}
+
+📋 EVENT SCHEDULE
+
+${scheduleContent}
+
+Made with love ❤️ By Aral D'Souza
+    `;
+
+    const blob = new Blob([weddingFlowContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'aral-violet-wedding-reception-timeline.txt';
+    a.click();
+    window.URL.revokeObjectURL(url);
+    console.log('Wedding flow downloaded');
+  };
+
   const downloadInvitation = async () => {
     try {
       // Check if there's a custom invitation PDF uploaded
@@ -331,19 +421,9 @@ Please RSVP at our wedding website
             </div>
             <div className="flex justify-center">
               <Button
-                onClick={() => {
-                  const today = new Date();
-                  const weddingDate = new Date('2025-12-28');
-                  if (today >= weddingDate) {
-                    // Download wedding flow functionality here
-                    alert('Wedding timeline download will be available!');
-                  } else {
-                    alert('Wedding reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!');
-                  }
-                }}
-                disabled={new Date() < new Date('2025-12-28')}
+                onClick={downloadWeddingFlow}
                 variant="outline"
-                className="bg-white/80 hover:bg-white border-sage-400 text-sage-600 hover:text-sage-700 px-6 py-2 text-sm font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-white/80 hover:bg-white border-sage-400 text-sage-600 hover:text-sage-700 px-6 py-2 text-sm font-medium shadow-md"
               >
                 <Clock className="mr-2" size={16} />
                 Download Reception Timeline
