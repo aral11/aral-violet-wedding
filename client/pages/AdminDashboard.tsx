@@ -838,33 +838,47 @@ export default function AdminDashboard() {
   };
 
   const handleInvitationUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Upload function called');
     const file = e.target.files?.[0];
-    if (file) {
-      // Check if it's a PDF
-      if (file.type !== 'application/pdf') {
-        alert('Please upload a PDF file for the invitation.');
-        return;
-      }
 
-      // Check file size (limit to 10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        alert('Please upload a PDF smaller than 10MB.');
-        return;
-      }
-
-      // Convert to base64 for storage
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          const base64String = event.target.result as string;
-          setInvitationPDF(base64String);
-        }
-      };
-      reader.onerror = () => {
-        alert('Error reading PDF file. Please try again.');
-      };
-      reader.readAsDataURL(file);
+    if (!file) {
+      console.log('No file selected');
+      return;
     }
+
+    console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
+
+    // Check if it's a PDF (more flexible check)
+    if (!file.type.includes('pdf') && !file.name.toLowerCase().endsWith('.pdf')) {
+      alert('Please upload a PDF file for the invitation.');
+      return;
+    }
+
+    // Check file size (limit to 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Please upload a PDF smaller than 10MB.');
+      return;
+    }
+
+    console.log('File validation passed, reading file...');
+
+    // Convert to base64 for storage
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      console.log('File read successfully');
+      if (event.target?.result) {
+        const base64String = event.target.result as string;
+        console.log('Setting invitation PDF...');
+        setInvitationPDF(base64String);
+        alert('Wedding invitation uploaded successfully!');
+      }
+    };
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
+      alert('Error reading PDF file. Please try again.');
+    };
+    reader.readAsDataURL(file);
+
     // Clear the input
     e.target.value = '';
   };
