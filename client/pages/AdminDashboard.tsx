@@ -1601,16 +1601,17 @@ export default function AdminDashboard() {
           <TabsContent value="rsvp" className="space-y-6">
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
               <CardHeader>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
                   <CardTitle className="text-olive-700">
                     Guest List Management
                   </CardTitle>
                   <Button
                     onClick={downloadGuestList}
                     disabled={guests.length === 0}
-                    className="bg-olive-600 hover:bg-olive-700 text-white"
+                    size="sm"
+                    className="bg-olive-600 hover:bg-olive-700 text-white w-full sm:w-auto"
                   >
-                    <Download className="mr-2" size={16} />
+                    <Download className="mr-2" size={14} />
                     Download PDF
                   </Button>
                 </div>
