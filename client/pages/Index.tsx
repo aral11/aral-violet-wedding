@@ -67,8 +67,25 @@ export default function Index() {
     const loadPhotos = async () => {
       try {
         const photos = await photosApi.getAll();
-        setUploadedPhotos(photos.map(photo => photo.photoData));
-        console.log('Photos loaded from database successfully');
+        if (photos && photos.length > 0) {
+          setUploadedPhotos(photos.map(photo => photo.photoData));
+          console.log('Photos loaded from database successfully:', photos.length);
+        } else {
+          // Try localStorage even if API returns empty array
+          const savedPhotos = localStorage.getItem('wedding_photos');
+          if (savedPhotos) {
+            try {
+              const photos = JSON.parse(savedPhotos);
+              setUploadedPhotos(photos);
+              console.log('Photos loaded from localStorage fallback:', photos.length);
+            } catch (parseError) {
+              console.error('Error parsing localStorage photos:', parseError);
+              setUploadedPhotos([]);
+            }
+          } else {
+            setUploadedPhotos([]);
+          }
+        }
       } catch (error) {
         console.warn('API unavailable, falling back to localStorage:', handleApiError(error));
         // Fallback to localStorage if API is not available
@@ -77,7 +94,7 @@ export default function Index() {
           try {
             const photos = JSON.parse(savedPhotos);
             setUploadedPhotos(photos);
-            console.log('Photos loaded from localStorage fallback');
+            console.log('Photos loaded from localStorage fallback:', photos.length);
           } catch (parseError) {
             console.error('Error parsing localStorage photos:', parseError);
             setUploadedPhotos([]);
@@ -90,6 +107,18 @@ export default function Index() {
 
     // Load photos initially
     loadPhotos();
+
+    // Also load from localStorage immediately for faster display
+    const savedPhotos = localStorage.getItem('wedding_photos');
+    if (savedPhotos) {
+      try {
+        const photos = JSON.parse(savedPhotos);
+        setUploadedPhotos(photos);
+        console.log('Photos loaded immediately from localStorage:', photos.length);
+      } catch (parseError) {
+        console.error('Error parsing localStorage photos:', parseError);
+      }
+    }
 
     // Check for new photos every 10 seconds when the page is focused
     const interval = setInterval(() => {
