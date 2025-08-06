@@ -80,8 +80,27 @@ export default function Index() {
     return () => clearInterval(timer);
   }, []);
 
-  // Load photos from API with fallback to localStorage
+  // Load photos - prioritize localStorage to avoid fetch errors
   useEffect(() => {
+    // Load from localStorage immediately
+    const loadFromStorage = () => {
+      const savedPhotos = localStorage.getItem("wedding_photos");
+      if (savedPhotos) {
+        try {
+          const photos = JSON.parse(savedPhotos);
+          setUploadedPhotos(photos);
+          console.log("Photos loaded from localStorage:", photos.length);
+        } catch (parseError) {
+          console.error("Error parsing localStorage photos:", parseError);
+          setUploadedPhotos([]);
+        }
+      }
+    };
+
+    // Load immediately
+    loadFromStorage();
+
+    // Try API silently in background
     const loadPhotos = async () => {
       try {
         const photos = await photosApi.getAll();
