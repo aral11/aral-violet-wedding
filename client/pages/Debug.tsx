@@ -398,7 +398,7 @@ export default function Debug() {
           <CardContent>
             <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
               {JSON.stringify(
-                { localStorageData, apiStatus, supabaseStatus, databaseStatus },
+                { localStorageData, apiStatus, supabaseStatus, databaseStatus, smsStatus },
                 null,
                 2,
               )}
