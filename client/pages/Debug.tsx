@@ -33,7 +33,7 @@ export default function Debug() {
     if (!supabase) {
       setSupabaseStatus({
         configured: false,
-        error: "Supabase client not configured - check environment variables"
+        error: "Supabase client not configured - check environment variables",
       });
       return;
     }
@@ -45,31 +45,31 @@ export default function Debug() {
     try {
       // Test connection by checking guests table
       const { data, error, count } = await supabase
-        .from('guests')
-        .select('*', { count: 'exact' });
+        .from("guests")
+        .select("*", { count: "exact" });
 
       if (error) {
         results.connection = {
           success: false,
           error: error.message,
-          code: error.code
+          code: error.code,
         };
 
-        if (error.code === 'PGRST116') {
+        if (error.code === "PGRST116") {
           results.tablesExist = false;
           results.message = "Tables don't exist - need to run SQL setup";
         }
       } else {
         results.connection = {
           success: true,
-          guestCount: count || 0
+          guestCount: count || 0,
         };
         results.tablesExist = true;
       }
     } catch (err: any) {
       results.connection = {
         success: false,
-        error: err.message
+        error: err.message,
       };
     }
 
@@ -92,7 +92,7 @@ export default function Debug() {
       results.data = {
         guests: guests.length,
         photos: photos.length,
-        weddingFlow: weddingFlow.length
+        weddingFlow: weddingFlow.length,
       };
       results.success = true;
     } catch (error: any) {
@@ -267,7 +267,9 @@ export default function Debug() {
                 {supabaseStatus.tablesExist !== undefined && (
                   <div>
                     <strong>Tables:</strong>{" "}
-                    {supabaseStatus.tablesExist ? "✅ Exist" : "❌ Missing - need SQL setup"}
+                    {supabaseStatus.tablesExist
+                      ? "✅ Exist"
+                      : "❌ Missing - need SQL setup"}
                   </div>
                 )}
               </div>
@@ -283,13 +285,16 @@ export default function Debug() {
                 <Button onClick={testDatabase}>Test Database Service</Button>
                 {databaseStatus.storageStatus && (
                   <div>
-                    <strong>Storage Type:</strong> {databaseStatus.storageStatus.type}
+                    <strong>Storage Type:</strong>{" "}
+                    {databaseStatus.storageStatus.type}
                   </div>
                 )}
                 {databaseStatus.isUsingSupabase !== undefined && (
                   <div>
                     <strong>Using Supabase:</strong>{" "}
-                    {databaseStatus.isUsingSupabase ? "✅ Yes" : "❌ No (localStorage)"}
+                    {databaseStatus.isUsingSupabase
+                      ? "✅ Yes"
+                      : "❌ No (localStorage)"}
                   </div>
                 )}
                 {databaseStatus.data && (
@@ -318,7 +323,11 @@ export default function Debug() {
           </CardHeader>
           <CardContent>
             <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
-              {JSON.stringify({ localStorageData, apiStatus, supabaseStatus, databaseStatus }, null, 2)}
+              {JSON.stringify(
+                { localStorageData, apiStatus, supabaseStatus, databaseStatus },
+                null,
+                2,
+              )}
             </pre>
           </CardContent>
         </Card>
