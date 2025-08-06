@@ -442,27 +442,28 @@ Please RSVP at our wedding website
               <Button
                 onClick={() => {
                   const today = new Date();
-                  const weddingDate = new Date('2025-12-28');
+                  const weddingDate = new Date("2025-12-28");
 
                   // Check if today is on or after the wedding date
                   if (today >= weddingDate) {
                     downloadWeddingFlow();
                   } else {
-                    alert('Wedding reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!');
+                    alert(
+                      "Wedding reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!",
+                    );
                   }
                 }}
                 variant="outline"
                 className={`px-6 py-2 text-sm font-medium shadow-md ${
-                  new Date() < new Date('2025-12-28')
-                    ? 'bg-white/60 border-sage-300 text-sage-500 opacity-70 cursor-default hover:bg-white/60'
-                    : 'bg-white/80 hover:bg-white border-sage-400 text-sage-600 hover:text-sage-700'
+                  new Date() < new Date("2025-12-28")
+                    ? "bg-white/60 border-sage-300 text-sage-500 opacity-70 cursor-default hover:bg-white/60"
+                    : "bg-white/80 hover:bg-white border-sage-400 text-sage-600 hover:text-sage-700"
                 }`}
               >
                 <Clock className="mr-2" size={16} />
-                {new Date() < new Date('2025-12-28')
-                  ? 'Available on Wedding Day'
-                  : 'Download Reception Timeline'
-                }
+                {new Date() < new Date("2025-12-28")
+                  ? "Available on Wedding Day"
+                  : "Download Reception Timeline"}
               </Button>
             </div>
           </div>

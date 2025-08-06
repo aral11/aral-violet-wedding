@@ -1,6 +1,6 @@
 // API utility functions for wedding website
 
-const API_BASE = '/api';
+const API_BASE = "/api";
 
 // Types
 export interface Guest {
@@ -10,7 +10,7 @@ export interface Guest {
   phone: string;
   attending: boolean;
   guests: number;
-  side: 'groom' | 'bride';
+  side: "groom" | "bride";
   message?: string;
   dietaryRestrictions?: string;
   needsAccommodation: boolean;
@@ -31,7 +31,7 @@ export interface WeddingFlowItem {
   title: string;
   description: string;
   duration?: string;
-  type: 'ceremony' | 'reception' | 'entertainment' | 'meal' | 'special';
+  type: "ceremony" | "reception" | "entertainment" | "meal" | "special";
   createdAt: string;
   updatedAt?: string;
 }
@@ -44,11 +44,14 @@ export interface WeddingInvitation {
 }
 
 // Generic API call function
-async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+async function apiCall<T>(
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<T> {
   const url = `${API_BASE}${endpoint}`;
   const config: RequestInit = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options.headers,
     },
     ...options,
@@ -58,15 +61,24 @@ async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<
     const response = await fetch(url, config);
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+      const errorData = await response
+        .json()
+        .catch(() => ({ error: "Unknown error" }));
+      throw new Error(
+        errorData.error || `HTTP ${response.status}: ${response.statusText}`,
+      );
     }
 
     return response.json();
   } catch (error) {
     // If fetch fails entirely, throw a more specific error
-    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-      throw new Error('API server is not available. Using localStorage fallback.');
+    if (
+      error instanceof TypeError &&
+      error.message.includes("Failed to fetch")
+    ) {
+      throw new Error(
+        "API server is not available. Using localStorage fallback.",
+      );
     }
     throw error;
   }
@@ -75,26 +87,31 @@ async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<
 // Guests API
 export const guestsApi = {
   async getAll(): Promise<Guest[]> {
-    return apiCall<Guest[]>('/guests');
+    return apiCall<Guest[]>("/guests");
   },
 
-  async create(guest: Omit<Guest, 'id' | 'createdAt' | 'updatedAt'>): Promise<Guest> {
-    return apiCall<Guest>('/guests', {
-      method: 'POST',
+  async create(
+    guest: Omit<Guest, "id" | "createdAt" | "updatedAt">,
+  ): Promise<Guest> {
+    return apiCall<Guest>("/guests", {
+      method: "POST",
       body: JSON.stringify(guest),
     });
   },
 
-  async update(id: string, guest: Partial<Guest>): Promise<{ message: string }> {
+  async update(
+    id: string,
+    guest: Partial<Guest>,
+  ): Promise<{ message: string }> {
     return apiCall<{ message: string }>(`/guests/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(guest),
     });
   },
 
   async delete(id: string): Promise<{ message: string }> {
     return apiCall<{ message: string }>(`/guests/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   },
 };
@@ -102,26 +119,32 @@ export const guestsApi = {
 // Photos API
 export const photosApi = {
   async getAll(): Promise<WeddingPhoto[]> {
-    return apiCall<WeddingPhoto[]>('/photos');
+    return apiCall<WeddingPhoto[]>("/photos");
   },
 
-  async upload(photoData: string, uploadedBy = 'admin'): Promise<WeddingPhoto> {
-    return apiCall<WeddingPhoto>('/photos', {
-      method: 'POST',
+  async upload(photoData: string, uploadedBy = "admin"): Promise<WeddingPhoto> {
+    return apiCall<WeddingPhoto>("/photos", {
+      method: "POST",
       body: JSON.stringify({ photoData, uploadedBy }),
     });
   },
 
-  async bulkUpload(photos: string[], uploadedBy = 'admin'): Promise<{ message: string; photos: WeddingPhoto[] }> {
-    return apiCall<{ message: string; photos: WeddingPhoto[] }>('/photos/bulk', {
-      method: 'POST',
-      body: JSON.stringify({ photos, uploadedBy }),
-    });
+  async bulkUpload(
+    photos: string[],
+    uploadedBy = "admin",
+  ): Promise<{ message: string; photos: WeddingPhoto[] }> {
+    return apiCall<{ message: string; photos: WeddingPhoto[] }>(
+      "/photos/bulk",
+      {
+        method: "POST",
+        body: JSON.stringify({ photos, uploadedBy }),
+      },
+    );
   },
 
   async delete(id: string): Promise<{ message: string }> {
     return apiCall<{ message: string }>(`/photos/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   },
 };
@@ -129,26 +152,31 @@ export const photosApi = {
 // Wedding Flow API
 export const weddingFlowApi = {
   async getAll(): Promise<WeddingFlowItem[]> {
-    return apiCall<WeddingFlowItem[]>('/wedding-flow');
+    return apiCall<WeddingFlowItem[]>("/wedding-flow");
   },
 
-  async create(flowItem: Omit<WeddingFlowItem, 'id' | 'createdAt' | 'updatedAt'>): Promise<WeddingFlowItem> {
-    return apiCall<WeddingFlowItem>('/wedding-flow', {
-      method: 'POST',
+  async create(
+    flowItem: Omit<WeddingFlowItem, "id" | "createdAt" | "updatedAt">,
+  ): Promise<WeddingFlowItem> {
+    return apiCall<WeddingFlowItem>("/wedding-flow", {
+      method: "POST",
       body: JSON.stringify(flowItem),
     });
   },
 
-  async update(id: string, flowItem: Partial<WeddingFlowItem>): Promise<{ message: string }> {
+  async update(
+    id: string,
+    flowItem: Partial<WeddingFlowItem>,
+  ): Promise<{ message: string }> {
     return apiCall<{ message: string }>(`/wedding-flow/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(flowItem),
     });
   },
 
   async delete(id: string): Promise<{ message: string }> {
     return apiCall<{ message: string }>(`/wedding-flow/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   },
 };
@@ -157,10 +185,13 @@ export const weddingFlowApi = {
 export const invitationApi = {
   async get(): Promise<WeddingInvitation | null> {
     try {
-      return await apiCall<WeddingInvitation>('/invitation');
+      return await apiCall<WeddingInvitation>("/invitation");
     } catch (error) {
       // Return null if no invitation found
-      if (error instanceof Error && error.message.includes('No invitation found')) {
+      if (
+        error instanceof Error &&
+        error.message.includes("No invitation found")
+      ) {
         return null;
       }
       throw error;
@@ -168,15 +199,15 @@ export const invitationApi = {
   },
 
   async upload(pdfData: string, filename?: string): Promise<WeddingInvitation> {
-    return apiCall<WeddingInvitation>('/invitation', {
-      method: 'POST',
+    return apiCall<WeddingInvitation>("/invitation", {
+      method: "POST",
       body: JSON.stringify({ pdfData, filename }),
     });
   },
 
   async delete(): Promise<{ message: string }> {
-    return apiCall<{ message: string }>('/invitation', {
-      method: 'DELETE',
+    return apiCall<{ message: string }>("/invitation", {
+      method: "DELETE",
     });
   },
 };
@@ -186,5 +217,5 @@ export function handleApiError(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
-  return 'An unexpected error occurred';
+  return "An unexpected error occurred";
 }
