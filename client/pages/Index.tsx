@@ -24,6 +24,7 @@ import {
   handleApiError,
 } from "@/lib/api";
 import { database } from "@/lib/database";
+import { sendRSVPNotification, isSMSConfigured } from "@/lib/sms-service";
 
 interface Guest {
   id: string;
