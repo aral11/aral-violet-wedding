@@ -1326,7 +1326,7 @@ export default function AdminDashboard() {
                     <label className="cursor-pointer">
                       <input
                         type="file"
-                        accept=".pdf"
+                        accept=".pdf,application/pdf"
                         onChange={handleInvitationUpload}
                         className="hidden"
                       />
