@@ -134,19 +134,20 @@ export default function Index() {
     }
   };
 
-  const downloadInvitation = () => {
-    // Check if there's a custom invitation PDF uploaded
-    const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
+  const downloadInvitation = async () => {
+    try {
+      // Check if there's a custom invitation PDF uploaded
+      const invitation = await invitationApi.get();
 
-    if (savedInvitation) {
-      // Download the uploaded PDF invitation
-      const link = document.createElement('a');
-      link.href = savedInvitation;
-      link.download = 'Aral-Violet-Wedding-Invitation.pdf';
-      link.click();
-    } else {
-      // Fallback to text invitation if no PDF uploaded
-      const invitationContent = `
+      if (invitation) {
+        // Download the uploaded PDF invitation
+        const link = document.createElement('a');
+        link.href = invitation.pdfData;
+        link.download = invitation.filename || 'Aral-Violet-Wedding-Invitation.pdf';
+        link.click();
+      } else {
+        // Fallback to text invitation if no PDF uploaded
+        const invitationContent = `
 WEDDING INVITATION
 ==================
 
@@ -177,15 +178,19 @@ A&V
 12.28.2025
 
 Please RSVP at our wedding website
-      `;
+        `;
 
-      const blob = new Blob([invitationContent], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'aral-violet-wedding-invitation.txt';
-      a.click();
-      window.URL.revokeObjectURL(url);
+        const blob = new Blob([invitationContent], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'aral-violet-wedding-invitation.txt';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Error downloading invitation:', handleApiError(error));
+      alert('Sorry, there was an error downloading the invitation. Please try again.');
     }
   };
 
