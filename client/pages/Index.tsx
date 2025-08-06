@@ -574,7 +574,9 @@ Please RSVP at our wedding website
                     {/* Proposal Video Section */}
                     <div className="relative rounded-lg overflow-hidden shadow-md bg-sage-50">
                       {/* YouTube Embed - Replace VIDEO_ID with your actual YouTube video ID */}
-                      <div className="relative pb-[56.25%] h-0"> {/* 16:9 aspect ratio */}
+                      <div className="relative pb-[56.25%] h-0">
+                        {" "}
+                        {/* 16:9 aspect ratio */}
                         <iframe
                           className="absolute top-0 left-0 w-full h-full rounded-lg"
                           src="https://www.youtube.com/embed/W4oKzn-0SCw?rel=0&modestbranding=1&controls=1"
@@ -583,7 +585,6 @@ Please RSVP at our wedding website
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                         ></iframe>
-
                         {/* Video will load here */}
                       </div>
                     </div>
