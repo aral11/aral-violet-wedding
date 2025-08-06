@@ -133,7 +133,18 @@ export default function Index() {
   };
 
   const downloadInvitation = () => {
-    const invitationContent = `
+    // Check if there's a custom invitation PDF uploaded
+    const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
+
+    if (savedInvitation) {
+      // Download the uploaded PDF invitation
+      const link = document.createElement('a');
+      link.href = savedInvitation;
+      link.download = 'Aral-Violet-Wedding-Invitation.pdf';
+      link.click();
+    } else {
+      // Fallback to text invitation if no PDF uploaded
+      const invitationContent = `
 WEDDING INVITATION
 ==================
 
@@ -143,19 +154,20 @@ I HAVE FOUND THE ONE WHOM MY SOUL LOVES.
 Aral & Violet
 
 Sunday, December 28, 2025
-Udupi, Karnataka, India
 
 CHURCH NUPTIALS
+Mother of Sorrows Church, Udupi
 Sunday, December 28, 2025
 4:00 PM – 5:15 PM
 
 RECEPTION
+Sai Radha Heritage Beach Resort, Kaup
 Sunday, December 28, 2025
 7:00 PM – 11:30 PM
 
-WITH HEARTS FULL OF JOY AND BLESSINGS FROM ABOVE, 
-WE INVITE YOU TO CELEBRATE OUR UNION. 
-WEAR YOUR FINEST, BRING YOUR SMILES, 
+WITH HEARTS FULL OF JOY AND BLESSINGS FROM ABOVE,
+WE INVITE YOU TO CELEBRATE OUR UNION.
+WEAR YOUR FINEST, BRING YOUR SMILES,
 AND LET'S CHERISH THIS BEAUTIFUL EVENING.
 
 TheVIRALWedding
@@ -163,15 +175,16 @@ A&V
 12.28.2025
 
 Please RSVP at our wedding website
-    `;
+      `;
 
-    const blob = new Blob([invitationContent], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'aral-violet-wedding-invitation.txt';
-    a.click();
-    window.URL.revokeObjectURL(url);
+      const blob = new Blob([invitationContent], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'aral-violet-wedding-invitation.txt';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
   };
 
   return (
