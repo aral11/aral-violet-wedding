@@ -147,11 +147,272 @@ export default function AdminDashboard() {
   }
 
   const downloadGuestList = () => {
-    const attendingGuests = guests.filter(g => g.attending);
-    const notAttendingGuests = guests.filter(g => !g.attending);
-    const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
-    const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
-    const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
+    const downloadWeddingFlow = () => {
+    const currentDate = new Date().toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    const getTypeIcon = (type: string) => {
+      switch (type) {
+        case 'ceremony': return '💒';
+        case 'reception': return '🎉';
+        case 'entertainment': return '🎵';
+        case 'meal': return '🍽️';
+        case 'special': return '✨';
+        default: return '📋';
+      }
+    };
+
+    const getTypeColor = (type: string) => {
+      switch (type) {
+        case 'ceremony': return '#5a6c57';
+        case 'reception': return '#84a178';
+        case 'entertainment': return '#9ca3af';
+        case 'meal': return '#6b7280';
+        case 'special': return '#d97706';
+        default: return '#718096';
+      }
+    };
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reception Flow - Aral & Violet Wedding</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #84a178;
+            padding: 30px;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .couple-names {
+            font-size: 2.5em;
+            color: #5a6c57;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .wedding-date {
+            font-size: 1.2em;
+            color: #718096;
+            margin-bottom: 15px;
+        }
+        .venue-info {
+            margin: 15px 0;
+            font-size: 1em;
+            color: #718096;
+        }
+        .timeline-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .timeline-header {
+            text-align: center;
+            color: #5a6c57;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #84a178;
+            padding-bottom: 15px;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 60px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #84a178, #5a6c57);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid #84a178;
+            transition: transform 0.2s;
+        }
+        .timeline-item:hover {
+            transform: translateX(5px);
+        }
+        .timeline-marker {
+            position: absolute;
+            left: -48px;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #84a178;
+            z-index: 1;
+        }
+        .timeline-time {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #5a6c57;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .timeline-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .timeline-description {
+            color: #4a5568;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .timeline-duration {
+            font-size: 0.9em;
+            color: #718096;
+            font-style: italic;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        .type-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+            margin-left: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .logo {
+            color: #5a6c57;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .note {
+            background: #fef5e7;
+            border: 2px solid #f6d55c;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .timeline-container, .header, .footer {
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">💐 Wedding Reception Timeline</div>
+        <div class="couple-names">Aral & Violet</div>
+        <div class="wedding-date">December 28, 2025</div>
+        <div class="venue-info">
+            <div><strong>📍 Venue:</strong> Sai Radha Heritage Beach Resort, Kaup</div>
+            <div><strong>⏰ Reception:</strong> 7:00 PM – 11:30 PM</div>
+        </div>
+        <div style="font-size: 0.9em; color: #a0aec0; margin-top: 15px;">Timeline Generated: ${currentDate}</div>
+    </div>
+
+    <div class="note">
+        <div style="font-size: 1.1em; font-weight: bold; color: #d97706; margin-bottom: 10px;">🎉 Join Us for an Evening of Celebration!</div>
+        <div style="color: #92400e;">All times are approximate and may vary based on the flow of celebration</div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-header">🕐 Reception Schedule</div>
+
+        <div class="timeline">
+            ${weddingFlow.map(item => `
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-time">
+                    ⏰ ${item.time}
+                    ${item.duration ? `<span class="timeline-duration">Duration: ${item.duration}</span>` : ''}
+                </div>
+                <div class="timeline-title">
+                    ${getTypeIcon(item.type)} ${item.title}
+                    <span class="type-badge" style="background-color: ${getTypeColor(item.type)}">
+                        ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                    </span>
+                </div>
+                <div class="timeline-description">${item.description}</div>
+            </div>
+            `).join('')}
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="logo">❤️ TheVIRALWedding</div>
+        <div style="font-size: 1.2em; margin: 10px 0;">A&V • 12.28.2025</div>
+        <div style="color: #718096;">With hearts full of joy and blessings from above</div>
+        <div style="margin-top: 15px; font-size: 0.9em; color: #a0aec0;">
+            Thank you for being part of our special celebration
+        </div>
+    </div>
+</body>
+</html>
+    `;
+
+    // Create a new window and print
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+
+      // Auto-download as PDF
+      setTimeout(() => {
+        printWindow.print();
+      }, 1000);
+    }
+  };
+
+  const attendingGuests = guests.filter(g => g.attending);
+  const notAttendingGuests = guests.filter(g => !g.attending);
+  const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
+  const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
+  const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
     const accommodationNeeded = attendingGuests.filter(g => g.needsAccommodation);
 
     const currentDate = new Date().toLocaleDateString('en-IN', {
