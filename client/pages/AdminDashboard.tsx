@@ -910,11 +910,11 @@ export default function AdminDashboard() {
         return;
       }
 
-      // Check file size (limit to 5MB)
-      if (file.size > 5 * 1024 * 1024) {
+      // Check file size (limit to 10MB)
+      if (file.size > 10 * 1024 * 1024) {
         console.error(`File ${file.name} is too large`);
         alert(
-          `"${file.name}" is too large. Please upload images smaller than 5MB.`,
+          `"${file.name}" is too large. Please upload images smaller than 10MB.`,
         );
         errorCount++;
         return;
