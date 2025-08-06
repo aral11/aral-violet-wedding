@@ -35,6 +35,15 @@ export default function AdminDashboard() {
   const { isAuthenticated, logout, user } = useAuth();
   const [guests, setGuests] = useState<Guest[]>([]);
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
+  const [weddingFlow, setWeddingFlow] = useState<WeddingFlowItem[]>([]);
+  const [newFlowItem, setNewFlowItem] = useState<Omit<WeddingFlowItem, 'id'>>({
+    time: '',
+    title: '',
+    description: '',
+    duration: '',
+    type: 'reception'
+  });
+  const [editingFlow, setEditingFlow] = useState<string | null>(null);
 
   // Load data from localStorage on mount
   useEffect(() => {
