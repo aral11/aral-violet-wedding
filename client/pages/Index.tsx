@@ -575,7 +575,8 @@ Please RSVP at our wedding website
                         className="w-full h-auto max-h-80 object-cover"
                         poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f7fafc'/><text x='50%' y='50%' font-family='Arial' font-size='16' fill='%23718096' text-anchor='middle' dy='0.3em'>Our Proposal Video</text></svg>"
                       >
-                        <source src="" type="video/mp4" />
+                        <source src="/aral-violet-wedding/proposal-video.mp4" type="video/mp4" />
+                        <source src="/proposal-video.mp4" type="video/mp4" />
                         <p className="text-sage-600 p-4">
                           Your browser doesn't support HTML5 video.
                           <a href="#" className="text-olive-600 underline">Download the video</a> instead.
