@@ -483,7 +483,7 @@ Please RSVP at our wedding website
       </section>
 
       {/* RSVP Section */}
-      <section className="py-20 px-4">
+      <section id="rsvp-section" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">RSVP</h2>
