@@ -59,12 +59,44 @@ export default function Index() {
     return () => clearInterval(timer);
   }, []);
 
-  // Load photos from localStorage for guest viewing
+  // Load photos from localStorage for guest viewing and refresh periodically
   useEffect(() => {
-    const savedPhotos = localStorage.getItem('wedding_photos');
-    if (savedPhotos) {
-      setUploadedPhotos(JSON.parse(savedPhotos));
-    }
+    const loadPhotos = () => {
+      const savedPhotos = localStorage.getItem('wedding_photos');
+      if (savedPhotos) {
+        try {
+          const photos = JSON.parse(savedPhotos);
+          setUploadedPhotos(photos);
+        } catch (error) {
+          console.error('Error loading photos:', error);
+          setUploadedPhotos([]);
+        }
+      }
+    };
+
+    // Load photos initially
+    loadPhotos();
+
+    // Check for new photos every 5 seconds when the page is focused
+    const interval = setInterval(() => {
+      if (!document.hidden) {
+        loadPhotos();
+      }
+    }, 5000);
+
+    // Also check when the page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadPhotos();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const handleRSVP = (e: React.FormEvent) => {
