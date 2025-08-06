@@ -119,9 +119,9 @@ export default function Login() {
         </Card>
 
         <div className="text-center mt-6">
-          <Button 
-            variant="outline" 
-            onClick={() => window.location.href = '/'}
+          <Button
+            variant="outline"
+            onClick={() => navigate('/')}
             className="text-sage-600 border-sage-300 hover:bg-sage-50"
           >
             ← Back to Wedding Site
