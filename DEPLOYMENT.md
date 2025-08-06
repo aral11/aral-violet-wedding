@@ -9,6 +9,7 @@ Your wedding website is configured for automatic GitHub Pages deployment!
 1. **Push to GitHub**: Your code is automatically built and deployed when you push to the `main` branch
 
 2. **Enable GitHub Pages**:
+
    - Go to your GitHub repository settings
    - Scroll to "Pages" section
    - Source: "GitHub Actions"
@@ -20,6 +21,7 @@ Your wedding website is configured for automatic GitHub Pages deployment!
    ```
 
 ### Features Working on GitHub Pages:
+
 - ✅ **Full Wedding Website**: Beautiful olive green theme
 - ✅ **RSVP System**: Guests can submit responses (saved to localStorage)
 - ✅ **Photo Gallery**: Display wedding photos
@@ -50,6 +52,7 @@ npm run build:github
 ## Troubleshooting:
 
 If the site shows "404" or blank page:
+
 1. Check that GitHub Pages is enabled in repository settings
 2. Ensure the source is set to "GitHub Actions"
 3. Wait 2-3 minutes for deployment to complete
@@ -58,6 +61,7 @@ If the site shows "404" or blank page:
 ## Custom Domain (Optional):
 
 To use your own domain (like weddingsite.com):
+
 1. Add a CNAME file to the `public` folder with your domain
 2. Configure DNS settings with your domain provider
 3. Enable custom domain in GitHub Pages settings

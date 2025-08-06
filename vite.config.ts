@@ -7,8 +7,10 @@ import { createServer } from "./server";
 export default defineConfig(({ mode }) => ({
   // Set base path for GitHub Pages if in production
   // The base path will be automatically set by GitHub Actions
-  base: process.env.NODE_ENV === 'production' && process.env.GITHUB_REPOSITORY ?
-    `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/` : '/',
+  base:
+    process.env.NODE_ENV === "production" && process.env.GITHUB_REPOSITORY
+      ? `/${process.env.GITHUB_REPOSITORY.split("/")[1]}/`
+      : "/",
   server: {
     host: "::",
     port: 8080,
