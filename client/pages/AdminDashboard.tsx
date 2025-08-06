@@ -2290,7 +2290,9 @@ export default function AdminDashboard() {
                     className="bg-olive-600 hover:bg-olive-700 text-white w-full sm:w-auto"
                   >
                     <Download className="mr-2" size={16} />
-                    <span className="hidden sm:inline">Download Documentation PDF</span>
+                    <span className="hidden sm:inline">
+                      Download Documentation PDF
+                    </span>
                     <span className="sm:hidden">Download PDF</span>
                   </Button>
                 </div>

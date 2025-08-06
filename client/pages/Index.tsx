@@ -930,7 +930,9 @@ Please RSVP at our wedding website
                         className="mr-3 text-olive-600"
                       />
                       <div>
-                        <div className="font-medium text-olive-700">Groom's Family & Friends</div>
+                        <div className="font-medium text-olive-700">
+                          Groom's Family & Friends
+                        </div>
                         <div className="text-sm text-sage-600">Aral's side</div>
                       </div>
                     </label>
@@ -945,8 +947,12 @@ Please RSVP at our wedding website
                         className="mr-3 text-olive-600"
                       />
                       <div>
-                        <div className="font-medium text-olive-700">Bride's Family & Friends</div>
-                        <div className="text-sm text-sage-600">Violet's side</div>
+                        <div className="font-medium text-olive-700">
+                          Bride's Family & Friends
+                        </div>
+                        <div className="text-sm text-sage-600">
+                          Violet's side
+                        </div>
                       </div>
                     </label>
                   </div>
