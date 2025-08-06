@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Heart, Download, LogOut, Camera, Users, Upload, Trash2, Eye } from 'lucide-react';
+import { Heart, Download, LogOut, Camera, Users, Upload, Trash2, Eye, Clock, Plus, Edit, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface Guest {
@@ -363,7 +365,7 @@ export default function AdminDashboard() {
                     ${guest.message ? `<div class="guest-message">💌 "${guest.message}"</div>` : ''}
                 </div>
                 <div class="guest-details">
-                    <div style="color: #e53e3e; font-weight: bold;">❌ Not Attending</div>
+                    <div style="color: #e53e3e; font-weight: bold;">��� Not Attending</div>
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 5px;"><strong>📅 RSVP Date:</strong></div>
