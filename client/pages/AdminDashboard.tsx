@@ -1,13 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Navigate } from 'react-router-dom';
-import { Heart, Download, LogOut, Camera, Users, Upload, Trash2, Eye, Clock, Plus, Edit, FileText } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useAuth } from '@/contexts/AuthContext';
-import { guestsApi, photosApi, invitationApi, weddingFlowApi, handleApiError } from '@/lib/api';
+import React, { useState, useEffect, useRef } from "react";
+import { Navigate } from "react-router-dom";
+import {
+  Heart,
+  Download,
+  LogOut,
+  Camera,
+  Users,
+  Upload,
+  Trash2,
+  Eye,
+  Clock,
+  Plus,
+  Edit,
+  FileText,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  guestsApi,
+  photosApi,
+  invitationApi,
+  weddingFlowApi,
+  handleApiError,
+} from "@/lib/api";
 
 interface Guest {
   id: string;
@@ -16,7 +35,7 @@ interface Guest {
   phone: string;
   attending: boolean;
   guests: number;
-  side: 'groom' | 'bride';
+  side: "groom" | "bride";
   message?: string;
   dietaryRestrictions?: string;
   needsAccommodation: boolean;
@@ -29,7 +48,7 @@ interface WeddingFlowItem {
   title: string;
   description: string;
   duration?: string;
-  type: 'ceremony' | 'reception' | 'entertainment' | 'meal' | 'special';
+  type: "ceremony" | "reception" | "entertainment" | "meal" | "special";
 }
 
 export default function AdminDashboard() {
@@ -38,12 +57,12 @@ export default function AdminDashboard() {
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [weddingFlow, setWeddingFlow] = useState<WeddingFlowItem[]>([]);
   const [invitationPDF, setInvitationPDF] = useState<string | null>(null);
-  const [newFlowItem, setNewFlowItem] = useState<Omit<WeddingFlowItem, 'id'>>({
-    time: '',
-    title: '',
-    description: '',
-    duration: '',
-    type: 'reception'
+  const [newFlowItem, setNewFlowItem] = useState<Omit<WeddingFlowItem, "id">>({
+    time: "",
+    title: "",
+    description: "",
+    duration: "",
+    type: "reception",
   });
   const [editingFlow, setEditingFlow] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,17 +76,17 @@ export default function AdminDashboard() {
         const guestsFromApi = await guestsApi.getAll();
         if (guestsFromApi && guestsFromApi.length > 0) {
           setGuests(guestsFromApi);
-          console.log('Guests loaded from API:', guestsFromApi.length);
+          console.log("Guests loaded from API:", guestsFromApi.length);
         } else {
-          const savedGuests = localStorage.getItem('wedding_guests');
+          const savedGuests = localStorage.getItem("wedding_guests");
           if (savedGuests) {
             setGuests(JSON.parse(savedGuests));
-            console.log('Guests loaded from localStorage');
+            console.log("Guests loaded from localStorage");
           }
         }
       } catch (error) {
-        console.log('API unavailable, loading guests from localStorage');
-        const savedGuests = localStorage.getItem('wedding_guests');
+        console.log("API unavailable, loading guests from localStorage");
+        const savedGuests = localStorage.getItem("wedding_guests");
         if (savedGuests) {
           setGuests(JSON.parse(savedGuests));
         }
@@ -77,18 +96,18 @@ export default function AdminDashboard() {
       try {
         const photosFromApi = await photosApi.getAll();
         if (photosFromApi && photosFromApi.length > 0) {
-          setUploadedPhotos(photosFromApi.map(photo => photo.photoData));
-          console.log('Photos loaded from API:', photosFromApi.length);
+          setUploadedPhotos(photosFromApi.map((photo) => photo.photoData));
+          console.log("Photos loaded from API:", photosFromApi.length);
         } else {
-          const savedPhotos = localStorage.getItem('wedding_photos');
+          const savedPhotos = localStorage.getItem("wedding_photos");
           if (savedPhotos) {
             setUploadedPhotos(JSON.parse(savedPhotos));
-            console.log('Photos loaded from localStorage');
+            console.log("Photos loaded from localStorage");
           }
         }
       } catch (error) {
-        console.log('API unavailable, loading photos from localStorage');
-        const savedPhotos = localStorage.getItem('wedding_photos');
+        console.log("API unavailable, loading photos from localStorage");
+        const savedPhotos = localStorage.getItem("wedding_photos");
         if (savedPhotos) {
           setUploadedPhotos(JSON.parse(savedPhotos));
         }
@@ -99,85 +118,86 @@ export default function AdminDashboard() {
         const flowFromApi = await weddingFlowApi.getAll();
         if (flowFromApi && flowFromApi.length > 0) {
           setWeddingFlow(flowFromApi);
-          console.log('Wedding flow loaded from API:', flowFromApi.length);
+          console.log("Wedding flow loaded from API:", flowFromApi.length);
         } else {
-          const savedFlow = localStorage.getItem('wedding_flow');
+          const savedFlow = localStorage.getItem("wedding_flow");
           if (savedFlow) {
             setWeddingFlow(JSON.parse(savedFlow));
           } else {
             // Set default flow
             const defaultFlow: WeddingFlowItem[] = [
               {
-                id: '1',
-                time: '7:00 PM',
-                title: 'Welcome & Cocktails',
-                description: 'Guests arrive and enjoy welcome drinks and appetizers',
-                duration: '30 min',
-                type: 'reception'
+                id: "1",
+                time: "7:00 PM",
+                title: "Welcome & Cocktails",
+                description:
+                  "Guests arrive and enjoy welcome drinks and appetizers",
+                duration: "30 min",
+                type: "reception",
               },
               {
-                id: '2',
-                time: '7:30 PM',
-                title: 'Grand Entrance',
-                description: 'Introduction of the newly married couple',
-                duration: '10 min',
-                type: 'ceremony'
+                id: "2",
+                time: "7:30 PM",
+                title: "Grand Entrance",
+                description: "Introduction of the newly married couple",
+                duration: "10 min",
+                type: "ceremony",
               },
               {
-                id: '3',
-                time: '8:00 PM',
-                title: 'Dinner Service',
-                description: 'Multi-cuisine buffet dinner',
-                duration: '60 min',
-                type: 'meal'
+                id: "3",
+                time: "8:00 PM",
+                title: "Dinner Service",
+                description: "Multi-cuisine buffet dinner",
+                duration: "60 min",
+                type: "meal",
               },
               {
-                id: '4',
-                time: '9:00 PM',
-                title: 'Cultural Performances',
-                description: 'Traditional dance and music performances',
-                duration: '45 min',
-                type: 'entertainment'
+                id: "4",
+                time: "9:00 PM",
+                title: "Cultural Performances",
+                description: "Traditional dance and music performances",
+                duration: "45 min",
+                type: "entertainment",
               },
               {
-                id: '5',
-                time: '10:00 PM',
-                title: 'Cake Cutting',
-                description: 'Wedding cake cutting ceremony',
-                duration: '15 min',
-                type: 'special'
+                id: "5",
+                time: "10:00 PM",
+                title: "Cake Cutting",
+                description: "Wedding cake cutting ceremony",
+                duration: "15 min",
+                type: "special",
               },
               {
-                id: '6',
-                time: '10:30 PM',
-                title: 'Dancing & Celebration',
-                description: 'Open dance floor for all guests',
-                duration: '60 min',
-                type: 'entertainment'
+                id: "6",
+                time: "10:30 PM",
+                title: "Dancing & Celebration",
+                description: "Open dance floor for all guests",
+                duration: "60 min",
+                type: "entertainment",
               },
               {
-                id: '7',
-                time: '11:30 PM',
-                title: 'Send-off',
-                description: 'Farewell and thank you to all guests',
-                duration: '',
-                type: 'ceremony'
-              }
+                id: "7",
+                time: "11:30 PM",
+                title: "Send-off",
+                description: "Farewell and thank you to all guests",
+                duration: "",
+                type: "ceremony",
+              },
             ];
             setWeddingFlow(defaultFlow);
-            localStorage.setItem('wedding_flow', JSON.stringify(defaultFlow));
+            localStorage.setItem("wedding_flow", JSON.stringify(defaultFlow));
           }
         }
       } catch (error) {
-        console.log('API unavailable, loading wedding flow from localStorage');
-        const savedFlow = localStorage.getItem('wedding_flow');
+        console.log("API unavailable, loading wedding flow from localStorage");
+        const savedFlow = localStorage.getItem("wedding_flow");
         if (savedFlow) {
           setWeddingFlow(JSON.parse(savedFlow));
         }
       }
 
       // Load invitation PDF
-      const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
+      const savedInvitation = localStorage.getItem("wedding_invitation_pdf");
       if (savedInvitation) {
         setInvitationPDF(savedInvitation);
       }
@@ -188,23 +208,23 @@ export default function AdminDashboard() {
 
   // Save guests to localStorage whenever guests state changes
   useEffect(() => {
-    localStorage.setItem('wedding_guests', JSON.stringify(guests));
+    localStorage.setItem("wedding_guests", JSON.stringify(guests));
   }, [guests]);
 
   // Save photos to localStorage whenever photos state changes
   useEffect(() => {
-    localStorage.setItem('wedding_photos', JSON.stringify(uploadedPhotos));
+    localStorage.setItem("wedding_photos", JSON.stringify(uploadedPhotos));
   }, [uploadedPhotos]);
 
   // Save wedding flow to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('wedding_flow', JSON.stringify(weddingFlow));
+    localStorage.setItem("wedding_flow", JSON.stringify(weddingFlow));
   }, [weddingFlow]);
 
   // Save invitation PDF to localStorage whenever it changes
   useEffect(() => {
     if (invitationPDF) {
-      localStorage.setItem('wedding_invitation_pdf', invitationPDF);
+      localStorage.setItem("wedding_invitation_pdf", invitationPDF);
     }
   }, [invitationPDF]);
 
@@ -214,31 +234,43 @@ export default function AdminDashboard() {
   }
 
   const downloadWeddingFlow = () => {
-    const currentDate = new Date().toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
+    const currentDate = new Date().toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
 
     const getTypeIcon = (type: string) => {
       switch (type) {
-        case 'ceremony': return '💒';
-        case 'reception': return '🎉';
-        case 'entertainment': return '🎵';
-        case 'meal': return '🍽️';
-        case 'special': return '✨';
-        default: return '📋';
+        case "ceremony":
+          return "💒";
+        case "reception":
+          return "🎉";
+        case "entertainment":
+          return "🎵";
+        case "meal":
+          return "🍽️";
+        case "special":
+          return "✨";
+        default:
+          return "📋";
       }
     };
 
     const getTypeColor = (type: string) => {
       switch (type) {
-        case 'ceremony': return '#5a6c57';
-        case 'reception': return '#84a178';
-        case 'entertainment': return '#9ca3af';
-        case 'meal': return '#6b7280';
-        case 'special': return '#d97706';
-        default: return '#718096';
+        case "ceremony":
+          return "#5a6c57";
+        case "reception":
+          return "#84a178";
+        case "entertainment":
+          return "#9ca3af";
+        case "meal":
+          return "#6b7280";
+        case "special":
+          return "#d97706";
+        default:
+          return "#718096";
       }
     };
 
@@ -430,12 +462,14 @@ export default function AdminDashboard() {
         <div class="timeline-header">🕐 Reception Schedule</div>
 
         <div class="timeline">
-            ${weddingFlow.map(item => `
+            ${weddingFlow
+              .map(
+                (item) => `
             <div class="timeline-item">
                 <div class="timeline-marker"></div>
                 <div class="timeline-time">
                     ⏰ ${item.time}
-                    ${item.duration ? `<span class="timeline-duration">Duration: ${item.duration}</span>` : ''}
+                    ${item.duration ? `<span class="timeline-duration">Duration: ${item.duration}</span>` : ""}
                 </div>
                 <div class="timeline-title">
                     ${getTypeIcon(item.type)} ${item.title}
@@ -445,7 +479,9 @@ export default function AdminDashboard() {
                 </div>
                 <div class="timeline-description">${item.description}</div>
             </div>
-            `).join('')}
+            `,
+              )
+              .join("")}
         </div>
     </div>
 
@@ -462,7 +498,7 @@ export default function AdminDashboard() {
     `;
 
     // Create a new window and print
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open("", "_blank");
     if (printWindow) {
       printWindow.document.write(htmlContent);
       printWindow.document.close();
@@ -475,17 +511,22 @@ export default function AdminDashboard() {
   };
 
   const downloadGuestList = () => {
-    const attendingGuests = guests.filter(g => g.attending);
-    const notAttendingGuests = guests.filter(g => !g.attending);
-    const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
-    const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
-    const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
-    const accommodationNeeded = attendingGuests.filter(g => g.needsAccommodation);
+    const attendingGuests = guests.filter((g) => g.attending);
+    const notAttendingGuests = guests.filter((g) => !g.attending);
+    const groomSideGuests = attendingGuests.filter((g) => g.side === "groom");
+    const brideSideGuests = attendingGuests.filter((g) => g.side === "bride");
+    const totalGuestCount = attendingGuests.reduce(
+      (sum, guest) => sum + guest.guests,
+      0,
+    );
+    const accommodationNeeded = attendingGuests.filter(
+      (g) => g.needsAccommodation,
+    );
 
-    const currentDate = new Date().toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
+    const currentDate = new Date().toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
 
     const htmlContent = `
@@ -707,49 +748,61 @@ export default function AdminDashboard() {
         </div>
     </div>
 
-    ${attendingGuests.length > 0 ? `
+    ${
+      attendingGuests.length > 0
+        ? `
     <div class="section">
         <div class="section-header">✅ Attending Guests (${attendingGuests.length})</div>
         <div class="guest-list">
-            ${attendingGuests.map(guest => `
+            ${attendingGuests
+              .map(
+                (guest) => `
             <div class="guest-item">
                 <div class="guest-main">
                     <div class="guest-name">${guest.name}</div>
                     <div class="guest-contact">📧 ${guest.email}</div>
                     <div class="guest-contact">📱 ${guest.phone}</div>
-                    <span class="side-badge ${guest.side === 'groom' ? 'groom-side' : 'bride-side'}">
-                        ${guest.side === 'groom' ? "Aral's Side" : "Violet's Side"}
+                    <span class="side-badge ${guest.side === "groom" ? "groom-side" : "bride-side"}">
+                        ${guest.side === "groom" ? "Aral's Side" : "Violet's Side"}
                     </span>
-                    ${guest.message ? `<div class="guest-message">💌 "${guest.message}"</div>` : ''}
+                    ${guest.message ? `<div class="guest-message">💌 "${guest.message}"</div>` : ""}
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 8px;"><strong>👥 Total Guests:</strong> ${guest.guests}</div>
-                    <div style="margin-bottom: 8px;"><strong>🏨 Accommodation:</strong> ${guest.needsAccommodation ? '✅ Required' : '❌ Not needed'}</div>
+                    <div style="margin-bottom: 8px;"><strong>🏨 Accommodation:</strong> ${guest.needsAccommodation ? "✅ Required" : "❌ Not needed"}</div>
                     ${guest.dietaryRestrictions ? `<div style="margin-bottom: 8px;"><strong>🍽️ Dietary:</strong> ${guest.dietaryRestrictions}</div>` : '<div style="margin-bottom: 8px;"><strong>🍽️ Dietary:</strong> None specified</div>'}
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 5px;"><strong>📅 RSVP Date:</strong></div>
-                    <div style="font-size: 0.9em;">${new Date(guest.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-                    <div style="font-size: 0.8em; color: #a0aec0; margin-top: 5px;">${new Date(guest.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
+                    <div style="font-size: 0.9em;">${new Date(guest.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
+                    <div style="font-size: 0.8em; color: #a0aec0; margin-top: 5px;">${new Date(guest.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</div>
                 </div>
             </div>
-            `).join('')}
+            `,
+              )
+              .join("")}
         </div>
     </div>
-    ` : ''}
+    `
+        : ""
+    }
 
-    ${accommodationNeeded.length > 0 ? `
+    ${
+      accommodationNeeded.length > 0
+        ? `
     <div class="section">
         <div class="section-header">🏨 Accommodation Required (${accommodationNeeded.length})</div>
         <div class="guest-list">
-            ${accommodationNeeded.map(guest => `
+            ${accommodationNeeded
+              .map(
+                (guest) => `
             <div class="guest-item">
                 <div class="guest-main">
                     <div class="guest-name">${guest.name}</div>
                     <div class="guest-contact">📧 ${guest.email}</div>
                     <div class="guest-contact">📱 ${guest.phone}</div>
-                    <span class="side-badge ${guest.side === 'groom' ? 'groom-side' : 'bride-side'}">
-                        ${guest.side === 'groom' ? "Aral's Side" : "Violet's Side"}
+                    <span class="side-badge ${guest.side === "groom" ? "groom-side" : "bride-side"}">
+                        ${guest.side === "groom" ? "Aral's Side" : "Violet's Side"}
                     </span>
                 </div>
                 <div class="guest-details">
@@ -758,43 +811,55 @@ export default function AdminDashboard() {
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 5px;"><strong>📅 RSVP Date:</strong></div>
-                    <div style="font-size: 0.9em;">${new Date(guest.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-                    <div style="font-size: 0.8em; color: #a0aec0; margin-top: 5px;">${new Date(guest.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
+                    <div style="font-size: 0.9em;">${new Date(guest.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
+                    <div style="font-size: 0.8em; color: #a0aec0; margin-top: 5px;">${new Date(guest.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</div>
                 </div>
             </div>
-            `).join('')}
+            `,
+              )
+              .join("")}
         </div>
     </div>
-    ` : ''}
+    `
+        : ""
+    }
 
-    ${notAttendingGuests.length > 0 ? `
+    ${
+      notAttendingGuests.length > 0
+        ? `
     <div class="section">
         <div class="section-header">❌ Not Attending (${notAttendingGuests.length})</div>
         <div class="guest-list">
-            ${notAttendingGuests.map(guest => `
+            ${notAttendingGuests
+              .map(
+                (guest) => `
             <div class="guest-item">
                 <div class="guest-main">
                     <div class="guest-name">${guest.name}</div>
                     <div class="guest-contact">📧 ${guest.email}</div>
                     <div class="guest-contact">📱 ${guest.phone}</div>
-                    <span class="side-badge ${guest.side === 'groom' ? 'groom-side' : 'bride-side'}">
-                        ${guest.side === 'groom' ? "Aral's Side" : "Violet's Side"}
+                    <span class="side-badge ${guest.side === "groom" ? "groom-side" : "bride-side"}">
+                        ${guest.side === "groom" ? "Aral's Side" : "Violet's Side"}
                     </span>
-                    ${guest.message ? `<div class="guest-message">💌 "${guest.message}"</div>` : ''}
+                    ${guest.message ? `<div class="guest-message">💌 "${guest.message}"</div>` : ""}
                 </div>
                 <div class="guest-details">
                     <div style="color: #e53e3e; font-weight: bold;">❌ Not Attending</div>
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 5px;"><strong>📅 RSVP Date:</strong></div>
-                    <div style="font-size: 0.9em;">${new Date(guest.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-                    <div style="font-size: 0.8em; color: #a0aec0; margin-top: 5px;">${new Date(guest.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
+                    <div style="font-size: 0.9em;">${new Date(guest.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
+                    <div style="font-size: 0.8em; color: #a0aec0; margin-top: 5px;">${new Date(guest.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</div>
                 </div>
             </div>
-            `).join('')}
+            `,
+              )
+              .join("")}
         </div>
     </div>
-    ` : ''}
+    `
+        : ""
+    }
 
     <div class="footer">
         <div class="logo">❤️ TheVIRALWedding</div>
@@ -806,7 +871,7 @@ export default function AdminDashboard() {
     `;
 
     // Create a new window and print
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open("", "_blank");
     if (printWindow) {
       printWindow.document.write(htmlContent);
       printWindow.document.close();
@@ -819,11 +884,11 @@ export default function AdminDashboard() {
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Photo upload function called');
+    console.log("Photo upload function called");
     const files = e.target.files;
 
     if (!files || files.length === 0) {
-      console.log('No files selected');
+      console.log("No files selected");
       return;
     }
 
@@ -833,12 +898,16 @@ export default function AdminDashboard() {
 
     // Process each file
     Array.from(files).forEach((file, index) => {
-      console.log(`Processing file ${index + 1}: ${file.name}, Type: ${file.type}, Size: ${file.size}`);
+      console.log(
+        `Processing file ${index + 1}: ${file.name}, Type: ${file.type}, Size: ${file.size}`,
+      );
 
       // Check file type
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith("image/")) {
         console.error(`File ${file.name} is not an image`);
-        alert(`"${file.name}" is not an image file. Please upload only image files.`);
+        alert(
+          `"${file.name}" is not an image file. Please upload only image files.`,
+        );
         errorCount++;
         return;
       }
@@ -846,7 +915,9 @@ export default function AdminDashboard() {
       // Check file size (limit to 5MB)
       if (file.size > 5 * 1024 * 1024) {
         console.error(`File ${file.name} is too large`);
-        alert(`"${file.name}" is too large. Please upload images smaller than 5MB.`);
+        alert(
+          `"${file.name}" is too large. Please upload images smaller than 5MB.`,
+        );
         errorCount++;
         return;
       }
@@ -857,10 +928,10 @@ export default function AdminDashboard() {
         console.log(`File ${file.name} read successfully`);
         if (event.target?.result) {
           const base64String = event.target.result as string;
-          setUploadedPhotos(prev => {
+          setUploadedPhotos((prev) => {
             const newPhotos = [...prev, base64String];
             // Also immediately save to localStorage
-            localStorage.setItem('wedding_photos', JSON.stringify(newPhotos));
+            localStorage.setItem("wedding_photos", JSON.stringify(newPhotos));
             console.log(`Photo ${file.name} added to gallery`);
             return newPhotos;
           });
@@ -869,7 +940,9 @@ export default function AdminDashboard() {
           // Show success message after processing all files
           if (successCount + errorCount === files.length) {
             if (successCount > 0) {
-              alert(`Successfully uploaded ${successCount} photo${successCount !== 1 ? 's' : ''}!`);
+              alert(
+                `Successfully uploaded ${successCount} photo${successCount !== 1 ? "s" : ""}!`,
+              );
             }
           }
         }
@@ -883,16 +956,20 @@ export default function AdminDashboard() {
     });
 
     // Clear the input so the same files can be uploaded again if needed
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const removePhoto = (index: number) => {
-    if (confirm('Are you sure you want to delete this photo? This action cannot be undone.')) {
+    if (
+      confirm(
+        "Are you sure you want to delete this photo? This action cannot be undone.",
+      )
+    ) {
       const newPhotos = uploadedPhotos.filter((_, i) => i !== index);
       setUploadedPhotos(newPhotos);
       // Immediately update localStorage
-      localStorage.setItem('wedding_photos', JSON.stringify(newPhotos));
-      console.log('Photo removed successfully');
+      localStorage.setItem("wedding_photos", JSON.stringify(newPhotos));
+      console.log("Photo removed successfully");
     }
   };
 
@@ -900,81 +977,95 @@ export default function AdminDashboard() {
     if (newFlowItem.time && newFlowItem.title) {
       const flowItem: WeddingFlowItem = {
         ...newFlowItem,
-        id: Date.now().toString()
+        id: Date.now().toString(),
       };
-      setWeddingFlow([...weddingFlow, flowItem].sort((a, b) => a.time.localeCompare(b.time)));
+      setWeddingFlow(
+        [...weddingFlow, flowItem].sort((a, b) => a.time.localeCompare(b.time)),
+      );
       setNewFlowItem({
-        time: '',
-        title: '',
-        description: '',
-        duration: '',
-        type: 'reception'
+        time: "",
+        title: "",
+        description: "",
+        duration: "",
+        type: "reception",
       });
     }
   };
 
   const updateFlowItem = (id: string, updates: Partial<WeddingFlowItem>) => {
-    setWeddingFlow(weddingFlow.map(item =>
-      item.id === id ? { ...item, ...updates } : item
-    ).sort((a, b) => a.time.localeCompare(b.time)));
+    setWeddingFlow(
+      weddingFlow
+        .map((item) => (item.id === id ? { ...item, ...updates } : item))
+        .sort((a, b) => a.time.localeCompare(b.time)),
+    );
     setEditingFlow(null);
   };
 
   const removeFlowItem = (id: string) => {
-    setWeddingFlow(weddingFlow.filter(item => item.id !== id));
+    setWeddingFlow(weddingFlow.filter((item) => item.id !== id));
   };
 
   const handleInvitationUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Upload function called');
+    console.log("Upload function called");
     const file = e.target.files?.[0];
 
     if (!file) {
-      console.log('No file selected');
+      console.log("No file selected");
       return;
     }
 
-    console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
+    console.log(
+      "File selected:",
+      file.name,
+      "Type:",
+      file.type,
+      "Size:",
+      file.size,
+    );
 
     // Check if it's a PDF (more flexible check)
-    if (!file.type.includes('pdf') && !file.name.toLowerCase().endsWith('.pdf')) {
-      alert('Please upload a PDF file for the invitation.');
+    if (
+      !file.type.includes("pdf") &&
+      !file.name.toLowerCase().endsWith(".pdf")
+    ) {
+      alert("Please upload a PDF file for the invitation.");
       return;
     }
 
     // Check file size (limit to 10MB)
     if (file.size > 10 * 1024 * 1024) {
-      alert('Please upload a PDF smaller than 10MB.');
+      alert("Please upload a PDF smaller than 10MB.");
       return;
     }
 
-    console.log('File validation passed, reading file...');
+    console.log("File validation passed, reading file...");
 
     // Convert to base64 for storage
     const reader = new FileReader();
     reader.onload = (event) => {
-      console.log('File read successfully');
+      console.log("File read successfully");
       if (event.target?.result) {
         const base64String = event.target.result as string;
-        console.log('Setting invitation PDF...');
+        console.log("Setting invitation PDF...");
         setInvitationPDF(base64String);
-        alert('Wedding invitation uploaded successfully!');
+        alert("Wedding invitation uploaded successfully!");
       }
     };
     reader.onerror = (error) => {
-      console.error('Error reading file:', error);
-      alert('Error reading PDF file. Please try again.');
+      console.error("Error reading file:", error);
+      alert("Error reading PDF file. Please try again.");
     };
     reader.readAsDataURL(file);
 
     // Clear the input
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const downloadDocumentation = () => {
-    const currentDate = new Date().toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
+    const currentDate = new Date().toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
 
     const htmlContent = `
@@ -1299,7 +1390,7 @@ export default function AdminDashboard() {
     `;
 
     // Create a new window and print
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open("", "_blank");
     if (printWindow) {
       printWindow.document.write(htmlContent);
       printWindow.document.close();
@@ -1311,13 +1402,21 @@ export default function AdminDashboard() {
     }
   };
 
-  const attendingGuests = guests.filter(g => g.attending);
-  const notAttendingGuests = guests.filter(g => !g.attending);
-  const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
-  const accommodationNeeded = attendingGuests.filter(g => g.needsAccommodation);
-  const accommodationGuestCount = accommodationNeeded.reduce((sum, guest) => sum + guest.guests, 0);
-  const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
-  const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
+  const attendingGuests = guests.filter((g) => g.attending);
+  const notAttendingGuests = guests.filter((g) => !g.attending);
+  const totalGuestCount = attendingGuests.reduce(
+    (sum, guest) => sum + guest.guests,
+    0,
+  );
+  const accommodationNeeded = attendingGuests.filter(
+    (g) => g.needsAccommodation,
+  );
+  const accommodationGuestCount = accommodationNeeded.reduce(
+    (sum, guest) => sum + guest.guests,
+    0,
+  );
+  const groomSideGuests = attendingGuests.filter((g) => g.side === "groom");
+  const brideSideGuests = attendingGuests.filter((g) => g.side === "bride");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 to-sage-50">
@@ -1328,21 +1427,25 @@ export default function AdminDashboard() {
             <div className="flex items-center gap-3">
               <Heart className="text-olive-600" size={24} />
               <div>
-                <h1 className="text-xl font-serif text-olive-700">Wedding Dashboard</h1>
-                <p className="text-sm text-sage-600">Welcome back, {user?.name}</p>
+                <h1 className="text-xl font-serif text-olive-700">
+                  Wedding Dashboard
+                </h1>
+                <p className="text-sm text-sage-600">
+                  Welcome back, {user?.name}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <Button 
-                variant="outline" 
-                onClick={() => window.open('/', '_blank')}
+              <Button
+                variant="outline"
+                onClick={() => window.open("/", "_blank")}
                 className="border-sage-300 text-sage-600 hover:bg-sage-50"
               >
                 <Eye className="mr-2" size={16} />
                 View Site
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={logout}
                 className="border-red-300 text-red-600 hover:bg-red-50"
               >
@@ -1360,7 +1463,9 @@ export default function AdminDashboard() {
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
             <CardContent className="p-6 text-center">
               <Users className="mx-auto mb-2 text-olive-600" size={32} />
-              <p className="text-2xl font-bold text-olive-700">{guests.length}</p>
+              <p className="text-2xl font-bold text-olive-700">
+                {guests.length}
+              </p>
               <p className="text-sm text-sage-600">Total RSVPs</p>
             </CardContent>
           </Card>
@@ -1368,9 +1473,13 @@ export default function AdminDashboard() {
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
             <CardContent className="p-6 text-center">
               <Heart className="mx-auto mb-2 text-green-600" size={32} />
-              <p className="text-2xl font-bold text-green-700">{attendingGuests.length}</p>
+              <p className="text-2xl font-bold text-green-700">
+                {attendingGuests.length}
+              </p>
               <p className="text-sm text-sage-600">Attending</p>
-              <p className="text-xs text-green-600 mt-1">{totalGuestCount} total guests</p>
+              <p className="text-xs text-green-600 mt-1">
+                {totalGuestCount} total guests
+              </p>
             </CardContent>
           </Card>
 
@@ -1379,16 +1488,22 @@ export default function AdminDashboard() {
               <div className="flex justify-center items-center mb-2">
                 <span className="text-2xl">🏨</span>
               </div>
-              <p className="text-2xl font-bold text-amber-700">{accommodationNeeded.length}</p>
+              <p className="text-2xl font-bold text-amber-700">
+                {accommodationNeeded.length}
+              </p>
               <p className="text-sm text-sage-600">Need Stay</p>
-              <p className="text-xs text-amber-600 mt-1">{accommodationGuestCount} guests</p>
+              <p className="text-xs text-amber-600 mt-1">
+                {accommodationGuestCount} guests
+              </p>
             </CardContent>
           </Card>
 
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
             <CardContent className="p-6 text-center">
               <Camera className="mx-auto mb-2 text-olive-600" size={32} />
-              <p className="text-2xl font-bold text-olive-700">{uploadedPhotos.length}</p>
+              <p className="text-2xl font-bold text-olive-700">
+                {uploadedPhotos.length}
+              </p>
               <p className="text-sm text-sage-600">Photos</p>
             </CardContent>
           </Card>
@@ -1401,9 +1516,14 @@ export default function AdminDashboard() {
               <div className="flex justify-center items-center mb-2">
                 <span className="text-2xl">👰</span>
               </div>
-              <p className="text-2xl font-bold text-purple-700">{brideSideGuests.length}</p>
+              <p className="text-2xl font-bold text-purple-700">
+                {brideSideGuests.length}
+              </p>
               <p className="text-sm text-sage-600">Bride's Side</p>
-              <p className="text-xs text-purple-600 mt-1">{brideSideGuests.reduce((sum, guest) => sum + guest.guests, 0)} guests</p>
+              <p className="text-xs text-purple-600 mt-1">
+                {brideSideGuests.reduce((sum, guest) => sum + guest.guests, 0)}{" "}
+                guests
+              </p>
             </CardContent>
           </Card>
 
@@ -1412,9 +1532,14 @@ export default function AdminDashboard() {
               <div className="flex justify-center items-center mb-2">
                 <span className="text-2xl">🤵</span>
               </div>
-              <p className="text-2xl font-bold text-blue-700">{groomSideGuests.length}</p>
+              <p className="text-2xl font-bold text-blue-700">
+                {groomSideGuests.length}
+              </p>
               <p className="text-sm text-sage-600">Groom's Side</p>
-              <p className="text-xs text-blue-600 mt-1">{groomSideGuests.reduce((sum, guest) => sum + guest.guests, 0)} guests</p>
+              <p className="text-xs text-blue-600 mt-1">
+                {groomSideGuests.reduce((sum, guest) => sum + guest.guests, 0)}{" "}
+                guests
+              </p>
             </CardContent>
           </Card>
 
@@ -1423,7 +1548,9 @@ export default function AdminDashboard() {
               <div className="flex justify-center items-center mb-2">
                 <span className="text-2xl">❌</span>
               </div>
-              <p className="text-2xl font-bold text-red-700">{notAttendingGuests.length}</p>
+              <p className="text-2xl font-bold text-red-700">
+                {notAttendingGuests.length}
+              </p>
               <p className="text-sm text-sage-600">Not Attending</p>
             </CardContent>
           </Card>
@@ -1448,7 +1575,10 @@ export default function AdminDashboard() {
               <FileText size={16} />
               Invitation
             </TabsTrigger>
-            <TabsTrigger value="documentation" className="flex items-center gap-2">
+            <TabsTrigger
+              value="documentation"
+              className="flex items-center gap-2"
+            >
               <FileText size={16} />
               Documentation
             </TabsTrigger>
@@ -1459,7 +1589,9 @@ export default function AdminDashboard() {
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-olive-700">Guest List Management</CardTitle>
+                  <CardTitle className="text-olive-700">
+                    Guest List Management
+                  </CardTitle>
                   <Button
                     onClick={downloadGuestList}
                     disabled={guests.length === 0}
@@ -1473,7 +1605,9 @@ export default function AdminDashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {guests.length === 0 ? (
-                    <p className="text-center py-8 text-sage-600">No RSVPs received yet.</p>
+                    <p className="text-center py-8 text-sage-600">
+                      No RSVPs received yet.
+                    </p>
                   ) : (
                     <div className="space-y-4">
                       {/* Attending Guests */}
@@ -1484,22 +1618,46 @@ export default function AdminDashboard() {
                           </h3>
                           <div className="space-y-3">
                             {attendingGuests.map((guest) => (
-                              <div key={guest.id} className="p-4 border border-green-200 rounded-lg bg-green-50">
+                              <div
+                                key={guest.id}
+                                className="p-4 border border-green-200 rounded-lg bg-green-50"
+                              >
                                 <div className="grid md:grid-cols-2 gap-4">
                                   <div>
-                                    <h4 className="font-medium text-green-800">{guest.name}</h4>
-                                    <p className="text-sm text-green-600">{guest.email}</p>
-                                    <p className="text-sm text-green-600">{guest.phone}</p>
+                                    <h4 className="font-medium text-green-800">
+                                      {guest.name}
+                                    </h4>
+                                    <p className="text-sm text-green-600">
+                                      {guest.email}
+                                    </p>
+                                    <p className="text-sm text-green-600">
+                                      {guest.phone}
+                                    </p>
                                   </div>
                                   <div className="text-sm text-green-700">
-                                    <p><strong>Side:</strong> {guest.side === 'groom' ? "Aral's (Groom)" : "Violet's (Bride)"}</p>
-                                    <p><strong>Guests:</strong> {guest.guests}</p>
-                                    <p><strong>Accommodation:</strong> {guest.needsAccommodation ? 'Yes' : 'No'}</p>
+                                    <p>
+                                      <strong>Side:</strong>{" "}
+                                      {guest.side === "groom"
+                                        ? "Aral's (Groom)"
+                                        : "Violet's (Bride)"}
+                                    </p>
+                                    <p>
+                                      <strong>Guests:</strong> {guest.guests}
+                                    </p>
+                                    <p>
+                                      <strong>Accommodation:</strong>{" "}
+                                      {guest.needsAccommodation ? "Yes" : "No"}
+                                    </p>
                                     {guest.dietaryRestrictions && (
-                                      <p><strong>Dietary:</strong> {guest.dietaryRestrictions}</p>
+                                      <p>
+                                        <strong>Dietary:</strong>{" "}
+                                        {guest.dietaryRestrictions}
+                                      </p>
                                     )}
                                     {guest.message && (
-                                      <p className="italic mt-2">"{guest.message}"</p>
+                                      <p className="italic mt-2">
+                                        "{guest.message}"
+                                      </p>
                                     )}
                                   </div>
                                 </div>
@@ -1517,17 +1675,33 @@ export default function AdminDashboard() {
                           </h3>
                           <div className="space-y-3">
                             {notAttendingGuests.map((guest) => (
-                              <div key={guest.id} className="p-4 border border-red-200 rounded-lg bg-red-50">
+                              <div
+                                key={guest.id}
+                                className="p-4 border border-red-200 rounded-lg bg-red-50"
+                              >
                                 <div className="grid md:grid-cols-2 gap-4">
                                   <div>
-                                    <h4 className="font-medium text-red-800">{guest.name}</h4>
-                                    <p className="text-sm text-red-600">{guest.email}</p>
-                                    <p className="text-sm text-red-600">{guest.phone}</p>
+                                    <h4 className="font-medium text-red-800">
+                                      {guest.name}
+                                    </h4>
+                                    <p className="text-sm text-red-600">
+                                      {guest.email}
+                                    </p>
+                                    <p className="text-sm text-red-600">
+                                      {guest.phone}
+                                    </p>
                                   </div>
                                   <div className="text-sm text-red-700">
-                                    <p><strong>Side:</strong> {guest.side === 'groom' ? "Aral's (Groom)" : "Violet's (Bride)"}</p>
+                                    <p>
+                                      <strong>Side:</strong>{" "}
+                                      {guest.side === "groom"
+                                        ? "Aral's (Groom)"
+                                        : "Violet's (Bride)"}
+                                    </p>
                                     {guest.message && (
-                                      <p className="italic mt-2">"{guest.message}"</p>
+                                      <p className="italic mt-2">
+                                        "{guest.message}"
+                                      </p>
                                     )}
                                   </div>
                                 </div>
@@ -1547,14 +1721,18 @@ export default function AdminDashboard() {
           <TabsContent value="photos" className="space-y-6">
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
               <CardHeader>
-                <CardTitle className="text-olive-700">Photo Gallery Management</CardTitle>
+                <CardTitle className="text-olive-700">
+                  Photo Gallery Management
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   {/* Upload Section */}
                   <div className="text-center p-8 border-2 border-dashed border-sage-300 rounded-lg">
                     <Camera className="mx-auto mb-4 text-olive-600" size={48} />
-                    <h3 className="text-xl font-serif text-olive-700 mb-4">Upload Wedding Photos</h3>
+                    <h3 className="text-xl font-serif text-olive-700 mb-4">
+                      Upload Wedding Photos
+                    </h3>
                     <div>
                       <input
                         ref={photoInputRef}
@@ -1566,7 +1744,7 @@ export default function AdminDashboard() {
                       />
                       <Button
                         onClick={() => {
-                          console.log('Photo upload button clicked');
+                          console.log("Photo upload button clicked");
                           photoInputRef.current?.click();
                         }}
                         className="bg-olive-600 hover:bg-olive-700 text-white"
@@ -1575,7 +1753,9 @@ export default function AdminDashboard() {
                         Choose Photos
                       </Button>
                     </div>
-                    <p className="text-xs text-sage-500 mt-2">Select multiple photos • Maximum 5MB per photo</p>
+                    <p className="text-xs text-sage-500 mt-2">
+                      Select multiple photos • Maximum 5MB per photo
+                    </p>
                   </div>
 
                   {/* Photos Grid */}
@@ -1603,7 +1783,9 @@ export default function AdminDashboard() {
                     </div>
                   ) : (
                     <div className="text-center py-12">
-                      <p className="text-sage-600">No photos uploaded yet. Upload some beautiful memories!</p>
+                      <p className="text-sage-600">
+                        No photos uploaded yet. Upload some beautiful memories!
+                      </p>
                     </div>
                   )}
                 </div>
@@ -1616,7 +1798,9 @@ export default function AdminDashboard() {
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-olive-700">Reception Timeline Management</CardTitle>
+                  <CardTitle className="text-olive-700">
+                    Reception Timeline Management
+                  </CardTitle>
                   <Button
                     onClick={downloadWeddingFlow}
                     className="bg-olive-600 hover:bg-olive-700 text-white"
@@ -1637,39 +1821,67 @@ export default function AdminDashboard() {
                       </h3>
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-sage-700 mb-2">Time *</label>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">
+                            Time *
+                          </label>
                           <Input
                             type="time"
                             value={newFlowItem.time}
-                            onChange={(e) => setNewFlowItem({...newFlowItem, time: e.target.value})}
+                            onChange={(e) =>
+                              setNewFlowItem({
+                                ...newFlowItem,
+                                time: e.target.value,
+                              })
+                            }
                             className="border-sage-300 focus:border-olive-500"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-sage-700 mb-2">Duration</label>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">
+                            Duration
+                          </label>
                           <Input
                             type="text"
                             placeholder="e.g., 30 min, 1 hour"
                             value={newFlowItem.duration}
-                            onChange={(e) => setNewFlowItem({...newFlowItem, duration: e.target.value})}
+                            onChange={(e) =>
+                              setNewFlowItem({
+                                ...newFlowItem,
+                                duration: e.target.value,
+                              })
+                            }
                             className="border-sage-300 focus:border-olive-500"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-sage-700 mb-2">Event Title *</label>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">
+                            Event Title *
+                          </label>
                           <Input
                             type="text"
                             placeholder="e.g., Welcome Cocktails"
                             value={newFlowItem.title}
-                            onChange={(e) => setNewFlowItem({...newFlowItem, title: e.target.value})}
+                            onChange={(e) =>
+                              setNewFlowItem({
+                                ...newFlowItem,
+                                title: e.target.value,
+                              })
+                            }
                             className="border-sage-300 focus:border-olive-500"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-sage-700 mb-2">Event Type</label>
+                          <label className="block text-sm font-medium text-sage-700 mb-2">
+                            Event Type
+                          </label>
                           <select
                             value={newFlowItem.type}
-                            onChange={(e) => setNewFlowItem({...newFlowItem, type: e.target.value as WeddingFlowItem['type']})}
+                            onChange={(e) =>
+                              setNewFlowItem({
+                                ...newFlowItem,
+                                type: e.target.value as WeddingFlowItem["type"],
+                              })
+                            }
                             className="w-full p-2 border border-sage-300 rounded-md focus:border-olive-500"
                           >
                             <option value="reception">Reception</option>
@@ -1681,11 +1893,18 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       <div className="mt-4">
-                        <label className="block text-sm font-medium text-sage-700 mb-2">Description</label>
+                        <label className="block text-sm font-medium text-sage-700 mb-2">
+                          Description
+                        </label>
                         <Textarea
                           placeholder="Describe what happens during this event..."
                           value={newFlowItem.description}
-                          onChange={(e) => setNewFlowItem({...newFlowItem, description: e.target.value})}
+                          onChange={(e) =>
+                            setNewFlowItem({
+                              ...newFlowItem,
+                              description: e.target.value,
+                            })
+                          }
                           className="border-sage-300 focus:border-olive-500"
                         />
                       </div>
@@ -1702,13 +1921,20 @@ export default function AdminDashboard() {
 
                   {/* Current Timeline */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-serif text-olive-700">Current Reception Timeline</h3>
+                    <h3 className="text-lg font-serif text-olive-700">
+                      Current Reception Timeline
+                    </h3>
                     {weddingFlow.length === 0 ? (
-                      <p className="text-center py-8 text-sage-600">No timeline events yet. Add some above to get started!</p>
+                      <p className="text-center py-8 text-sage-600">
+                        No timeline events yet. Add some above to get started!
+                      </p>
                     ) : (
                       <div className="space-y-3">
                         {weddingFlow.map((item) => (
-                          <Card key={item.id} className="border-l-4 border-l-olive-500">
+                          <Card
+                            key={item.id}
+                            className="border-l-4 border-l-olive-500"
+                          >
                             <CardContent className="p-4">
                               {editingFlow === item.id ? (
                                 <div className="space-y-3">
@@ -1716,27 +1942,50 @@ export default function AdminDashboard() {
                                     <Input
                                       type="time"
                                       value={item.time}
-                                      onChange={(e) => updateFlowItem(item.id, { time: e.target.value })}
+                                      onChange={(e) =>
+                                        updateFlowItem(item.id, {
+                                          time: e.target.value,
+                                        })
+                                      }
                                     />
                                     <Input
                                       placeholder="Duration"
                                       value={item.duration}
-                                      onChange={(e) => updateFlowItem(item.id, { duration: e.target.value })}
+                                      onChange={(e) =>
+                                        updateFlowItem(item.id, {
+                                          duration: e.target.value,
+                                        })
+                                      }
                                     />
                                   </div>
                                   <Input
                                     value={item.title}
-                                    onChange={(e) => updateFlowItem(item.id, { title: e.target.value })}
+                                    onChange={(e) =>
+                                      updateFlowItem(item.id, {
+                                        title: e.target.value,
+                                      })
+                                    }
                                   />
                                   <Textarea
                                     value={item.description}
-                                    onChange={(e) => updateFlowItem(item.id, { description: e.target.value })}
+                                    onChange={(e) =>
+                                      updateFlowItem(item.id, {
+                                        description: e.target.value,
+                                      })
+                                    }
                                   />
                                   <div className="flex gap-2">
-                                    <Button size="sm" onClick={() => setEditingFlow(null)}>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => setEditingFlow(null)}
+                                    >
                                       Save
                                     </Button>
-                                    <Button size="sm" variant="outline" onClick={() => setEditingFlow(null)}>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => setEditingFlow(null)}
+                                    >
                                       Cancel
                                     </Button>
                                   </div>
@@ -1745,22 +1994,36 @@ export default function AdminDashboard() {
                                 <div className="flex justify-between items-start">
                                   <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-2">
-                                      <span className="text-lg font-bold text-olive-700">{item.time}</span>
-                                      <span className={`px-2 py-1 text-xs rounded-full text-white ${
-                                        item.type === 'ceremony' ? 'bg-olive-600' :
-                                        item.type === 'reception' ? 'bg-sage-600' :
-                                        item.type === 'entertainment' ? 'bg-gray-600' :
-                                        item.type === 'meal' ? 'bg-amber-600' :
-                                        'bg-purple-600'
-                                      }`}>
+                                      <span className="text-lg font-bold text-olive-700">
+                                        {item.time}
+                                      </span>
+                                      <span
+                                        className={`px-2 py-1 text-xs rounded-full text-white ${
+                                          item.type === "ceremony"
+                                            ? "bg-olive-600"
+                                            : item.type === "reception"
+                                              ? "bg-sage-600"
+                                              : item.type === "entertainment"
+                                                ? "bg-gray-600"
+                                                : item.type === "meal"
+                                                  ? "bg-amber-600"
+                                                  : "bg-purple-600"
+                                        }`}
+                                      >
                                         {item.type}
                                       </span>
                                       {item.duration && (
-                                        <span className="text-sm text-sage-500">({item.duration})</span>
+                                        <span className="text-sm text-sage-500">
+                                          ({item.duration})
+                                        </span>
                                       )}
                                     </div>
-                                    <h4 className="font-semibold text-sage-800 mb-1">{item.title}</h4>
-                                    <p className="text-sage-600 text-sm">{item.description}</p>
+                                    <h4 className="font-semibold text-sage-800 mb-1">
+                                      {item.title}
+                                    </h4>
+                                    <p className="text-sage-600 text-sm">
+                                      {item.description}
+                                    </p>
                                   </div>
                                   <div className="flex gap-2 ml-4">
                                     <Button
@@ -1795,16 +2058,25 @@ export default function AdminDashboard() {
           <TabsContent value="invitation" className="space-y-6">
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
               <CardHeader>
-                <CardTitle className="text-olive-700">Wedding Invitation Management</CardTitle>
+                <CardTitle className="text-olive-700">
+                  Wedding Invitation Management
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   {/* Upload Invitation */}
                   <div className="text-center p-8 border-2 border-dashed border-sage-300 rounded-lg">
-                    <FileText className="mx-auto mb-4 text-olive-600" size={48} />
-                    <h3 className="text-xl font-serif text-olive-700 mb-4">Upload Wedding Invitation PDF</h3>
+                    <FileText
+                      className="mx-auto mb-4 text-olive-600"
+                      size={48}
+                    />
+                    <h3 className="text-xl font-serif text-olive-700 mb-4">
+                      Upload Wedding Invitation PDF
+                    </h3>
                     <p className="text-sage-600 mb-4">
-                      Upload your custom wedding invitation PDF. This will be downloaded when guests click the "Download Invitation" button.
+                      Upload your custom wedding invitation PDF. This will be
+                      downloaded when guests click the "Download Invitation"
+                      button.
                     </p>
                     <div>
                       <input
@@ -1822,22 +2094,27 @@ export default function AdminDashboard() {
                         Choose PDF Invitation
                       </Button>
                     </div>
-                    <p className="text-xs text-sage-500 mt-2">Maximum file size: 10MB • PDF format only</p>
+                    <p className="text-xs text-sage-500 mt-2">
+                      Maximum file size: 10MB • PDF format only
+                    </p>
                   </div>
 
                   {/* Current Invitation Status */}
-                  <Card className={`border-l-4 ${invitationPDF ? 'border-l-green-500 bg-green-50' : 'border-l-amber-500 bg-amber-50'}`}>
+                  <Card
+                    className={`border-l-4 ${invitationPDF ? "border-l-green-500 bg-green-50" : "border-l-amber-500 bg-amber-50"}`}
+                  >
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-semibold text-lg mb-2">
-                            {invitationPDF ? '✅ Custom Invitation Active' : '⚠️ Using Default Text Invitation'}
+                            {invitationPDF
+                              ? "✅ Custom Invitation Active"
+                              : "⚠️ Using Default Text Invitation"}
                           </h4>
                           <p className="text-sm text-gray-600">
                             {invitationPDF
-                              ? 'Your custom PDF invitation is active. Guests will download your uploaded PDF when they click the invitation button.'
-                              : 'No custom invitation uploaded. Guests will download a basic text invitation. Upload a PDF above for a professional invitation.'
-                            }
+                              ? "Your custom PDF invitation is active. Guests will download your uploaded PDF when they click the invitation button."
+                              : "No custom invitation uploaded. Guests will download a basic text invitation. Upload a PDF above for a professional invitation."}
                           </p>
                         </div>
                         {invitationPDF && (
@@ -1845,9 +2122,10 @@ export default function AdminDashboard() {
                             <Button
                               size="sm"
                               onClick={() => {
-                                const link = document.createElement('a');
+                                const link = document.createElement("a");
                                 link.href = invitationPDF;
-                                link.download = 'Wedding-Invitation-Preview.pdf';
+                                link.download =
+                                  "Wedding-Invitation-Preview.pdf";
                                 link.click();
                               }}
                               className="bg-sage-600 hover:bg-sage-700 text-white"
@@ -1860,7 +2138,9 @@ export default function AdminDashboard() {
                               variant="destructive"
                               onClick={() => {
                                 setInvitationPDF(null);
-                                localStorage.removeItem('wedding_invitation_pdf');
+                                localStorage.removeItem(
+                                  "wedding_invitation_pdf",
+                                );
                               }}
                             >
                               <Trash2 size={14} className="mr-1" />
@@ -1875,13 +2155,28 @@ export default function AdminDashboard() {
                   {/* Instructions */}
                   <Card className="bg-sage-50 border-sage-200">
                     <CardContent className="p-6">
-                      <h4 className="font-semibold text-sage-800 mb-3">📋 How it works:</h4>
+                      <h4 className="font-semibold text-sage-800 mb-3">
+                        📋 How it works:
+                      </h4>
                       <ul className="space-y-2 text-sm text-sage-700">
-                        <li>• Upload your professionally designed wedding invitation PDF</li>
-                        <li>• Guests will download your custom invitation when they click "Download Invitation"</li>
-                        <li>• You can preview or remove the invitation anytime</li>
-                        <li>• If no PDF is uploaded, guests get a basic text invitation</li>
-                        <li>• Maximum file size is 10MB for optimal download speed</li>
+                        <li>
+                          • Upload your professionally designed wedding
+                          invitation PDF
+                        </li>
+                        <li>
+                          • Guests will download your custom invitation when
+                          they click "Download Invitation"
+                        </li>
+                        <li>
+                          • You can preview or remove the invitation anytime
+                        </li>
+                        <li>
+                          • If no PDF is uploaded, guests get a basic text
+                          invitation
+                        </li>
+                        <li>
+                          • Maximum file size is 10MB for optimal download speed
+                        </li>
                       </ul>
                     </CardContent>
                   </Card>
@@ -1895,7 +2190,9 @@ export default function AdminDashboard() {
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-olive-700">Website Documentation</CardTitle>
+                  <CardTitle className="text-olive-700">
+                    Website Documentation
+                  </CardTitle>
                   <Button
                     onClick={downloadDocumentation}
                     className="bg-olive-600 hover:bg-olive-700 text-white"
@@ -1915,12 +2212,15 @@ export default function AdminDashboard() {
                         Complete User Guide
                       </h3>
                       <p className="text-sage-700 mb-4">
-                        This documentation contains everything you need to know about your wedding website,
-                        including login credentials, feature explanations, and best practices.
+                        This documentation contains everything you need to know
+                        about your wedding website, including login credentials,
+                        feature explanations, and best practices.
                       </p>
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
                         <div>
-                          <h4 className="font-semibold text-olive-700 mb-2">📋 What's Included:</h4>
+                          <h4 className="font-semibold text-olive-700 mb-2">
+                            📋 What's Included:
+                          </h4>
                           <ul className="space-y-1 text-sage-600">
                             <li>• Login credentials for admin access</li>
                             <li>• Complete feature walkthrough</li>
@@ -1929,7 +2229,9 @@ export default function AdminDashboard() {
                           </ul>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-olive-700 mb-2">🎯 Perfect For:</h4>
+                          <h4 className="font-semibold text-olive-700 mb-2">
+                            🎯 Perfect For:
+                          </h4>
                           <ul className="space-y-1 text-sage-600">
                             <li>• Reference during wedding planning</li>
                             <li>• Sharing with family helpers</li>
@@ -1944,27 +2246,45 @@ export default function AdminDashboard() {
                   {/* Quick Reference */}
                   <Card className="bg-sage-50 border-sage-200">
                     <CardContent className="p-6">
-                      <h3 className="text-lg font-serif text-olive-700 mb-4">🔑 Quick Access Information</h3>
+                      <h3 className="text-lg font-serif text-olive-700 mb-4">
+                        🔑 Quick Access Information
+                      </h3>
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <h4 className="font-semibold text-olive-700 mb-3">Admin Login Credentials:</h4>
+                          <h4 className="font-semibold text-olive-700 mb-3">
+                            Admin Login Credentials:
+                          </h4>
                           <div className="space-y-2 text-sm">
                             <div className="bg-white p-3 rounded border">
-                              <div><strong>Username:</strong> aral</div>
-                              <div><strong>Password:</strong> aral2025</div>
+                              <div>
+                                <strong>Username:</strong> aral
+                              </div>
+                              <div>
+                                <strong>Password:</strong> aral2025
+                              </div>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <div><strong>Username:</strong> violet</div>
-                              <div><strong>Password:</strong> violet2025</div>
+                              <div>
+                                <strong>Username:</strong> violet
+                              </div>
+                              <div>
+                                <strong>Password:</strong> violet2025
+                              </div>
                             </div>
                             <div className="bg-white p-3 rounded border">
-                              <div><strong>Username:</strong> couple</div>
-                              <div><strong>Password:</strong> wedding2025</div>
+                              <div>
+                                <strong>Username:</strong> couple
+                              </div>
+                              <div>
+                                <strong>Password:</strong> wedding2025
+                              </div>
                             </div>
                           </div>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-olive-700 mb-3">Key Features:</h4>
+                          <h4 className="font-semibold text-olive-700 mb-3">
+                            Key Features:
+                          </h4>
                           <ul className="space-y-2 text-sm text-sage-700">
                             <li>✅ RSVP Management with PDF downloads</li>
                             <li>✅ Photo Gallery with upload/delete</li>
@@ -1982,13 +2302,23 @@ export default function AdminDashboard() {
                   {/* Important Notes */}
                   <Card className="border-l-4 border-l-amber-500 bg-amber-50">
                     <CardContent className="p-6">
-                      <h3 className="text-lg font-serif text-amber-700 mb-4">⚠️ Important Notes</h3>
+                      <h3 className="text-lg font-serif text-amber-700 mb-4">
+                        ⚠️ Important Notes
+                      </h3>
                       <ul className="space-y-2 text-sm text-amber-800">
-                        <li>• Keep admin credentials confidential and secure</li>
+                        <li>
+                          • Keep admin credentials confidential and secure
+                        </li>
                         <li>• Download RSVP data regularly as backup</li>
                         <li>• Photo uploads are limited to 5MB per image</li>
-                        <li>• Wedding timeline download for guests activates on December 28, 2025</li>
-                        <li>• All data is stored locally in browser - download PDFs for permanent records</li>
+                        <li>
+                          • Wedding timeline download for guests activates on
+                          December 28, 2025
+                        </li>
+                        <li>
+                          • All data is stored locally in browser - download
+                          PDFs for permanent records
+                        </li>
                       </ul>
                     </CardContent>
                   </Card>
@@ -1996,22 +2326,42 @@ export default function AdminDashboard() {
                   {/* Contact Information */}
                   <Card className="bg-white border-sage-200">
                     <CardContent className="p-6">
-                      <h3 className="text-lg font-serif text-olive-700 mb-4">📞 Wedding Information</h3>
+                      <h3 className="text-lg font-serif text-olive-700 mb-4">
+                        📞 Wedding Information
+                      </h3>
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
                         <div>
-                          <h4 className="font-semibold text-olive-700 mb-2">⛪ Church Nuptials:</h4>
+                          <h4 className="font-semibold text-olive-700 mb-2">
+                            ⛪ Church Nuptials:
+                          </h4>
                           <div className="text-sage-700 space-y-1">
-                            <div><strong>Venue:</strong> Mother of Sorrows Church, Udupi</div>
-                            <div><strong>Time:</strong> 4:00 PM – 5:15 PM</div>
-                            <div><strong>Date:</strong> Sunday, December 28, 2025</div>
+                            <div>
+                              <strong>Venue:</strong> Mother of Sorrows Church,
+                              Udupi
+                            </div>
+                            <div>
+                              <strong>Time:</strong> 4:00 PM – 5:15 PM
+                            </div>
+                            <div>
+                              <strong>Date:</strong> Sunday, December 28, 2025
+                            </div>
                           </div>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-olive-700 mb-2">🎉 Reception:</h4>
+                          <h4 className="font-semibold text-olive-700 mb-2">
+                            🎉 Reception:
+                          </h4>
                           <div className="text-sage-700 space-y-1">
-                            <div><strong>Venue:</strong> Sai Radha Heritage Beach Resort, Kaup</div>
-                            <div><strong>Time:</strong> 7:00 PM – 11:30 PM</div>
-                            <div><strong>Date:</strong> Sunday, December 28, 2025</div>
+                            <div>
+                              <strong>Venue:</strong> Sai Radha Heritage Beach
+                              Resort, Kaup
+                            </div>
+                            <div>
+                              <strong>Time:</strong> 7:00 PM – 11:30 PM
+                            </div>
+                            <div>
+                              <strong>Date:</strong> Sunday, December 28, 2025
+                            </div>
                           </div>
                         </div>
                       </div>

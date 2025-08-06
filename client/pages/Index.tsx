@@ -1,11 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, Calendar, MapPin, Clock, Camera, Users, Download, Sparkles, Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Link } from 'react-router-dom';
-import { guestsApi, photosApi, invitationApi, weddingFlowApi, handleApiError } from '@/lib/api';
+import React, { useState, useEffect } from "react";
+import {
+  Heart,
+  Calendar,
+  MapPin,
+  Clock,
+  Camera,
+  Users,
+  Download,
+  Sparkles,
+  Lock,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Link } from "react-router-dom";
+import {
+  guestsApi,
+  photosApi,
+  invitationApi,
+  weddingFlowApi,
+  handleApiError,
+} from "@/lib/api";
 
 interface Guest {
   id: string;
@@ -14,7 +30,7 @@ interface Guest {
   phone: string;
   attending: boolean;
   guests: number;
-  side: 'groom' | 'bride';
+  side: "groom" | "bride";
   message?: string;
   dietaryRestrictions?: string;
   needsAccommodation: boolean;
@@ -26,25 +42,25 @@ export default function Index() {
     days: 0,
     hours: 0,
     minutes: 0,
-    seconds: 0
+    seconds: 0,
   });
 
   const [rsvpForm, setRsvpForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
+    name: "",
+    email: "",
+    phone: "",
     attending: true,
     guests: 1,
-    side: 'groom' as 'groom' | 'bride',
-    message: '',
-    dietaryRestrictions: '',
-    needsAccommodation: false
+    side: "groom" as "groom" | "bride",
+    message: "",
+    dietaryRestrictions: "",
+    needsAccommodation: false,
   });
 
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
 
-  const weddingDate = new Date('2025-12-28T16:00:00+05:30');
+  const weddingDate = new Date("2025-12-28T16:00:00+05:30");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,7 +68,9 @@ export default function Index() {
       const distance = weddingDate.getTime() - now;
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      );
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -68,18 +86,24 @@ export default function Index() {
       try {
         const photos = await photosApi.getAll();
         if (photos && photos.length > 0) {
-          setUploadedPhotos(photos.map(photo => photo.photoData));
-          console.log('Photos loaded from database successfully:', photos.length);
+          setUploadedPhotos(photos.map((photo) => photo.photoData));
+          console.log(
+            "Photos loaded from database successfully:",
+            photos.length,
+          );
         } else {
           // Try localStorage even if API returns empty array
-          const savedPhotos = localStorage.getItem('wedding_photos');
+          const savedPhotos = localStorage.getItem("wedding_photos");
           if (savedPhotos) {
             try {
               const photos = JSON.parse(savedPhotos);
               setUploadedPhotos(photos);
-              console.log('Photos loaded from localStorage fallback:', photos.length);
+              console.log(
+                "Photos loaded from localStorage fallback:",
+                photos.length,
+              );
             } catch (parseError) {
-              console.error('Error parsing localStorage photos:', parseError);
+              console.error("Error parsing localStorage photos:", parseError);
               setUploadedPhotos([]);
             }
           } else {
@@ -87,16 +111,22 @@ export default function Index() {
           }
         }
       } catch (error) {
-        console.warn('API unavailable, falling back to localStorage:', handleApiError(error));
+        console.warn(
+          "API unavailable, falling back to localStorage:",
+          handleApiError(error),
+        );
         // Fallback to localStorage if API is not available
-        const savedPhotos = localStorage.getItem('wedding_photos');
+        const savedPhotos = localStorage.getItem("wedding_photos");
         if (savedPhotos) {
           try {
             const photos = JSON.parse(savedPhotos);
             setUploadedPhotos(photos);
-            console.log('Photos loaded from localStorage fallback:', photos.length);
+            console.log(
+              "Photos loaded from localStorage fallback:",
+              photos.length,
+            );
           } catch (parseError) {
-            console.error('Error parsing localStorage photos:', parseError);
+            console.error("Error parsing localStorage photos:", parseError);
             setUploadedPhotos([]);
           }
         } else {
@@ -109,14 +139,17 @@ export default function Index() {
     loadPhotos();
 
     // Also load from localStorage immediately for faster display
-    const savedPhotos = localStorage.getItem('wedding_photos');
+    const savedPhotos = localStorage.getItem("wedding_photos");
     if (savedPhotos) {
       try {
         const photos = JSON.parse(savedPhotos);
         setUploadedPhotos(photos);
-        console.log('Photos loaded immediately from localStorage:', photos.length);
+        console.log(
+          "Photos loaded immediately from localStorage:",
+          photos.length,
+        );
       } catch (parseError) {
-        console.error('Error parsing localStorage photos:', parseError);
+        console.error("Error parsing localStorage photos:", parseError);
       }
     }
 
@@ -133,12 +166,12 @@ export default function Index() {
         loadPhotos();
       }
     };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Cleanup
     return () => {
       clearInterval(interval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -155,46 +188,51 @@ export default function Index() {
         side: rsvpForm.side,
         message: rsvpForm.message || undefined,
         dietaryRestrictions: rsvpForm.dietaryRestrictions || undefined,
-        needsAccommodation: rsvpForm.needsAccommodation
+        needsAccommodation: rsvpForm.needsAccommodation,
       });
 
-      console.log('RSVP submitted to database successfully');
+      console.log("RSVP submitted to database successfully");
     } catch (error) {
-      console.warn('API unavailable, falling back to localStorage:', handleApiError(error));
+      console.warn(
+        "API unavailable, falling back to localStorage:",
+        handleApiError(error),
+      );
 
       // Fallback to localStorage if API is not available
-      const existingGuests = JSON.parse(localStorage.getItem('wedding_guests') || '[]');
+      const existingGuests = JSON.parse(
+        localStorage.getItem("wedding_guests") || "[]",
+      );
       const newGuest = {
         id: Date.now().toString(),
         ...rsvpForm,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
       const updatedGuests = [...existingGuests, newGuest];
-      localStorage.setItem('wedding_guests', JSON.stringify(updatedGuests));
-      console.log('RSVP saved to localStorage fallback');
+      localStorage.setItem("wedding_guests", JSON.stringify(updatedGuests));
+      console.log("RSVP saved to localStorage fallback");
     }
 
     // Reset form regardless of storage method
     setRsvpForm({
-      name: '',
-      email: '',
-      phone: '',
+      name: "",
+      email: "",
+      phone: "",
       attending: true,
       guests: 1,
-      side: 'groom' as 'groom' | 'bride',
-      message: '',
-      dietaryRestrictions: '',
-      needsAccommodation: false
+      side: "groom" as "groom" | "bride",
+      message: "",
+      dietaryRestrictions: "",
+      needsAccommodation: false,
     });
     setShowSuccessMessage(true);
     setTimeout(() => setShowSuccessMessage(false), 5000);
   };
 
   const downloadWeddingFlow = async () => {
-    const currentDate = new Date().toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
+    const currentDate = new Date().toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
 
     // Try to get wedding flow from API first, then localStorage
@@ -203,38 +241,50 @@ export default function Index() {
       const flowFromApi = await weddingFlowApi.getAll();
       if (flowFromApi && flowFromApi.length > 0) {
         flowItems = flowFromApi;
-        console.log('Wedding flow loaded from API for download');
+        console.log("Wedding flow loaded from API for download");
       } else {
-        const savedFlow = localStorage.getItem('wedding_flow');
+        const savedFlow = localStorage.getItem("wedding_flow");
         if (savedFlow) {
           flowItems = JSON.parse(savedFlow);
-          console.log('Wedding flow loaded from localStorage for download');
+          console.log("Wedding flow loaded from localStorage for download");
         }
       }
     } catch (error) {
-      const savedFlow = localStorage.getItem('wedding_flow');
+      const savedFlow = localStorage.getItem("wedding_flow");
       if (savedFlow) {
         flowItems = JSON.parse(savedFlow);
-        console.log('Wedding flow loaded from localStorage for download (API failed)');
+        console.log(
+          "Wedding flow loaded from localStorage for download (API failed)",
+        );
       }
     }
 
     const getTypeIcon = (type: string) => {
       switch (type) {
-        case 'ceremony': return '💒';
-        case 'reception': return '🎉';
-        case 'entertainment': return '🎵';
-        case 'meal': return '🍽️';
-        case 'special': return '✨';
-        default: return '📋';
+        case "ceremony":
+          return "💒";
+        case "reception":
+          return "🎉";
+        case "entertainment":
+          return "🎵";
+        case "meal":
+          return "🍽️";
+        case "special":
+          return "✨";
+        default:
+          return "📋";
       }
     };
 
-    const scheduleContent = flowItems.length > 0
-      ? flowItems.map(item =>
-          `${item.time} | ${item.title}${item.duration ? ` (${item.duration})` : ''}\n${getTypeIcon(item.type)} ${item.description}`
-        ).join('\n\n')
-      : `7:00 PM | Welcome & Cocktails (30 min)
+    const scheduleContent =
+      flowItems.length > 0
+        ? flowItems
+            .map(
+              (item) =>
+                `${item.time} | ${item.title}${item.duration ? ` (${item.duration})` : ""}\n${getTypeIcon(item.type)} ${item.description}`,
+            )
+            .join("\n\n")
+        : `7:00 PM | Welcome & Cocktails (30 min)
 🎉 Guests arrive and enjoy welcome drinks and appetizers
 
 7:30 PM | Grand Entrance (10 min)
@@ -270,14 +320,14 @@ ${scheduleContent}
 Made with love ❤️ By Aral D'Souza
     `;
 
-    const blob = new Blob([weddingFlowContent], { type: 'text/plain' });
+    const blob = new Blob([weddingFlowContent], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'aral-violet-wedding-reception-timeline.txt';
+    a.download = "aral-violet-wedding-reception-timeline.txt";
     a.click();
     window.URL.revokeObjectURL(url);
-    console.log('Wedding flow downloaded');
+    console.log("Wedding flow downloaded");
   };
 
   const downloadInvitation = async () => {
@@ -287,24 +337,28 @@ Made with love ❤️ By Aral D'Souza
 
       if (invitation) {
         // Download the uploaded PDF invitation
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = invitation.pdfData;
-        link.download = invitation.filename || 'Aral-Violet-Wedding-Invitation.pdf';
+        link.download =
+          invitation.filename || "Aral-Violet-Wedding-Invitation.pdf";
         link.click();
-        console.log('Invitation downloaded from database');
+        console.log("Invitation downloaded from database");
         return;
       }
     } catch (error) {
-      console.warn('API unavailable, checking localStorage fallback:', handleApiError(error));
+      console.warn(
+        "API unavailable, checking localStorage fallback:",
+        handleApiError(error),
+      );
 
       // Fallback to localStorage if API is not available
-      const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
+      const savedInvitation = localStorage.getItem("wedding_invitation_pdf");
       if (savedInvitation) {
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = savedInvitation;
-        link.download = 'Aral-Violet-Wedding-Invitation.pdf';
+        link.download = "Aral-Violet-Wedding-Invitation.pdf";
         link.click();
-        console.log('Invitation downloaded from localStorage fallback');
+        console.log("Invitation downloaded from localStorage fallback");
         return;
       }
     }
@@ -343,14 +397,14 @@ A&V
 Please RSVP at our wedding website
     `;
 
-    const blob = new Blob([invitationContent], { type: 'text/plain' });
+    const blob = new Blob([invitationContent], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'aral-violet-wedding-invitation.txt';
+    a.download = "aral-violet-wedding-invitation.txt";
     a.click();
     window.URL.revokeObjectURL(url);
-    console.log('Default text invitation downloaded');
+    console.log("Default text invitation downloaded");
   };
 
   return (
@@ -358,9 +412,9 @@ Please RSVP at our wedding website
       {/* Admin Login Link */}
       <div className="fixed top-4 right-4 z-50">
         <Link to="/login">
-          <Button 
-            size="sm" 
-            variant="outline" 
+          <Button
+            size="sm"
+            variant="outline"
             className="bg-white/80 backdrop-blur-sm border-sage-300 text-sage-700 hover:bg-sage-50"
           >
             <Lock size={14} className="mr-2" />
@@ -372,13 +426,13 @@ Please RSVP at our wedding website
       {/* Hero Section with Background */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `linear-gradient(rgba(132, 76, 89, 0.4), rgba(120, 113, 108, 0.3)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`
+            backgroundImage: `linear-gradient(rgba(132, 76, 89, 0.4), rgba(120, 113, 108, 0.3)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`,
           }}
         ></div>
-        
+
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <div className="mb-8">
             <Heart className="mx-auto mb-4 text-white" size={48} />
@@ -387,7 +441,7 @@ Please RSVP at our wedding website
             </p>
             <p className="text-cream-100 text-sm mb-8">- SONG OF SOLOMON 3:4</p>
           </div>
-          
+
           <div className="mb-12">
             <h1 className="text-6xl md:text-8xl font-serif text-white mb-4 drop-shadow-lg">
               Aral <span className="text-sage-200">&</span> Violet
@@ -409,8 +463,8 @@ Please RSVP at our wedding website
               </Button>
               <Button
                 onClick={() => {
-                  const rsvpSection = document.getElementById('rsvp-section');
-                  rsvpSection?.scrollIntoView({ behavior: 'smooth' });
+                  const rsvpSection = document.getElementById("rsvp-section");
+                  rsvpSection?.scrollIntoView({ behavior: "smooth" });
                 }}
                 variant="outline"
                 className="bg-white/90 hover:bg-white border-olive-600 text-olive-700 hover:text-olive-800 px-8 py-3 text-lg font-medium shadow-lg"
@@ -433,22 +487,32 @@ Please RSVP at our wedding website
 
           {/* Countdown */}
           <div className="mb-16">
-            <h3 className="text-2xl md:text-3xl text-white mb-6 font-serif drop-shadow-md">Days To Go!</h3>
+            <h3 className="text-2xl md:text-3xl text-white mb-6 font-serif drop-shadow-md">
+              Days To Go!
+            </h3>
             <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
               <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 border border-sage-200 shadow-lg">
-                <div className="text-2xl md:text-3xl font-bold text-olive-700">{timeLeft.days}</div>
+                <div className="text-2xl md:text-3xl font-bold text-olive-700">
+                  {timeLeft.days}
+                </div>
                 <div className="text-sm text-sage-600">Days</div>
               </div>
               <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 border border-sage-200 shadow-lg">
-                <div className="text-2xl md:text-3xl font-bold text-olive-700">{timeLeft.hours}</div>
+                <div className="text-2xl md:text-3xl font-bold text-olive-700">
+                  {timeLeft.hours}
+                </div>
                 <div className="text-sm text-sage-600">Hours</div>
               </div>
               <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 border border-sage-200 shadow-lg">
-                <div className="text-2xl md:text-3xl font-bold text-olive-700">{timeLeft.minutes}</div>
+                <div className="text-2xl md:text-3xl font-bold text-olive-700">
+                  {timeLeft.minutes}
+                </div>
                 <div className="text-sm text-sage-600">Minutes</div>
               </div>
               <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 border border-sage-200 shadow-lg">
-                <div className="text-2xl md:text-3xl font-bold text-olive-700">{timeLeft.seconds}</div>
+                <div className="text-2xl md:text-3xl font-bold text-olive-700">
+                  {timeLeft.seconds}
+                </div>
                 <div className="text-sm text-sage-600">Seconds</div>
               </div>
             </div>
@@ -460,7 +524,9 @@ Please RSVP at our wedding website
       <section className="py-20 px-4 bg-gradient-to-r from-olive-50 to-sage-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">Our Story</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">
+              Our Story
+            </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-olive-600 to-sage-600 mx-auto mb-8"></div>
           </div>
 
@@ -470,12 +536,16 @@ Please RSVP at our wedding website
                 <CardContent className="p-8">
                   <div className="flex items-center mb-4">
                     <Sparkles className="text-olive-600 mr-2" size={24} />
-                    <h3 className="text-2xl font-serif text-olive-700">How We Met</h3>
+                    <h3 className="text-2xl font-serif text-olive-700">
+                      How We Met
+                    </h3>
                   </div>
                   <p className="text-sage-700 leading-relaxed">
-                    Our love story began in the most unexpected way. What started as a friendship 
-                    blossomed into something beautiful and everlasting. Through shared laughter, 
-                    dreams, and countless memories, we discovered that we were meant to be together.
+                    Our love story began in the most unexpected way. What
+                    started as a friendship blossomed into something beautiful
+                    and everlasting. Through shared laughter, dreams, and
+                    countless memories, we discovered that we were meant to be
+                    together.
                   </p>
                 </CardContent>
               </Card>
@@ -484,12 +554,15 @@ Please RSVP at our wedding website
                 <CardContent className="p-8">
                   <div className="flex items-center mb-4">
                     <Heart className="text-olive-600 mr-2" size={24} />
-                    <h3 className="text-2xl font-serif text-olive-700">The Proposal</h3>
+                    <h3 className="text-2xl font-serif text-olive-700">
+                      The Proposal
+                    </h3>
                   </div>
                   <p className="text-sage-700 leading-relaxed">
-                    Under the starlit sky, with hearts full of love and hope for the future, 
-                    we decided to take the next step in our journey together. It was a moment 
-                    of pure joy, surrounded by the beauty of God's creation and the promise of forever.
+                    Under the starlit sky, with hearts full of love and hope for
+                    the future, we decided to take the next step in our journey
+                    together. It was a moment of pure joy, surrounded by the
+                    beauty of God's creation and the promise of forever.
                   </p>
                 </CardContent>
               </Card>
@@ -500,12 +573,15 @@ Please RSVP at our wedding website
                 <CardContent className="p-8">
                   <div className="flex items-center mb-4">
                     <Calendar className="text-olive-600 mr-2" size={24} />
-                    <h3 className="text-2xl font-serif text-olive-700">Our Journey</h3>
+                    <h3 className="text-2xl font-serif text-olive-700">
+                      Our Journey
+                    </h3>
                   </div>
                   <p className="text-sage-700 leading-relaxed">
-                    Every step of our relationship has been guided by faith, love, and the support 
-                    of our families and friends. We've grown together, learned from each other, 
-                    and built a foundation strong enough to last a lifetime.
+                    Every step of our relationship has been guided by faith,
+                    love, and the support of our families and friends. We've
+                    grown together, learned from each other, and built a
+                    foundation strong enough to last a lifetime.
                   </p>
                 </CardContent>
               </Card>
@@ -514,12 +590,15 @@ Please RSVP at our wedding website
                 <CardContent className="p-8">
                   <div className="flex items-center mb-4">
                     <Sparkles className="text-olive-600 mr-2" size={24} />
-                    <h3 className="text-2xl font-serif text-olive-700">Forever Together</h3>
+                    <h3 className="text-2xl font-serif text-olive-700">
+                      Forever Together
+                    </h3>
                   </div>
                   <p className="text-sage-700 leading-relaxed">
-                    As we prepare to say "I do," we're filled with excitement for the adventures 
-                    that await us. With God's blessing and the love of our families, we're ready 
-                    to begin this new chapter as husband and wife.
+                    As we prepare to say "I do," we're filled with excitement
+                    for the adventures that await us. With God's blessing and
+                    the love of our families, we're ready to begin this new
+                    chapter as husband and wife.
                   </p>
                 </CardContent>
               </Card>
@@ -532,7 +611,9 @@ Please RSVP at our wedding website
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">Wedding Details</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">
+              Wedding Details
+            </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-olive-600 to-sage-600 mx-auto"></div>
           </div>
 
@@ -541,7 +622,9 @@ Please RSVP at our wedding website
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200 shadow-lg">
               <CardContent className="p-8 text-center">
                 <Calendar className="mx-auto mb-4 text-olive-600" size={48} />
-                <h3 className="text-2xl font-serif text-olive-700 mb-4">Church Nuptials</h3>
+                <h3 className="text-2xl font-serif text-olive-700 mb-4">
+                  Church Nuptials
+                </h3>
                 <div className="space-y-3 text-sage-700">
                   <p className="flex items-center justify-center gap-2">
                     <Calendar size={16} />
@@ -559,7 +642,9 @@ Please RSVP at our wedding website
                     <p className="text-sm text-sage-600">Udupi, Karnataka</p>
                     <Button
                       size="sm"
-                      onClick={() => window.open('https://g.co/kgs/kCfjJUM', '_blank')}
+                      onClick={() =>
+                        window.open("https://g.co/kgs/kCfjJUM", "_blank")
+                      }
                       className="bg-olive-600 hover:bg-olive-700 text-white mt-2"
                     >
                       Get Directions
@@ -573,7 +658,9 @@ Please RSVP at our wedding website
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200 shadow-lg">
               <CardContent className="p-8 text-center">
                 <Heart className="mx-auto mb-4 text-olive-600" size={48} />
-                <h3 className="text-2xl font-serif text-olive-700 mb-4">Reception</h3>
+                <h3 className="text-2xl font-serif text-olive-700 mb-4">
+                  Reception
+                </h3>
                 <div className="space-y-3 text-sage-700">
                   <p className="flex items-center justify-center gap-2">
                     <Calendar size={16} />
@@ -591,7 +678,9 @@ Please RSVP at our wedding website
                     <p className="text-sm text-sage-600">Kaup, Karnataka</p>
                     <Button
                       size="sm"
-                      onClick={() => window.open('https://g.co/kgs/MHHZo7T', '_blank')}
+                      onClick={() =>
+                        window.open("https://g.co/kgs/MHHZo7T", "_blank")
+                      }
                       className="bg-olive-600 hover:bg-olive-700 text-white mt-2"
                     >
                       Get Directions
@@ -607,14 +696,23 @@ Please RSVP at our wedding website
       {/* Celebration Message */}
       <section className="py-20 px-4 bg-gradient-to-r from-olive-600 to-olive-700">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-serif text-white mb-8">LET'S CELEBRATE</h2>
+          <h2 className="text-4xl md:text-5xl font-serif text-white mb-8">
+            LET'S CELEBRATE
+          </h2>
           <p className="text-lg md:text-xl text-olive-100 leading-relaxed mb-8">
-            WITH HEARTS FULL OF JOY AND BLESSINGS FROM ABOVE, WE INVITE YOU TO CELEBRATE OUR UNION. 
-            WEAR YOUR FINEST, BRING YOUR SMILES, AND LET'S CHERISH THIS BEAUTIFUL EVENING.
+            WITH HEARTS FULL OF JOY AND BLESSINGS FROM ABOVE, WE INVITE YOU TO
+            CELEBRATE OUR UNION. WEAR YOUR FINEST, BRING YOUR SMILES, AND LET'S
+            CHERISH THIS BEAUTIFUL EVENING.
           </p>
-          <div className="text-2xl md:text-3xl font-serif text-white mb-4">TheVIRALWedding</div>
-          <div className="text-3xl md:text-4xl font-serif text-olive-200">A&V</div>
-          <div className="text-xl md:text-2xl text-olive-200 mt-2">12.28.2025</div>
+          <div className="text-2xl md:text-3xl font-serif text-white mb-4">
+            TheVIRALWedding
+          </div>
+          <div className="text-3xl md:text-4xl font-serif text-olive-200">
+            A&V
+          </div>
+          <div className="text-xl md:text-2xl text-olive-200 mt-2">
+            12.28.2025
+          </div>
         </div>
       </section>
 
@@ -622,12 +720,17 @@ Please RSVP at our wedding website
       <section className="py-20 px-4 bg-sage-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">Our Memories</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">
+              Our Memories
+            </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-olive-600 to-sage-600 mx-auto mb-6"></div>
-            <p className="text-sage-700 text-lg">Beautiful moments from our journey together</p>
+            <p className="text-sage-700 text-lg">
+              Beautiful moments from our journey together
+            </p>
             {uploadedPhotos.length > 0 && (
               <p className="text-sm text-sage-500 mt-2">
-                Gallery updates automatically • {uploadedPhotos.length} photo{uploadedPhotos.length !== 1 ? 's' : ''}
+                Gallery updates automatically • {uploadedPhotos.length} photo
+                {uploadedPhotos.length !== 1 ? "s" : ""}
               </p>
             )}
             <div className="mt-4">
@@ -637,19 +740,29 @@ Please RSVP at our wedding website
                     try {
                       const photos = await photosApi.getAll();
                       if (photos && photos.length > 0) {
-                        setUploadedPhotos(photos.map(photo => photo.photoData));
-                        console.log('Photos refreshed from API:', photos.length);
+                        setUploadedPhotos(
+                          photos.map((photo) => photo.photoData),
+                        );
+                        console.log(
+                          "Photos refreshed from API:",
+                          photos.length,
+                        );
                       } else {
-                        const savedPhotos = localStorage.getItem('wedding_photos');
+                        const savedPhotos =
+                          localStorage.getItem("wedding_photos");
                         if (savedPhotos) {
                           const photos = JSON.parse(savedPhotos);
                           setUploadedPhotos(photos);
-                          console.log('Photos refreshed from localStorage:', photos.length);
+                          console.log(
+                            "Photos refreshed from localStorage:",
+                            photos.length,
+                          );
                         }
                       }
                     } catch (error) {
-                      console.log('Refresh failed, using localStorage');
-                      const savedPhotos = localStorage.getItem('wedding_photos');
+                      console.log("Refresh failed, using localStorage");
+                      const savedPhotos =
+                        localStorage.getItem("wedding_photos");
                       if (savedPhotos) {
                         const photos = JSON.parse(savedPhotos);
                         setUploadedPhotos(photos);
@@ -671,7 +784,10 @@ Please RSVP at our wedding website
           {uploadedPhotos.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {uploadedPhotos.map((photo, index) => (
-                <div key={index} className="aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                <div
+                  key={index}
+                  className="aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                >
                   <img
                     src={photo}
                     alt={`Wedding memory ${index + 1}`}
@@ -684,9 +800,12 @@ Please RSVP at our wedding website
             <Card className="bg-white/80 backdrop-blur-sm border-sage-200 shadow-lg">
               <CardContent className="p-12 text-center">
                 <Camera className="mx-auto mb-4 text-sage-400" size={48} />
-                <h3 className="text-2xl font-serif text-sage-600 mb-4">Photo Gallery</h3>
+                <h3 className="text-2xl font-serif text-sage-600 mb-4">
+                  Photo Gallery
+                </h3>
                 <p className="text-sage-500">
-                  We're still preparing our photo gallery. Check back soon to see our beautiful memories!
+                  We're still preparing our photo gallery. Check back soon to
+                  see our beautiful memories!
                 </p>
               </CardContent>
             </Card>
@@ -698,9 +817,13 @@ Please RSVP at our wedding website
       <section id="rsvp-section" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">RSVP</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">
+              RSVP
+            </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-olive-600 to-sage-600 mx-auto mb-6"></div>
-            <p className="text-sage-700 text-lg">Please let us know if you'll be joining us for our special day</p>
+            <p className="text-sage-700 text-lg">
+              Please let us know if you'll be joining us for our special day
+            </p>
           </div>
 
           <Card className="bg-white/80 backdrop-blur-sm border-sage-200 shadow-lg">
@@ -709,7 +832,7 @@ Please RSVP at our wedding website
                 <Users size={24} />
                 Submit Your RSVP
               </h3>
-              
+
               {showSuccessMessage && (
                 <div className="bg-sage-100 border border-sage-300 text-sage-700 px-4 py-3 rounded mb-6">
                   Thank you for your RSVP! We're excited to celebrate with you.
@@ -719,22 +842,30 @@ Please RSVP at our wedding website
               <form onSubmit={handleRSVP} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-sage-700 mb-2">Your Name(s) *</label>
+                    <label className="block text-sm font-medium text-sage-700 mb-2">
+                      Your Name(s) *
+                    </label>
                     <Input
                       type="text"
                       value={rsvpForm.name}
-                      onChange={(e) => setRsvpForm({...rsvpForm, name: e.target.value})}
+                      onChange={(e) =>
+                        setRsvpForm({ ...rsvpForm, name: e.target.value })
+                      }
                       placeholder="Enter your name(s)"
                       required
                       className="border-sage-300 focus:border-olive-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-sage-700 mb-2">Email Address *</label>
+                    <label className="block text-sm font-medium text-sage-700 mb-2">
+                      Email Address *
+                    </label>
                     <Input
                       type="email"
                       value={rsvpForm.email}
-                      onChange={(e) => setRsvpForm({...rsvpForm, email: e.target.value})}
+                      onChange={(e) =>
+                        setRsvpForm({ ...rsvpForm, email: e.target.value })
+                      }
                       placeholder="Enter your email"
                       required
                       className="border-sage-300 focus:border-olive-500"
@@ -743,11 +874,15 @@ Please RSVP at our wedding website
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">Phone Number *</label>
+                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                    Phone Number *
+                  </label>
                   <Input
                     type="tel"
                     value={rsvpForm.phone}
-                    onChange={(e) => setRsvpForm({...rsvpForm, phone: e.target.value})}
+                    onChange={(e) =>
+                      setRsvpForm({ ...rsvpForm, phone: e.target.value })
+                    }
                     placeholder="Enter your phone number"
                     required
                     className="border-sage-300 focus:border-olive-500"
@@ -755,13 +890,17 @@ Please RSVP at our wedding website
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">Will you attend? *</label>
+                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                    Will you attend? *
+                  </label>
                   <div className="flex gap-6">
                     <label className="flex items-center">
                       <input
                         type="radio"
                         checked={rsvpForm.attending}
-                        onChange={() => setRsvpForm({...rsvpForm, attending: true})}
+                        onChange={() =>
+                          setRsvpForm({ ...rsvpForm, attending: true })
+                        }
                         className="mr-2 text-olive-600"
                       />
                       Yes, I'll be there!
@@ -770,7 +909,9 @@ Please RSVP at our wedding website
                       <input
                         type="radio"
                         checked={!rsvpForm.attending}
-                        onChange={() => setRsvpForm({...rsvpForm, attending: false})}
+                        onChange={() =>
+                          setRsvpForm({ ...rsvpForm, attending: false })
+                        }
                         className="mr-2 text-olive-600"
                       />
                       Sorry, can't make it
@@ -779,13 +920,17 @@ Please RSVP at our wedding website
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">Which side are you from? *</label>
+                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                    Which side are you from? *
+                  </label>
                   <div className="flex gap-6">
                     <label className="flex items-center">
                       <input
                         type="radio"
-                        checked={rsvpForm.side === 'groom'}
-                        onChange={() => setRsvpForm({...rsvpForm, side: 'groom'})}
+                        checked={rsvpForm.side === "groom"}
+                        onChange={() =>
+                          setRsvpForm({ ...rsvpForm, side: "groom" })
+                        }
                         className="mr-2 text-olive-600"
                       />
                       Groom's Side (Aral's)
@@ -793,8 +938,10 @@ Please RSVP at our wedding website
                     <label className="flex items-center">
                       <input
                         type="radio"
-                        checked={rsvpForm.side === 'bride'}
-                        onChange={() => setRsvpForm({...rsvpForm, side: 'bride'})}
+                        checked={rsvpForm.side === "bride"}
+                        onChange={() =>
+                          setRsvpForm({ ...rsvpForm, side: "bride" })
+                        }
                         className="mr-2 text-olive-600"
                       />
                       Bride's Side (Violet's)
@@ -804,13 +951,20 @@ Please RSVP at our wedding website
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-sage-700 mb-2">Number of Guests *</label>
+                    <label className="block text-sm font-medium text-sage-700 mb-2">
+                      Number of Guests *
+                    </label>
                     <Input
                       type="number"
                       min="1"
                       max="10"
                       value={rsvpForm.guests}
-                      onChange={(e) => setRsvpForm({...rsvpForm, guests: parseInt(e.target.value)})}
+                      onChange={(e) =>
+                        setRsvpForm({
+                          ...rsvpForm,
+                          guests: parseInt(e.target.value),
+                        })
+                      }
                       className="border-sage-300 focus:border-olive-500"
                     />
                   </div>
@@ -818,7 +972,8 @@ Please RSVP at our wedding website
                     <label className="block text-sm font-medium text-sage-700 mb-2">
                       Traveling from afar?
                       <span className="block text-xs text-sage-500 font-normal mt-1">
-                        We'd love to help arrange accommodation for our out-of-town guests
+                        We'd love to help arrange accommodation for our
+                        out-of-town guests
                       </span>
                     </label>
                     <div className="flex gap-4 mt-2">
@@ -826,7 +981,12 @@ Please RSVP at our wedding website
                         <input
                           type="radio"
                           checked={rsvpForm.needsAccommodation}
-                          onChange={() => setRsvpForm({...rsvpForm, needsAccommodation: true})}
+                          onChange={() =>
+                            setRsvpForm({
+                              ...rsvpForm,
+                              needsAccommodation: true,
+                            })
+                          }
                           className="mr-2 text-olive-600"
                         />
                         Yes, please assist
@@ -835,7 +995,12 @@ Please RSVP at our wedding website
                         <input
                           type="radio"
                           checked={!rsvpForm.needsAccommodation}
-                          onChange={() => setRsvpForm({...rsvpForm, needsAccommodation: false})}
+                          onChange={() =>
+                            setRsvpForm({
+                              ...rsvpForm,
+                              needsAccommodation: false,
+                            })
+                          }
                           className="mr-2 text-olive-600"
                         />
                         No, thank you
@@ -845,27 +1010,41 @@ Please RSVP at our wedding website
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">Dietary Restrictions</label>
+                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                    Dietary Restrictions
+                  </label>
                   <Input
                     type="text"
                     value={rsvpForm.dietaryRestrictions}
-                    onChange={(e) => setRsvpForm({...rsvpForm, dietaryRestrictions: e.target.value})}
+                    onChange={(e) =>
+                      setRsvpForm({
+                        ...rsvpForm,
+                        dietaryRestrictions: e.target.value,
+                      })
+                    }
                     placeholder="Any dietary restrictions or allergies?"
                     className="border-sage-300 focus:border-olive-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">Message for the Couple</label>
+                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                    Message for the Couple
+                  </label>
                   <Textarea
                     value={rsvpForm.message}
-                    onChange={(e) => setRsvpForm({...rsvpForm, message: e.target.value})}
+                    onChange={(e) =>
+                      setRsvpForm({ ...rsvpForm, message: e.target.value })
+                    }
                     placeholder="Share your wishes with us..."
                     className="border-sage-300 focus:border-olive-500"
                   />
                 </div>
 
-                <Button type="submit" className="w-full bg-olive-600 hover:bg-olive-700 text-white py-3 text-lg">
+                <Button
+                  type="submit"
+                  className="w-full bg-olive-600 hover:bg-olive-700 text-white py-3 text-lg"
+                >
                   Submit RSVP
                 </Button>
               </form>
@@ -878,12 +1057,18 @@ Please RSVP at our wedding website
       <footer className="bg-olive-800 text-olive-100 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-6">
-            <h3 className="text-3xl font-serif text-white mb-2">Aral & Violet</h3>
-            <p className="text-olive-200">December 28, 2025 • Udupi, Karnataka, India</p>
+            <h3 className="text-3xl font-serif text-white mb-2">
+              Aral & Violet
+            </h3>
+            <p className="text-olive-200">
+              December 28, 2025 • Udupi, Karnataka, India
+            </p>
           </div>
           <div className="flex justify-center items-center gap-2 mb-4">
             <Heart className="text-olive-400" size={20} />
-            <span className="text-olive-200">Thank you for being part of our special day</span>
+            <span className="text-olive-200">
+              Thank you for being part of our special day
+            </span>
             <Heart className="text-olive-400" size={20} />
           </div>
           <p className="text-olive-300 text-sm">
