@@ -81,5 +81,9 @@ export async function createServer() {
   app.post("/api/invitation", uploadInvitation);
   app.delete("/api/invitation", deleteInvitation);
 
+  // SMS API
+  app.post("/api/sms/send-rsvp-notification", sendRSVPSMSNotification);
+  app.post("/api/sms/test", testSMS);
+
   return app;
 }
