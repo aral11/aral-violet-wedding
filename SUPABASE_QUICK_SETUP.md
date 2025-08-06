@@ -89,6 +89,24 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 - Without these keys, the site will automatically use localStorage (current behavior)
 
 ## Step 5: Deploy! 🎉
+
+### For Local Development:
+Your `.env` file will work automatically for local testing.
+
+### For GitHub Pages Deployment:
+Since GitHub Pages is static hosting, environment variables work differently:
+
+**Option A: Build with variables locally**
+```bash
+VITE_SUPABASE_URL=your_url VITE_SUPABASE_ANON_KEY=your_key npm run build:github
+```
+
+**Option B: Use repository secrets (advanced)**
+Set up GitHub Actions to build with secrets (see GitHub documentation).
+
+**Option C: Keep localStorage (easiest)**
+Your site works perfectly with localStorage - only add Supabase if you need cross-device sync.
+
 Push your code to GitHub - your wedding website now has a real database!
 
 ## What You Get After Setup
