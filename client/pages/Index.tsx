@@ -172,9 +172,26 @@ export default function Index() {
         link.href = invitation.pdfData;
         link.download = invitation.filename || 'Aral-Violet-Wedding-Invitation.pdf';
         link.click();
-      } else {
-        // Fallback to text invitation if no PDF uploaded
-        const invitationContent = `
+        console.log('Invitation downloaded from database');
+        return;
+      }
+    } catch (error) {
+      console.warn('API unavailable, checking localStorage fallback:', handleApiError(error));
+
+      // Fallback to localStorage if API is not available
+      const savedInvitation = localStorage.getItem('wedding_invitation_pdf');
+      if (savedInvitation) {
+        const link = document.createElement('a');
+        link.href = savedInvitation;
+        link.download = 'Aral-Violet-Wedding-Invitation.pdf';
+        link.click();
+        console.log('Invitation downloaded from localStorage fallback');
+        return;
+      }
+    }
+
+    // Final fallback to text invitation
+    const invitationContent = `
 WEDDING INVITATION
 ==================
 
@@ -205,20 +222,16 @@ A&V
 12.28.2025
 
 Please RSVP at our wedding website
-        `;
+    `;
 
-        const blob = new Blob([invitationContent], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'aral-violet-wedding-invitation.txt';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Error downloading invitation:', handleApiError(error));
-      alert('Sorry, there was an error downloading the invitation. Please try again.');
-    }
+    const blob = new Blob([invitationContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'aral-violet-wedding-invitation.txt';
+    a.click();
+    window.URL.revokeObjectURL(url);
+    console.log('Default text invitation downloaded');
   };
 
   return (
