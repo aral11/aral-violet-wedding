@@ -62,15 +62,29 @@ export default function Index() {
     return () => clearInterval(timer);
   }, []);
 
-  // Load photos from API for guest viewing and refresh periodically
+  // Load photos from API with fallback to localStorage
   useEffect(() => {
     const loadPhotos = async () => {
       try {
         const photos = await photosApi.getAll();
         setUploadedPhotos(photos.map(photo => photo.photoData));
+        console.log('Photos loaded from database successfully');
       } catch (error) {
-        console.error('Error loading photos:', handleApiError(error));
-        setUploadedPhotos([]);
+        console.warn('API unavailable, falling back to localStorage:', handleApiError(error));
+        // Fallback to localStorage if API is not available
+        const savedPhotos = localStorage.getItem('wedding_photos');
+        if (savedPhotos) {
+          try {
+            const photos = JSON.parse(savedPhotos);
+            setUploadedPhotos(photos);
+            console.log('Photos loaded from localStorage fallback');
+          } catch (parseError) {
+            console.error('Error parsing localStorage photos:', parseError);
+            setUploadedPhotos([]);
+          }
+        } else {
+          setUploadedPhotos([]);
+        }
       }
     };
 
