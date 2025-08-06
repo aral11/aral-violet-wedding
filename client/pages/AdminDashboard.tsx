@@ -1324,18 +1324,22 @@ export default function AdminDashboard() {
                     <p className="text-sage-600 mb-4">
                       Upload your custom wedding invitation PDF. This will be downloaded when guests click the "Download Invitation" button.
                     </p>
-                    <label className="cursor-pointer">
+                    <div>
                       <input
+                        ref={fileInputRef}
                         type="file"
                         accept=".pdf,application/pdf"
                         onChange={handleInvitationUpload}
                         className="hidden"
                       />
-                      <Button className="bg-olive-600 hover:bg-olive-700 text-white">
+                      <Button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="bg-olive-600 hover:bg-olive-700 text-white"
+                      >
                         <Upload className="mr-2" size={16} />
                         Choose PDF Invitation
                       </Button>
-                    </label>
+                    </div>
                     <p className="text-xs text-sage-500 mt-2">Maximum file size: 10MB • PDF format only</p>
                   </div>
 
