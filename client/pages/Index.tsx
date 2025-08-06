@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Calendar, MapPin, Clock, Camera, Users, Download, Sparkles } from 'lucide-react';
+import { Heart, Calendar, MapPin, Clock, Camera, Users, Download, Sparkles, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Link } from 'react-router-dom';
 
 interface Guest {
   id: string;
@@ -38,8 +38,8 @@ export default function Index() {
     needsAccommodation: false
   });
 
-  const [guests, setGuests] = useState<Guest[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
 
   const weddingDate = new Date('2025-12-28T16:00:00+05:30');
 
@@ -59,14 +59,30 @@ export default function Index() {
     return () => clearInterval(timer);
   }, []);
 
+  // Load photos from localStorage for guest viewing
+  useEffect(() => {
+    const savedPhotos = localStorage.getItem('wedding_photos');
+    if (savedPhotos) {
+      setUploadedPhotos(JSON.parse(savedPhotos));
+    }
+  }, []);
+
   const handleRSVP = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Get existing guests from localStorage
+    const existingGuests = JSON.parse(localStorage.getItem('wedding_guests') || '[]');
+    
     const newGuest: Guest = {
       id: Date.now().toString(),
       ...rsvpForm,
       createdAt: new Date().toISOString()
     };
-    setGuests([...guests, newGuest]);
+    
+    // Save to localStorage
+    const updatedGuests = [...existingGuests, newGuest];
+    localStorage.setItem('wedding_guests', JSON.stringify(updatedGuests));
+    
     setRsvpForm({ 
       name: '', 
       email: '', 
@@ -79,31 +95,6 @@ export default function Index() {
     });
     setShowSuccessMessage(true);
     setTimeout(() => setShowSuccessMessage(false), 5000);
-  };
-
-  const downloadGuestList = () => {
-    const csvContent = [
-      ['Name', 'Email', 'Phone', 'Attending', 'Number of Guests', 'Dietary Restrictions', 'Needs Accommodation', 'Message', 'Submitted Date'],
-      ...guests.map(guest => [
-        guest.name,
-        guest.email,
-        guest.phone,
-        guest.attending ? 'Yes' : 'No',
-        guest.guests.toString(),
-        guest.dietaryRestrictions || 'None',
-        guest.needsAccommodation ? 'Yes' : 'No',
-        guest.message || 'No message',
-        new Date(guest.createdAt).toLocaleDateString()
-      ])
-    ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `aral-violet-wedding-rsvp-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    window.URL.revokeObjectURL(url);
   };
 
   const downloadInvitation = () => {
@@ -150,6 +141,20 @@ Please RSVP at our wedding website
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 to-sage-50">
+      {/* Admin Login Link */}
+      <div className="fixed top-4 right-4 z-50">
+        <Link to="/login">
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className="bg-white/80 backdrop-blur-sm border-sage-300 text-sage-700 hover:bg-sage-50"
+          >
+            <Lock size={14} className="mr-2" />
+            Admin
+          </Button>
+        </Link>
+      </div>
+
       {/* Hero Section with Background */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
@@ -356,8 +361,43 @@ Please RSVP at our wedding website
         </div>
       </section>
 
-      {/* RSVP Section */}
+      {/* Photo Gallery for Guests (View Only) */}
       <section className="py-20 px-4 bg-sage-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">Our Memories</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-olive-600 to-sage-600 mx-auto mb-6"></div>
+            <p className="text-sage-700 text-lg">Beautiful moments from our journey together</p>
+          </div>
+
+          {uploadedPhotos.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {uploadedPhotos.map((photo, index) => (
+                <div key={index} className="aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                  <img
+                    src={photo}
+                    alt={`Wedding memory ${index + 1}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Card className="bg-white/80 backdrop-blur-sm border-sage-200 shadow-lg">
+              <CardContent className="p-12 text-center">
+                <Camera className="mx-auto mb-4 text-sage-400" size={48} />
+                <h3 className="text-2xl font-serif text-sage-600 mb-4">Photo Gallery</h3>
+                <p className="text-sage-500">
+                  We're still preparing our photo gallery. Check back soon to see our beautiful memories!
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </section>
+
+      {/* RSVP Section */}
+      <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-olive-700 mb-4">RSVP</h2>
@@ -502,49 +542,6 @@ Please RSVP at our wedding website
                   Submit RSVP
                 </Button>
               </form>
-
-              {/* Admin Section - Always Visible */}
-              <div className="mt-8 pt-6 border-t border-sage-200">
-                <div className="bg-olive-50 rounded-lg p-6 border border-olive-200">
-                  <h4 className="text-lg font-serif text-olive-700 mb-4 flex items-center gap-2">
-                    <Users className="text-olive-600" size={20} />
-                    Admin Dashboard
-                  </h4>
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                    <div className="text-sm text-olive-700">
-                      <p className="font-medium mb-1">RSVP Status:</p>
-                      <p>
-                        {guests.length === 0 ? (
-                          "No RSVPs received yet"
-                        ) : (
-                          <>
-                            {guests.length} RSVP{guests.length !== 1 ? 's' : ''} received
-                            <br />
-                            <span className="text-xs text-olive-600">
-                              {guests.filter(g => g.attending).length} attending • {guests.filter(g => !g.attending).length} not attending
-                            </span>
-                          </>
-                        )}
-                      </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <Button
-                        onClick={downloadGuestList}
-                        disabled={guests.length === 0}
-                        className="bg-sage-600 hover:bg-sage-700 text-white disabled:bg-sage-300"
-                      >
-                        <Download className="mr-2" size={16} />
-                        Download Guest List
-                      </Button>
-                      {guests.length === 0 && (
-                        <p className="text-xs text-sage-500 mt-1">
-                          Download will be available once guests submit RSVPs
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>
