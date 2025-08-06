@@ -37,8 +37,12 @@ function expressPlugin(): Plugin {
 
         // Add Express app as middleware to Vite dev server
         server.middlewares.use(app);
+
+        // Don't add fallback middleware if Express server works
+        return;
       } catch (error) {
         console.error('Failed to initialize Express server:', error);
+        console.log('Starting fallback API middleware...');
         // Create a fallback middleware that provides graceful responses
         server.middlewares.use('/api', (req, res, next) => {
           const url = req.url || '';
