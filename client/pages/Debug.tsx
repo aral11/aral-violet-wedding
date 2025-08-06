@@ -231,6 +231,87 @@ export default function Debug() {
           </Card>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Supabase Status</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <Button onClick={testSupabase}>Test Supabase Connection</Button>
+                {supabaseStatus.configured !== undefined && (
+                  <div>
+                    <strong>Configured:</strong>{" "}
+                    {supabaseStatus.configured ? "✅ Yes" : "❌ No"}
+                  </div>
+                )}
+                {supabaseStatus.url && (
+                  <div>
+                    <strong>URL:</strong> {supabaseStatus.url}
+                  </div>
+                )}
+                {supabaseStatus.hasKey !== undefined && (
+                  <div>
+                    <strong>API Key:</strong>{" "}
+                    {supabaseStatus.hasKey ? "✅ Set" : "❌ Missing"}
+                  </div>
+                )}
+                {supabaseStatus.connection && (
+                  <div>
+                    <strong>Connection:</strong>{" "}
+                    {supabaseStatus.connection.success
+                      ? `✅ Success (${supabaseStatus.connection.guestCount} guests)`
+                      : `❌ Failed: ${supabaseStatus.connection.error}`}
+                  </div>
+                )}
+                {supabaseStatus.tablesExist !== undefined && (
+                  <div>
+                    <strong>Tables:</strong>{" "}
+                    {supabaseStatus.tablesExist ? "✅ Exist" : "❌ Missing - need SQL setup"}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Database Service</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <Button onClick={testDatabase}>Test Database Service</Button>
+                {databaseStatus.storageStatus && (
+                  <div>
+                    <strong>Storage Type:</strong> {databaseStatus.storageStatus.type}
+                  </div>
+                )}
+                {databaseStatus.isUsingSupabase !== undefined && (
+                  <div>
+                    <strong>Using Supabase:</strong>{" "}
+                    {databaseStatus.isUsingSupabase ? "✅ Yes" : "❌ No (localStorage)"}
+                  </div>
+                )}
+                {databaseStatus.data && (
+                  <div>
+                    <strong>Data Counts:</strong>
+                    <ul className="ml-4 mt-1">
+                      <li>Guests: {databaseStatus.data.guests}</li>
+                      <li>Photos: {databaseStatus.data.photos}</li>
+                      <li>Wedding Flow: {databaseStatus.data.weddingFlow}</li>
+                    </ul>
+                  </div>
+                )}
+                {databaseStatus.success === false && (
+                  <div>
+                    <strong>Error:</strong> {databaseStatus.error}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         <Card>
           <CardHeader>
             <CardTitle>Raw Data</CardTitle>
