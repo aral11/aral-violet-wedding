@@ -55,28 +55,334 @@ export default function AdminDashboard() {
   }
 
   const downloadGuestList = () => {
-    const csvContent = [
-      ['Name', 'Email', 'Phone', 'Attending', 'Number of Guests', 'Dietary Restrictions', 'Needs Accommodation', 'Message', 'Submitted Date'],
-      ...guests.map(guest => [
-        guest.name,
-        guest.email,
-        guest.phone,
-        guest.attending ? 'Yes' : 'No',
-        guest.guests.toString(),
-        guest.dietaryRestrictions || 'None',
-        guest.needsAccommodation ? 'Yes' : 'No',
-        guest.message || 'No message',
-        new Date(guest.createdAt).toLocaleDateString()
-      ])
-    ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    const attendingGuests = guests.filter(g => g.attending);
+    const notAttendingGuests = guests.filter(g => !g.attending);
+    const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
+    const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
+    const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
+    const accommodationNeeded = attendingGuests.filter(g => g.needsAccommodation);
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `aral-violet-wedding-rsvp-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    window.URL.revokeObjectURL(url);
+    const currentDate = new Date().toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Guest List - Aral & Violet</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #84a178;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .couple-names {
+            font-size: 2.5em;
+            color: #5a6c57;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .wedding-date {
+            font-size: 1.2em;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+        .report-date {
+            font-size: 0.9em;
+            color: #a0aec0;
+        }
+        .summary {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .summary h2 {
+            color: #5a6c57;
+            border-bottom: 2px solid #84a178;
+            padding-bottom: 10px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #84a178;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #5a6c57;
+        }
+        .stat-label {
+            color: #718096;
+            font-size: 0.9em;
+        }
+        .section {
+            background: white;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .section-header {
+            background: #5a6c57;
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .guest-list {
+            padding: 0;
+        }
+        .guest-item {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        .guest-item:last-child {
+            border-bottom: none;
+        }
+        .guest-main {
+            color: #2d3748;
+        }
+        .guest-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #5a6c57;
+        }
+        .guest-contact {
+            font-size: 0.9em;
+            color: #718096;
+            margin: 5px 0;
+        }
+        .guest-details {
+            font-size: 0.9em;
+            color: #4a5568;
+        }
+        .guest-message {
+            font-style: italic;
+            color: #718096;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f7fafc;
+            border-radius: 5px;
+        }
+        .side-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+        }
+        .groom-side {
+            background: #84a178;
+        }
+        .bride-side {
+            background: #9ca3af;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+        .logo {
+            color: #5a6c57;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .section, .summary, .header {
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">❤️ TheVIRALWedding</div>
+        <div class="couple-names">Aral & Violet</div>
+        <div class="wedding-date">December 28, 2025 • Udupi, Karnataka, India</div>
+        <div class="report-date">RSVP Report Generated: ${currentDate}</div>
+    </div>
+
+    <div class="summary">
+        <h2>📊 Wedding Summary</h2>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">${guests.length}</div>
+                <div class="stat-label">Total RSVPs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${attendingGuests.length}</div>
+                <div class="stat-label">Attending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${totalGuestCount}</div>
+                <div class="stat-label">Total Guests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${accommodationNeeded.length}</div>
+                <div class="stat-label">Need Accommodation</div>
+            </div>
+        </div>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">${groomSideGuests.length}</div>
+                <div class="stat-label">Groom's Side</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${brideSideGuests.length}</div>
+                <div class="stat-label">Bride's Side</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${notAttendingGuests.length}</div>
+                <div class="stat-label">Not Attending</div>
+            </div>
+        </div>
+    </div>
+
+    ${attendingGuests.length > 0 ? `
+    <div class="section">
+        <div class="section-header">✅ Attending Guests (${attendingGuests.length})</div>
+        <div class="guest-list">
+            ${attendingGuests.map(guest => `
+            <div class="guest-item">
+                <div class="guest-main">
+                    <div class="guest-name">${guest.name}</div>
+                    <div class="guest-contact">📧 ${guest.email}</div>
+                    <div class="guest-contact">📱 ${guest.phone}</div>
+                    <span class="side-badge ${guest.side === 'groom' ? 'groom-side' : 'bride-side'}">
+                        ${guest.side === 'groom' ? "Aral's Side" : "Violet's Side"}
+                    </span>
+                    ${guest.message ? `<div class="guest-message">"${guest.message}"</div>` : ''}
+                </div>
+                <div class="guest-details">
+                    <div><strong>Guests:</strong> ${guest.guests}</div>
+                    <div><strong>Accommodation:</strong> ${guest.needsAccommodation ? 'Yes' : 'No'}</div>
+                    ${guest.dietaryRestrictions ? `<div><strong>Dietary:</strong> ${guest.dietaryRestrictions}</div>` : ''}
+                </div>
+                <div class="guest-details">
+                    <div><strong>RSVP Date:</strong></div>
+                    <div>${new Date(guest.createdAt).toLocaleDateString('en-IN')}</div>
+                </div>
+            </div>
+            `).join('')}
+        </div>
+    </div>
+    ` : ''}
+
+    ${accommodationNeeded.length > 0 ? `
+    <div class="section">
+        <div class="section-header">🏨 Accommodation Required (${accommodationNeeded.length})</div>
+        <div class="guest-list">
+            ${accommodationNeeded.map(guest => `
+            <div class="guest-item">
+                <div class="guest-main">
+                    <div class="guest-name">${guest.name}</div>
+                    <div class="guest-contact">📧 ${guest.email}</div>
+                    <div class="guest-contact">📱 ${guest.phone}</div>
+                </div>
+                <div class="guest-details">
+                    <div><strong>Guests:</strong> ${guest.guests}</div>
+                    <span class="side-badge ${guest.side === 'groom' ? 'groom-side' : 'bride-side'}">
+                        ${guest.side === 'groom' ? "Aral's Side" : "Violet's Side"}
+                    </span>
+                </div>
+                <div class="guest-details">
+                    <div><strong>RSVP Date:</strong></div>
+                    <div>${new Date(guest.createdAt).toLocaleDateString('en-IN')}</div>
+                </div>
+            </div>
+            `).join('')}
+        </div>
+    </div>
+    ` : ''}
+
+    ${notAttendingGuests.length > 0 ? `
+    <div class="section">
+        <div class="section-header">❌ Not Attending (${notAttendingGuests.length})</div>
+        <div class="guest-list">
+            ${notAttendingGuests.map(guest => `
+            <div class="guest-item">
+                <div class="guest-main">
+                    <div class="guest-name">${guest.name}</div>
+                    <div class="guest-contact">📧 ${guest.email}</div>
+                    <div class="guest-contact">📱 ${guest.phone}</div>
+                    ${guest.message ? `<div class="guest-message">"${guest.message}"</div>` : ''}
+                </div>
+                <div class="guest-details">
+                    <span class="side-badge ${guest.side === 'groom' ? 'groom-side' : 'bride-side'}">
+                        ${guest.side === 'groom' ? "Aral's Side" : "Violet's Side"}
+                    </span>
+                </div>
+                <div class="guest-details">
+                    <div><strong>RSVP Date:</strong></div>
+                    <div>${new Date(guest.createdAt).toLocaleDateString('en-IN')}</div>
+                </div>
+            </div>
+            `).join('')}
+        </div>
+    </div>
+    ` : ''}
+
+    <div class="footer">
+        <div class="logo">❤️ TheVIRALWedding</div>
+        <div>A&V • 12.28.2025</div>
+        <div>With hearts full of joy and blessings from above</div>
+    </div>
+</body>
+</html>
+    `;
+
+    // Create a new window and print
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+
+      // Auto-download as PDF
+      setTimeout(() => {
+        printWindow.print();
+      }, 1000);
+    }
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
