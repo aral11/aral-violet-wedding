@@ -1,9 +1,7 @@
-import { Router } from 'express';
-
-const router = Router();
+import { Request, Response } from 'express';
 
 // SMS notification endpoint
-router.post('/send-rsvp-notification', async (req, res) => {
+export const sendRSVPSMSNotification = async (req: Request, res: Response) => {
   try {
     const { rsvpDetails } = req.body;
     
@@ -35,7 +33,7 @@ router.post('/send-rsvp-notification', async (req, res) => {
 📱 Phone: ${rsvpDetails.phone}
 ${attendingText}
 👥 Guests: ${rsvpDetails.guests}
-👨‍👩‍👧‍��� Side: ${sideText}
+👨‍👩‍👧‍👦 Side: ${sideText}
 
 ${rsvpDetails.message ? `💬 Message: ${rsvpDetails.message}` : ''}
 ${rsvpDetails.dietaryRestrictions ? `🍽️ Dietary: ${rsvpDetails.dietaryRestrictions}` : ''}
@@ -64,10 +62,10 @@ TheVIRALWedding - A&V 💕`;
       message: error instanceof Error ? error.message : 'Unknown error'
     });
   }
-});
+};
 
 // SMS test endpoint
-router.post('/test-sms', async (req, res) => {
+export const testSMS = async (req: Request, res: Response) => {
   try {
     console.log('📱 SMS Test Request');
     
@@ -97,4 +95,4 @@ A&V Wedding Website 💕`;
       message: error instanceof Error ? error.message : 'Unknown error'
     });
   }
-});
+};
