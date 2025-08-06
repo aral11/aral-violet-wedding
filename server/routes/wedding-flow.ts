@@ -26,7 +26,8 @@ export const getWeddingFlow: RequestHandler = async (req, res) => {
     res.json(flowItems);
   } catch (error) {
     console.error('Error fetching wedding flow:', error);
-    res.status(500).json({ error: 'Failed to fetch wedding flow' });
+    // Return empty array for graceful fallback
+    res.json([]);
   }
 };
 

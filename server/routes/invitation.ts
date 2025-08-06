@@ -24,7 +24,8 @@ export const getInvitation: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching invitation:', error);
-    res.status(500).json({ error: 'Failed to fetch invitation' });
+    // Return 404 for graceful fallback
+    res.status(404).json({ error: 'No invitation found' });
   }
 };
 
