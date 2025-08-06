@@ -134,6 +134,7 @@ export default function Index() {
 
     // Cleanup
     return () => {
+      clearTimeout(timeoutId);
       clearInterval(interval);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
