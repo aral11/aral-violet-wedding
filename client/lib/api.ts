@@ -54,14 +54,22 @@ async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<
     ...options,
   };
 
-  const response = await fetch(url, config);
-  
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
-  }
+  try {
+    const response = await fetch(url, config);
 
-  return response.json();
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+      throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    // If fetch fails entirely, throw a more specific error
+    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+      throw new Error('API server is not available. Using localStorage fallback.');
+    }
+    throw error;
+  }
 }
 
 // Guests API
