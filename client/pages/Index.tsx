@@ -99,35 +99,39 @@ export default function Index() {
     };
   }, []);
 
-  const handleRSVP = (e: React.FormEvent) => {
+  const handleRSVP = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Get existing guests from localStorage
-    const existingGuests = JSON.parse(localStorage.getItem('wedding_guests') || '[]');
-    
-    const newGuest: Guest = {
-      id: Date.now().toString(),
-      ...rsvpForm,
-      createdAt: new Date().toISOString()
-    };
-    
-    // Save to localStorage
-    const updatedGuests = [...existingGuests, newGuest];
-    localStorage.setItem('wedding_guests', JSON.stringify(updatedGuests));
-    
-    setRsvpForm({
-      name: '',
-      email: '',
-      phone: '',
-      attending: true,
-      guests: 1,
-      side: 'groom' as 'groom' | 'bride',
-      message: '',
-      dietaryRestrictions: '',
-      needsAccommodation: false
-    });
-    setShowSuccessMessage(true);
-    setTimeout(() => setShowSuccessMessage(false), 5000);
+
+    try {
+      await guestsApi.create({
+        name: rsvpForm.name,
+        email: rsvpForm.email,
+        phone: rsvpForm.phone,
+        attending: rsvpForm.attending,
+        guests: rsvpForm.guests,
+        side: rsvpForm.side,
+        message: rsvpForm.message || undefined,
+        dietaryRestrictions: rsvpForm.dietaryRestrictions || undefined,
+        needsAccommodation: rsvpForm.needsAccommodation
+      });
+
+      setRsvpForm({
+        name: '',
+        email: '',
+        phone: '',
+        attending: true,
+        guests: 1,
+        side: 'groom' as 'groom' | 'bride',
+        message: '',
+        dietaryRestrictions: '',
+        needsAccommodation: false
+      });
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 5000);
+    } catch (error) {
+      console.error('Error submitting RSVP:', handleApiError(error));
+      alert('Sorry, there was an error submitting your RSVP. Please try again.');
+    }
   };
 
   const downloadInvitation = () => {
