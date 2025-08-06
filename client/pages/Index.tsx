@@ -280,7 +280,7 @@ export default function Index() {
 ✨ Wedding cake cutting ceremony
 
 10:30 PM | Dancing & Celebration (60 min)
-🎵 Open dance floor for all guests
+��� Open dance floor for all guests
 
 11:30 PM | Send-off
 💒 Farewell and thank you to all guests`;
@@ -577,7 +577,7 @@ Please RSVP at our wedding website
                       <div className="relative pb-[56.25%] h-0"> {/* 16:9 aspect ratio */}
                         <iframe
                           className="absolute top-0 left-0 w-full h-full rounded-lg"
-                          src="https://www.youtube.com/embed/YOUR_VIDEO_ID?rel=0&modestbranding=1&controls=1"
+                          src="https://www.youtube.com/embed/W4oKzn-0SCw?rel=0&modestbranding=1&controls=1"
                           title="Aral & Violet - Surprise Proposal Video"
                           frameBorder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
