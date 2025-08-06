@@ -22,6 +22,7 @@ export async function createServer() {
     console.log('Database initialized successfully');
   } catch (error) {
     console.error('Failed to initialize database:', error);
+    console.log('Server will continue with fallback mode - all data will be stored in localStorage');
     // Don't throw error, let server start without DB for now
   }
 
