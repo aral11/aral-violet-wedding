@@ -73,25 +73,23 @@ export default function AdminDashboard() {
   // Load data from API and localStorage on mount
   useEffect(() => {
     const loadAllData = async () => {
-      // Load guests from API first, then fallback to localStorage
+      // Load guests from localStorage first, then try API sync
+      const savedGuests = localStorage.getItem("wedding_guests");
+      if (savedGuests) {
+        setGuests(JSON.parse(savedGuests));
+        console.log("Guests loaded from localStorage");
+      }
+
+      // Try to sync with API silently in background
       try {
         const guestsFromApi = await guestsApi.getAll();
         if (guestsFromApi && guestsFromApi.length > 0) {
           setGuests(guestsFromApi);
-          console.log("Guests loaded from API:", guestsFromApi.length);
-        } else {
-          const savedGuests = localStorage.getItem("wedding_guests");
-          if (savedGuests) {
-            setGuests(JSON.parse(savedGuests));
-            console.log("Guests loaded from localStorage");
-          }
+          console.log("Guests synced from API:", guestsFromApi.length);
         }
       } catch (error) {
-        console.log("API unavailable, loading guests from localStorage");
-        const savedGuests = localStorage.getItem("wedding_guests");
-        if (savedGuests) {
-          setGuests(JSON.parse(savedGuests));
-        }
+        // Silently ignore API errors - localStorage already loaded
+        console.log("Using localStorage guest data (API not available)");
       }
 
       // Load photos from localStorage first, then try API sync
