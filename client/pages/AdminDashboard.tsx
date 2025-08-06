@@ -1239,7 +1239,7 @@ export default function AdminDashboard() {
         <div style="font-size: 1.2em; margin: 10px 0;">Aral & Violet • December 28, 2025</div>
         <div style="color: #718096;">With hearts full of joy and blessings from above</div>
         <div style="margin-top: 15px; font-size: 0.9em; color: #a0aec0;">
-            © 2025 TheVIRALWedding. Made with love for By Aral.
+            © 2025 TheVIRALWedding. Made with love By Aral D'Souza.
         </div>
     </div>
 </body>
