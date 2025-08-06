@@ -131,6 +131,7 @@ export default function Index() {
     e.preventDefault();
 
     try {
+      console.log("Submitting RSVP with side:", rsvpForm.side);
       await database.guests.create({
         name: rsvpForm.name,
         email: rsvpForm.email,
