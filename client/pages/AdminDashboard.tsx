@@ -159,8 +159,7 @@ export default function AdminDashboard() {
     return <Navigate to="/login" replace />;
   }
 
-  const downloadGuestList = () => {
-    const downloadWeddingFlow = () => {
+  const downloadWeddingFlow = () => {
     const currentDate = new Date().toLocaleDateString('en-IN', {
       day: 'numeric',
       month: 'long',
@@ -421,11 +420,12 @@ export default function AdminDashboard() {
     }
   };
 
-  const attendingGuests = guests.filter(g => g.attending);
-  const notAttendingGuests = guests.filter(g => !g.attending);
-  const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
-  const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
-  const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
+  const downloadGuestList = () => {
+    const attendingGuests = guests.filter(g => g.attending);
+    const notAttendingGuests = guests.filter(g => !g.attending);
+    const groomSideGuests = attendingGuests.filter(g => g.side === 'groom');
+    const brideSideGuests = attendingGuests.filter(g => g.side === 'bride');
+    const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
     const accommodationNeeded = attendingGuests.filter(g => g.needsAccommodation);
 
     const currentDate = new Date().toLocaleDateString('en-IN', {
@@ -700,7 +700,7 @@ export default function AdminDashboard() {
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 8px;"><strong>👥 Total Guests:</strong> ${guest.guests}</div>
-                    <div style="margin-bottom: 8px;"><strong>🏨 Accommodation:</strong> ✅ Required</div>
+                    <div style="margin-bottom: 8px;"><strong>🏨 Accommodation:</strong> �� Required</div>
                 </div>
                 <div class="guest-details">
                     <div style="margin-bottom: 5px;"><strong>📅 RSVP Date:</strong></div>
