@@ -357,7 +357,7 @@ Please RSVP at our wedding website
                     <p className="text-sm text-sage-600">Udupi, Karnataka</p>
                     <Button
                       size="sm"
-                      onClick={() => window.open('https://maps.google.com/maps?q=Mother+of+Sorrows+Church+Udupi', '_blank')}
+                      onClick={() => window.open('https://g.co/kgs/kCfjJUM', '_blank')}
                       className="bg-olive-600 hover:bg-olive-700 text-white mt-2"
                     >
                       Get Directions
