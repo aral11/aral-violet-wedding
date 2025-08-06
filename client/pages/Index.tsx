@@ -463,9 +463,11 @@ Please RSVP at our wedding website
                   if (today >= weddingDate) {
                     downloadWeddingFlow();
                   } else {
-                    alert(
-                      "Wedding reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!",
-                    );
+                    toast({
+                      title: "Wedding Timeline Coming Soon! ⏰",
+                      description: "The reception timeline will be available for download on December 28, 2025. Please check back on our wedding day!",
+                      duration: 5000,
+                    });
                   }
                 }}
                 variant="outline"
@@ -477,7 +479,7 @@ Please RSVP at our wedding website
               >
                 <Clock className="mr-2" size={16} />
                 {new Date() < new Date("2025-12-28")
-                  ? "Available on Wedding Day"
+                  ? "Wedding Timeline"
                   : "Download Reception Timeline"}
               </Button>
             </div>
@@ -556,12 +558,31 @@ Please RSVP at our wedding website
                       The Proposal
                     </h3>
                   </div>
-                  <p className="text-sage-700 leading-relaxed">
+                  <p className="text-sage-700 leading-relaxed mb-6">
                     Under the starlit sky, with hearts full of love and hope for
                     the future, we decided to take the next step in our journey
                     together. It was a moment of pure joy, surrounded by the
                     beauty of God's creation and the promise of forever.
                   </p>
+
+                  <div className="mt-6">
+                    <p className="text-sm text-sage-600 mb-3 italic">
+                      A surprise proposal - Violet never had an idea about it! 💍
+                    </p>
+                    <div className="relative rounded-lg overflow-hidden shadow-md">
+                      <video
+                        controls
+                        className="w-full h-auto max-h-80 object-cover"
+                        poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f7fafc'/><text x='50%' y='50%' font-family='Arial' font-size='16' fill='%23718096' text-anchor='middle' dy='0.3em'>Our Proposal Video</text></svg>"
+                      >
+                        <source src="" type="video/mp4" />
+                        <p className="text-sage-600 p-4">
+                          Your browser doesn't support HTML5 video.
+                          <a href="#" className="text-olive-600 underline">Download the video</a> instead.
+                        </p>
+                      </video>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
