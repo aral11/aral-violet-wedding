@@ -1063,13 +1063,13 @@ export default function AdminDashboard() {
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-olive-700">Guest List Management</CardTitle>
-                  <Button 
+                  <Button
                     onClick={downloadGuestList}
                     disabled={guests.length === 0}
                     className="bg-olive-600 hover:bg-olive-700 text-white"
                   >
                     <Download className="mr-2" size={16} />
-                    Download CSV
+                    Download PDF
                   </Button>
                 </div>
               </CardHeader>
