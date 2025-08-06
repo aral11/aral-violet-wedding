@@ -136,6 +136,11 @@ export default function AdminDashboard() {
     localStorage.setItem('wedding_photos', JSON.stringify(uploadedPhotos));
   }, [uploadedPhotos]);
 
+  // Save wedding flow to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('wedding_flow', JSON.stringify(weddingFlow));
+  }, [weddingFlow]);
+
   // Redirect if not authenticated (after all hooks)
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
