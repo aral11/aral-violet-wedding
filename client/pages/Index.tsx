@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Link } from 'react-router-dom';
+import { guestsApi, photosApi, invitationApi, handleApiError } from '@/lib/api';
 
 interface Guest {
   id: string;
