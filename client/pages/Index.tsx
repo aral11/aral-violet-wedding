@@ -160,6 +160,12 @@ export default function Index() {
       });
 
       console.log("RSVP submitted to database successfully");
+
+      toast({
+        title: "RSVP Submitted Successfully! 🎉",
+        description: `Thank you ${rsvpForm.name}! We can't wait to celebrate with you on December 28, 2025!`,
+        duration: 5000,
+      });
     } catch (error) {
       console.warn(
         "API unavailable, falling back to localStorage:",
@@ -178,6 +184,12 @@ export default function Index() {
       const updatedGuests = [...existingGuests, newGuest];
       localStorage.setItem("wedding_guests", JSON.stringify(updatedGuests));
       console.log("RSVP saved to localStorage fallback");
+
+      toast({
+        title: "RSVP Submitted Successfully! 🎉",
+        description: `Thank you ${rsvpForm.name}! Your RSVP has been saved. We can't wait to celebrate with you!`,
+        duration: 5000,
+      });
     }
 
     // Reset form regardless of storage method
