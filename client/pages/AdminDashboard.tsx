@@ -1567,46 +1567,56 @@ export default function AdminDashboard() {
         {/* Main Content */}
         <Tabs defaultValue="rsvp" className="space-y-6">
           <div className="w-full overflow-x-auto scrollbar-hide">
-            <TabsList className="flex w-max min-w-full sm:grid sm:w-full sm:grid-cols-5 gap-1 h-auto p-1">
+            <TabsList className="flex w-max min-w-full lg:grid lg:w-full lg:grid-cols-5 gap-1 h-auto p-1">
               <TabsTrigger
                 value="rsvp"
-                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+                className="flex flex-col sm:flex-row items-center gap-1 text-xs px-2 sm:px-3 py-2 whitespace-nowrap min-w-[60px] sm:min-w-[80px]"
+                title="RSVP Management"
               >
-                <Users size={12} />
-                <span className="hidden xs:inline sm:hidden">RSVP</span>
-                <span className="hidden sm:inline">RSVP Management</span>
+                <Users size={16} className="sm:hidden" />
+                <Users size={14} className="hidden sm:inline" />
+                <span className="hidden sm:inline lg:hidden">RSVP</span>
+                <span className="hidden lg:inline">RSVP Management</span>
               </TabsTrigger>
               <TabsTrigger
                 value="photos"
-                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+                className="flex flex-col sm:flex-row items-center gap-1 text-xs px-2 sm:px-3 py-2 whitespace-nowrap min-w-[60px] sm:min-w-[80px]"
+                title="Photo Gallery"
               >
-                <Camera size={12} />
-                <span className="hidden xs:inline sm:hidden">Photos</span>
-                <span className="hidden sm:inline">Photo Gallery</span>
+                <Camera size={16} className="sm:hidden" />
+                <Camera size={14} className="hidden sm:inline" />
+                <span className="hidden sm:inline lg:hidden">Photos</span>
+                <span className="hidden lg:inline">Photo Gallery</span>
               </TabsTrigger>
               <TabsTrigger
                 value="flow"
-                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+                className="flex flex-col sm:flex-row items-center gap-1 text-xs px-2 sm:px-3 py-2 whitespace-nowrap min-w-[60px] sm:min-w-[80px]"
+                title="Wedding Flow"
               >
-                <Clock size={12} />
-                <span className="hidden xs:inline sm:hidden">Flow</span>
-                <span className="hidden sm:inline">Wedding Flow</span>
+                <Clock size={16} className="sm:hidden" />
+                <Clock size={14} className="hidden sm:inline" />
+                <span className="hidden sm:inline lg:hidden">Flow</span>
+                <span className="hidden lg:inline">Wedding Flow</span>
               </TabsTrigger>
               <TabsTrigger
                 value="invitation"
-                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+                className="flex flex-col sm:flex-row items-center gap-1 text-xs px-2 sm:px-3 py-2 whitespace-nowrap min-w-[60px] sm:min-w-[80px]"
+                title="Invitation PDF"
               >
-                <FileText size={12} />
-                <span className="hidden xs:inline sm:hidden">PDF</span>
-                <span className="hidden sm:inline">Invitation</span>
+                <FileText size={16} className="sm:hidden" />
+                <FileText size={14} className="hidden sm:inline" />
+                <span className="hidden sm:inline lg:hidden">PDF</span>
+                <span className="hidden lg:inline">Invitation</span>
               </TabsTrigger>
               <TabsTrigger
                 value="documentation"
-                className="flex items-center gap-1 text-xs px-3 py-2 whitespace-nowrap"
+                className="flex flex-col sm:flex-row items-center gap-1 text-xs px-2 sm:px-3 py-2 whitespace-nowrap min-w-[60px] sm:min-w-[80px]"
+                title="Documentation"
               >
-                <FileText size={12} />
-                <span className="hidden xs:inline sm:hidden">Docs</span>
-                <span className="hidden sm:inline">Documentation</span>
+                <FileText size={16} className="sm:hidden" />
+                <FileText size={14} className="hidden sm:inline" />
+                <span className="hidden sm:inline lg:hidden">Docs</span>
+                <span className="hidden lg:inline">Documentation</span>
               </TabsTrigger>
             </TabsList>
           </div>
