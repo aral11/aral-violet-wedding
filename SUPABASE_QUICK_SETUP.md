@@ -74,15 +74,19 @@ CREATE POLICY "Anyone can delete wedding_flow" ON wedding_flow FOR DELETE USING 
    - **anon public key** (long string starting with "eyJ")
 
 ## Step 4: Add Keys to Your Website (1 minute)
-1. Create a file called `.env` in your project root
-2. Add your keys:
+1. Create a file called `.env` in your project root (same level as package.json)
+2. Copy from `.env.example` and add your actual keys:
 
-```
-VITE_SUPABASE_URL=your_project_url_here
-VITE_SUPABASE_ANON_KEY=your_anon_key_here
+```bash
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Important:** Don't commit this file to Git! It's already in .gitignore.
+**Important Notes:**
+- Use your ACTUAL Supabase URL and key (not the placeholders)
+- Don't commit this file to Git! It's already in .gitignore
+- For GitHub Pages deployment, you may need to set these as repository secrets
+- Without these keys, the site will automatically use localStorage (current behavior)
 
 ## Step 5: Deploy! 🎉
 Push your code to GitHub - your wedding website now has a real database!
