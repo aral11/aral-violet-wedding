@@ -28,6 +28,7 @@ import {
   weddingFlowApi,
   handleApiError,
 } from "@/lib/api";
+import { database } from "@/lib/database";
 
 interface Guest {
   id: string;
