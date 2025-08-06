@@ -1293,6 +1293,101 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Invitation Management */}
+          <TabsContent value="invitation" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm border-sage-200">
+              <CardHeader>
+                <CardTitle className="text-olive-700">Wedding Invitation Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Upload Invitation */}
+                  <div className="text-center p-8 border-2 border-dashed border-sage-300 rounded-lg">
+                    <FileText className="mx-auto mb-4 text-olive-600" size={48} />
+                    <h3 className="text-xl font-serif text-olive-700 mb-4">Upload Wedding Invitation PDF</h3>
+                    <p className="text-sage-600 mb-4">
+                      Upload your custom wedding invitation PDF. This will be downloaded when guests click the "Download Invitation" button.
+                    </p>
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        onChange={handleInvitationUpload}
+                        className="hidden"
+                      />
+                      <Button className="bg-olive-600 hover:bg-olive-700 text-white">
+                        <Upload className="mr-2" size={16} />
+                        Choose PDF Invitation
+                      </Button>
+                    </label>
+                    <p className="text-xs text-sage-500 mt-2">Maximum file size: 10MB • PDF format only</p>
+                  </div>
+
+                  {/* Current Invitation Status */}
+                  <Card className={`border-l-4 ${invitationPDF ? 'border-l-green-500 bg-green-50' : 'border-l-amber-500 bg-amber-50'}`}>
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-semibold text-lg mb-2">
+                            {invitationPDF ? '✅ Custom Invitation Active' : '⚠️ Using Default Text Invitation'}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {invitationPDF
+                              ? 'Your custom PDF invitation is active. Guests will download your uploaded PDF when they click the invitation button.'
+                              : 'No custom invitation uploaded. Guests will download a basic text invitation. Upload a PDF above for a professional invitation.'
+                            }
+                          </p>
+                        </div>
+                        {invitationPDF && (
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                const link = document.createElement('a');
+                                link.href = invitationPDF;
+                                link.download = 'Wedding-Invitation-Preview.pdf';
+                                link.click();
+                              }}
+                              className="bg-sage-600 hover:bg-sage-700 text-white"
+                            >
+                              <Download size={14} className="mr-1" />
+                              Preview
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => {
+                                setInvitationPDF(null);
+                                localStorage.removeItem('wedding_invitation_pdf');
+                              }}
+                            >
+                              <Trash2 size={14} className="mr-1" />
+                              Remove
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Instructions */}
+                  <Card className="bg-sage-50 border-sage-200">
+                    <CardContent className="p-6">
+                      <h4 className="font-semibold text-sage-800 mb-3">📋 How it works:</h4>
+                      <ul className="space-y-2 text-sm text-sage-700">
+                        <li>• Upload your professionally designed wedding invitation PDF</li>
+                        <li>• Guests will download your custom invitation when they click "Download Invitation"</li>
+                        <li>• You can preview or remove the invitation anytime</li>
+                        <li>• If no PDF is uploaded, guests get a basic text invitation</li>
+                        <li>• Maximum file size is 10MB for optimal download speed</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
