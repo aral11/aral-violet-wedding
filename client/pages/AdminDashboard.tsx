@@ -1567,22 +1567,34 @@ export default function AdminDashboard() {
         {/* Main Content */}
         <Tabs defaultValue="rsvp" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1 h-auto p-1">
-            <TabsTrigger value="rsvp" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+            <TabsTrigger
+              value="rsvp"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
+            >
               <Users size={14} />
               <span className="hidden sm:inline">RSVP Management</span>
               <span className="sm:hidden">RSVP</span>
             </TabsTrigger>
-            <TabsTrigger value="photos" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+            <TabsTrigger
+              value="photos"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
+            >
               <Camera size={14} />
               <span className="hidden sm:inline">Photo Gallery</span>
               <span className="sm:hidden">Photos</span>
             </TabsTrigger>
-            <TabsTrigger value="flow" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+            <TabsTrigger
+              value="flow"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
+            >
               <Clock size={14} />
               <span className="hidden sm:inline">Wedding Flow</span>
               <span className="sm:hidden">Flow</span>
             </TabsTrigger>
-            <TabsTrigger value="invitation" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2">
+            <TabsTrigger
+              value="invitation"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 py-2"
+            >
               <FileText size={14} />
               <span className="hidden sm:inline">Invitation</span>
               <span className="sm:hidden">PDF</span>
