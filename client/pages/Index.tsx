@@ -106,71 +106,16 @@ export default function Index() {
         const photos = await photosApi.getAll();
         if (photos && photos.length > 0) {
           setUploadedPhotos(photos.map((photo) => photo.photoData));
-          console.log(
-            "Photos loaded from database successfully:",
-            photos.length,
-          );
-        } else {
-          // Try localStorage even if API returns empty array
-          const savedPhotos = localStorage.getItem("wedding_photos");
-          if (savedPhotos) {
-            try {
-              const photos = JSON.parse(savedPhotos);
-              setUploadedPhotos(photos);
-              console.log(
-                "Photos loaded from localStorage fallback:",
-                photos.length,
-              );
-            } catch (parseError) {
-              console.error("Error parsing localStorage photos:", parseError);
-              setUploadedPhotos([]);
-            }
-          } else {
-            setUploadedPhotos([]);
-          }
+          console.log("Photos synced from API:", photos.length);
         }
       } catch (error) {
-        console.warn(
-          "API unavailable, falling back to localStorage:",
-          handleApiError(error),
-        );
-        // Fallback to localStorage if API is not available
-        const savedPhotos = localStorage.getItem("wedding_photos");
-        if (savedPhotos) {
-          try {
-            const photos = JSON.parse(savedPhotos);
-            setUploadedPhotos(photos);
-            console.log(
-              "Photos loaded from localStorage fallback:",
-              photos.length,
-            );
-          } catch (parseError) {
-            console.error("Error parsing localStorage photos:", parseError);
-            setUploadedPhotos([]);
-          }
-        } else {
-          setUploadedPhotos([]);
-        }
+        // Silently ignore API errors - localStorage already loaded
+        console.log("API not available, keeping localStorage data");
       }
     };
 
-    // Load from localStorage immediately first
-    const savedPhotos = localStorage.getItem("wedding_photos");
-    if (savedPhotos) {
-      try {
-        const photos = JSON.parse(savedPhotos);
-        setUploadedPhotos(photos);
-        console.log(
-          "Photos loaded immediately from localStorage:",
-          photos.length,
-        );
-      } catch (parseError) {
-        console.error("Error parsing localStorage photos:", parseError);
-      }
-    }
-
-    // Then try API load
-    loadPhotos();
+    // Try API after a delay to avoid race conditions
+    const timeoutId = setTimeout(loadPhotos, 1000);
 
     // Check for new photos every 30 seconds when the page is focused (reduced frequency)
     const interval = setInterval(() => {
