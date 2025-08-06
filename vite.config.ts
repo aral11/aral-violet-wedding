@@ -31,9 +31,9 @@ function expressPlugin(): Plugin {
     apply: "serve", // Only apply during development (serve mode)
     async configureServer(server) {
       try {
-        console.log('Initializing Express server...');
+        console.log("Initializing Express server...");
         const app = await createServer();
-        console.log('Express server initialized successfully');
+        console.log("Express server initialized successfully");
 
         // Add Express app as middleware to Vite dev server
         server.middlewares.use(app);
@@ -41,75 +41,97 @@ function expressPlugin(): Plugin {
         // Don't add fallback middleware if Express server works
         return;
       } catch (error) {
-        console.error('Failed to initialize Express server:', error);
-        console.log('Starting fallback API middleware...');
+        console.error("Failed to initialize Express server:", error);
+        console.log("Starting fallback API middleware...");
         // Create a fallback middleware that provides graceful responses
-        server.middlewares.use('/api', (req, res, next) => {
-          const url = req.url || '';
-          const method = req.method || 'GET';
+        server.middlewares.use("/api", (req, res, next) => {
+          const url = req.url || "";
+          const method = req.method || "GET";
 
-          res.setHeader('Content-Type', 'application/json');
+          res.setHeader("Content-Type", "application/json");
 
           // Handle different API endpoints gracefully
-          if (url.includes('/guests')) {
-            if (method === 'GET') {
+          if (url.includes("/guests")) {
+            if (method === "GET") {
               res.statusCode = 200;
               res.end(JSON.stringify([]));
-            } else if (method === 'POST') {
+            } else if (method === "POST") {
               res.statusCode = 201;
-              res.end(JSON.stringify({
-                id: Date.now().toString(),
-                name: 'Fallback User',
-                email: 'fallback@example.com',
-                phone: '0000000000',
-                attending: true,
-                guests: 1,
-                side: 'groom',
-                needsAccommodation: false,
-                createdAt: new Date().toISOString()
-              }));
+              res.end(
+                JSON.stringify({
+                  id: Date.now().toString(),
+                  name: "Fallback User",
+                  email: "fallback@example.com",
+                  phone: "0000000000",
+                  attending: true,
+                  guests: 1,
+                  side: "groom",
+                  needsAccommodation: false,
+                  createdAt: new Date().toISOString(),
+                }),
+              );
             } else {
               res.statusCode = 200;
-              res.end(JSON.stringify({ message: 'Operation completed successfully' }));
+              res.end(
+                JSON.stringify({ message: "Operation completed successfully" }),
+              );
             }
-          } else if (url.includes('/photos')) {
-            if (method === 'GET') {
+          } else if (url.includes("/photos")) {
+            if (method === "GET") {
               res.statusCode = 200;
               res.end(JSON.stringify([]));
-            } else if (method === 'POST') {
+            } else if (method === "POST") {
               res.statusCode = 201;
-              res.end(JSON.stringify({
-                id: Date.now().toString(),
-                photoData: 'fallback-photo-data',
-                uploadedBy: 'admin',
-                createdAt: new Date().toISOString()
-              }));
+              res.end(
+                JSON.stringify({
+                  id: Date.now().toString(),
+                  photoData: "fallback-photo-data",
+                  uploadedBy: "admin",
+                  createdAt: new Date().toISOString(),
+                }),
+              );
             } else {
               res.statusCode = 200;
-              res.end(JSON.stringify({ message: 'Photo operation completed successfully' }));
+              res.end(
+                JSON.stringify({
+                  message: "Photo operation completed successfully",
+                }),
+              );
             }
-          } else if (url.includes('/wedding-flow')) {
-            if (method === 'GET') {
+          } else if (url.includes("/wedding-flow")) {
+            if (method === "GET") {
               res.statusCode = 200;
               res.end(JSON.stringify([]));
             } else {
               res.statusCode = 200;
-              res.end(JSON.stringify({ message: 'Wedding flow operation completed successfully' }));
+              res.end(
+                JSON.stringify({
+                  message: "Wedding flow operation completed successfully",
+                }),
+              );
             }
-          } else if (url.includes('/invitation')) {
-            if (method === 'GET') {
+          } else if (url.includes("/invitation")) {
+            if (method === "GET") {
               res.statusCode = 404;
-              res.end(JSON.stringify({ error: 'No invitation found' }));
+              res.end(JSON.stringify({ error: "No invitation found" }));
             } else {
               res.statusCode = 200;
-              res.end(JSON.stringify({ message: 'Invitation operation completed successfully' }));
+              res.end(
+                JSON.stringify({
+                  message: "Invitation operation completed successfully",
+                }),
+              );
             }
-          } else if (url.includes('/ping')) {
+          } else if (url.includes("/ping")) {
             res.statusCode = 200;
-            res.end(JSON.stringify({ message: 'pong' }));
+            res.end(JSON.stringify({ message: "pong" }));
           } else {
             res.statusCode = 200;
-            res.end(JSON.stringify({ message: 'API endpoint available - fallback mode' }));
+            res.end(
+              JSON.stringify({
+                message: "API endpoint available - fallback mode",
+              }),
+            );
           }
         });
       }

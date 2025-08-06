@@ -3,26 +3,47 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { initializeDatabase } from "./models";
-import { getGuests, createGuest, updateGuest, deleteGuest } from "./routes/guests";
-import { getPhotos, uploadPhoto, deletePhoto, bulkUploadPhotos } from "./routes/photos";
-import { getWeddingFlow, createFlowItem, updateFlowItem, deleteFlowItem } from "./routes/wedding-flow";
-import { getInvitation, uploadInvitation, deleteInvitation } from "./routes/invitation";
+import {
+  getGuests,
+  createGuest,
+  updateGuest,
+  deleteGuest,
+} from "./routes/guests";
+import {
+  getPhotos,
+  uploadPhoto,
+  deletePhoto,
+  bulkUploadPhotos,
+} from "./routes/photos";
+import {
+  getWeddingFlow,
+  createFlowItem,
+  updateFlowItem,
+  deleteFlowItem,
+} from "./routes/wedding-flow";
+import {
+  getInvitation,
+  uploadInvitation,
+  deleteInvitation,
+} from "./routes/invitation";
 
 export async function createServer() {
   const app = express();
 
   // Middleware
   app.use(cors());
-  app.use(express.json({ limit: '50mb' })); // Increased limit for base64 images/PDFs
-  app.use(express.urlencoded({ limit: '50mb', extended: true }));
+  app.use(express.json({ limit: "50mb" })); // Increased limit for base64 images/PDFs
+  app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
   // Initialize database
   try {
     await initializeDatabase();
-    console.log('Database initialized successfully');
+    console.log("Database initialized successfully");
   } catch (error) {
-    console.error('Failed to initialize database:', error);
-    console.log('Server will continue with fallback mode - all data will be stored in localStorage');
+    console.error("Failed to initialize database:", error);
+    console.log(
+      "Server will continue with fallback mode - all data will be stored in localStorage",
+    );
     // Don't throw error, let server start without DB for now
   }
 
