@@ -231,15 +231,28 @@ Please RSVP at our wedding website
             </p>
           </div>
 
-          {/* Download Invitation Button */}
-          <div className="mb-12">
-            <Button 
-              onClick={downloadInvitation}
-              className="bg-olive-600 hover:bg-olive-700 text-white px-8 py-3 text-lg font-medium shadow-lg"
-            >
-              <Download className="mr-2" size={20} />
-              Download Invitation
-            </Button>
+          {/* Action Buttons */}
+          <div className="mb-12 space-y-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button
+                onClick={downloadInvitation}
+                className="bg-olive-600 hover:bg-olive-700 text-white px-8 py-3 text-lg font-medium shadow-lg"
+              >
+                <Download className="mr-2" size={20} />
+                Download Invitation
+              </Button>
+              <Button
+                onClick={() => {
+                  const rsvpSection = document.getElementById('rsvp-section');
+                  rsvpSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                variant="outline"
+                className="bg-white/90 hover:bg-white border-olive-600 text-olive-700 hover:text-olive-800 px-8 py-3 text-lg font-medium shadow-lg"
+              >
+                <Users className="mr-2" size={20} />
+                RSVP Now
+              </Button>
+            </div>
           </div>
 
           {/* Countdown */}
