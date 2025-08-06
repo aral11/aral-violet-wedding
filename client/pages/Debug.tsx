@@ -318,7 +318,7 @@ export default function Debug() {
           </CardHeader>
           <CardContent>
             <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
-              {JSON.stringify({ localStorageData, apiStatus }, null, 2)}
+              {JSON.stringify({ localStorageData, apiStatus, supabaseStatus, databaseStatus }, null, 2)}
             </pre>
           </CardContent>
         </Card>
