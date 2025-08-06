@@ -1130,19 +1130,27 @@ export default function AdminDashboard() {
                   <div className="text-center p-8 border-2 border-dashed border-sage-300 rounded-lg">
                     <Camera className="mx-auto mb-4 text-olive-600" size={48} />
                     <h3 className="text-xl font-serif text-olive-700 mb-4">Upload Wedding Photos</h3>
-                    <label className="cursor-pointer">
+                    <div>
                       <input
+                        ref={photoInputRef}
                         type="file"
                         multiple
                         accept="image/*"
                         onChange={handlePhotoUpload}
                         className="hidden"
                       />
-                      <Button className="bg-olive-600 hover:bg-olive-700 text-white">
+                      <Button
+                        onClick={() => {
+                          console.log('Photo upload button clicked');
+                          photoInputRef.current?.click();
+                        }}
+                        className="bg-olive-600 hover:bg-olive-700 text-white"
+                      >
                         <Upload className="mr-2" size={16} />
                         Choose Photos
                       </Button>
-                    </label>
+                    </div>
+                    <p className="text-xs text-sage-500 mt-2">Select multiple photos • Maximum 5MB per photo</p>
                   </div>
 
                   {/* Photos Grid */}
