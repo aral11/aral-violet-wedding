@@ -20,6 +20,7 @@
     "start": "node dist/server/node-build.mjs",
     "preview": "vite preview",
     "deploy": "npm run build:github",
+    "deploy:manual": "node scripts/deploy-manual.js",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc"
