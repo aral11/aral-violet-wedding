@@ -135,10 +135,7 @@ export default function Index() {
       }
     };
 
-    // Load photos initially
-    loadPhotos();
-
-    // Also load from localStorage immediately for faster display
+    // Load from localStorage immediately first
     const savedPhotos = localStorage.getItem("wedding_photos");
     if (savedPhotos) {
       try {
@@ -152,6 +149,9 @@ export default function Index() {
         console.error("Error parsing localStorage photos:", parseError);
       }
     }
+
+    // Then try API load
+    loadPhotos();
 
     // Check for new photos every 10 seconds when the page is focused
     const interval = setInterval(() => {
