@@ -109,8 +109,9 @@ export default function Index() {
           console.log("Photos synced from API:", photos.length);
         }
       } catch (error) {
-        // Silently ignore API errors - localStorage already loaded
-        console.log("API not available, keeping localStorage data");
+        // Silently ignore ALL API errors - localStorage already loaded
+        // Don't log specific error details to avoid console spam
+        console.log("Using localStorage data (API not available)");
       }
     };
 
