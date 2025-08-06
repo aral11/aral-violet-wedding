@@ -387,15 +387,36 @@ export default function AdminDashboard() {
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files) {
+    if (files && files.length > 0) {
+      // Process each file
       Array.from(files).forEach(file => {
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+          alert('Please upload only image files.');
+          return;
+        }
+
+        // Check file size (limit to 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Please upload images smaller than 5MB.');
+          return;
+        }
+
         // Convert to base64 for persistent storage
         const reader = new FileReader();
         reader.onload = (event) => {
           if (event.target?.result) {
             const base64String = event.target.result as string;
-            setUploadedPhotos(prev => [...prev, base64String]);
+            setUploadedPhotos(prev => {
+              const newPhotos = [...prev, base64String];
+              // Also immediately save to localStorage
+              localStorage.setItem('wedding_photos', JSON.stringify(newPhotos));
+              return newPhotos;
+            });
           }
+        };
+        reader.onerror = () => {
+          alert('Error reading file. Please try again.');
         };
         reader.readAsDataURL(file);
       });
