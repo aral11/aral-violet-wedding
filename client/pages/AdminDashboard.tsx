@@ -535,6 +535,34 @@ export default function AdminDashboard() {
     setUploadedPhotos(newPhotos);
   };
 
+  const addFlowItem = () => {
+    if (newFlowItem.time && newFlowItem.title) {
+      const flowItem: WeddingFlowItem = {
+        ...newFlowItem,
+        id: Date.now().toString()
+      };
+      setWeddingFlow([...weddingFlow, flowItem].sort((a, b) => a.time.localeCompare(b.time)));
+      setNewFlowItem({
+        time: '',
+        title: '',
+        description: '',
+        duration: '',
+        type: 'reception'
+      });
+    }
+  };
+
+  const updateFlowItem = (id: string, updates: Partial<WeddingFlowItem>) => {
+    setWeddingFlow(weddingFlow.map(item =>
+      item.id === id ? { ...item, ...updates } : item
+    ).sort((a, b) => a.time.localeCompare(b.time)));
+    setEditingFlow(null);
+  };
+
+  const removeFlowItem = (id: string) => {
+    setWeddingFlow(weddingFlow.filter(item => item.id !== id));
+  };
+
   const attendingGuests = guests.filter(g => g.attending);
   const notAttendingGuests = guests.filter(g => !g.attending);
   const totalGuestCount = attendingGuests.reduce((sum, guest) => sum + guest.guests, 0);
