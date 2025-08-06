@@ -384,12 +384,12 @@ Please RSVP at our wedding website
                   <div className="space-y-2">
                     <p className="flex items-center justify-center gap-2">
                       <MapPin size={16} />
-                      Sai Radha Beach Resort
+                      Sai Radha Heritage Beach Resort
                     </p>
                     <p className="text-sm text-sage-600">Kaup, Karnataka</p>
                     <Button
                       size="sm"
-                      onClick={() => window.open('https://maps.google.com/maps?q=Sai+Radha+Beach+Resort+Kaup', '_blank')}
+                      onClick={() => window.open('https://g.co/kgs/MHHZo7T', '_blank')}
                       className="bg-olive-600 hover:bg-olive-700 text-white mt-2"
                     >
                       Get Directions
