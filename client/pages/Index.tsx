@@ -520,6 +520,30 @@ Please RSVP at our wedding website
                   </div>
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium text-sage-700 mb-2">Which side are you from? *</label>
+                  <div className="flex gap-6">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        checked={rsvpForm.side === 'groom'}
+                        onChange={() => setRsvpForm({...rsvpForm, side: 'groom'})}
+                        className="mr-2 text-olive-600"
+                      />
+                      Groom's Side (Aral's)
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        checked={rsvpForm.side === 'bride'}
+                        onChange={() => setRsvpForm({...rsvpForm, side: 'bride'})}
+                        className="mr-2 text-olive-600"
+                      />
+                      Bride's Side (Violet's)
+                    </label>
+                  </div>
+                </div>
+
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-sage-700 mb-2">Number of Guests *</label>
@@ -533,7 +557,12 @@ Please RSVP at our wedding website
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-sage-700 mb-2">Need Accommodation?</label>
+                    <label className="block text-sm font-medium text-sage-700 mb-2">
+                      Traveling from afar?
+                      <span className="block text-xs text-sage-500 font-normal mt-1">
+                        We'd love to help arrange accommodation for our out-of-town guests
+                      </span>
+                    </label>
                     <div className="flex gap-4 mt-2">
                       <label className="flex items-center">
                         <input
@@ -542,7 +571,7 @@ Please RSVP at our wedding website
                           onChange={() => setRsvpForm({...rsvpForm, needsAccommodation: true})}
                           className="mr-2 text-olive-600"
                         />
-                        Yes
+                        Yes, please assist
                       </label>
                       <label className="flex items-center">
                         <input
@@ -551,7 +580,7 @@ Please RSVP at our wedding website
                           onChange={() => setRsvpForm({...rsvpForm, needsAccommodation: false})}
                           className="mr-2 text-olive-600"
                         />
-                        No
+                        No, thank you
                       </label>
                     </div>
                   </div>
