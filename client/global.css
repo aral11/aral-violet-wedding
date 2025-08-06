@@ -18,7 +18,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 345 100% 32%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -27,33 +27,60 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 99 22% 60%;
+    --accent-foreground: 345 100% 32%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 345 100% 32%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Wedding theme colors - Burgundy */
+    --burgundy-50: 355 100% 97%;
+    --burgundy-100: 355 86% 92%;
+    --burgundy-200: 353 85% 85%;
+    --burgundy-300: 351 84% 74%;
+    --burgundy-400: 349 82% 60%;
+    --burgundy-500: 347 77% 50%;
+    --burgundy-600: 345 100% 32%;
+    --burgundy-700: 343 87% 24%;
+    --burgundy-800: 342 82% 20%;
+    --burgundy-900: 341 79% 17%;
+    --burgundy-950: 340 95% 8%;
+
+    /* Wedding theme colors - Sage Green */
+    --sage-50: 99 22% 96%;
+    --sage-100: 101 20% 90%;
+    --sage-200: 99 19% 81%;
+    --sage-300: 99 19% 70%;
+    --sage-400: 99 18% 60%;
+    --sage-500: 99 22% 49%;
+    --sage-600: 99 25% 39%;
+    --sage-700: 99 26% 31%;
+    --sage-800: 99 24% 26%;
+    --sage-900: 99 23% 22%;
+    --sage-950: 99 28% 12%;
+
+    /* Wedding theme colors - Cream */
+    --cream-50: 48 100% 98%;
+    --cream-100: 48 75% 95%;
+    --cream-200: 47 69% 89%;
+    --cream-300: 47 60% 82%;
+    --cream-400: 46 55% 73%;
+    --cream-500: 45 54% 64%;
   }
 
   .dark {
