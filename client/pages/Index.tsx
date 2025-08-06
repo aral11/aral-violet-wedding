@@ -571,49 +571,45 @@ Please RSVP at our wedding website
                       A surprise proposal - Violet never had an idea about it!
                       💍
                     </p>
+                    {/* Proposal Video Section */}
                     <div className="relative rounded-lg overflow-hidden shadow-md bg-sage-50">
-                      <video
-                        controls
-                        className="w-full h-auto max-h-80 object-cover"
-                        poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23f7fafc'/><text x='50%' y='40%' font-family='Arial' font-size='14' fill='%23718096' text-anchor='middle' dy='0.3em'>💍 Our Proposal Video</text><text x='50%' y='60%' font-family='Arial' font-size='10' fill='%23a0aec0' text-anchor='middle' dy='0.3em'>Coming Soon</text></svg>"
-                        onError={() => console.log("Video failed to load")}
-                        onLoadStart={() => console.log("Video started loading")}
-                        onLoadedData={() =>
-                          console.log("Video loaded successfully")
-                        }
-                      >
-                        <source
-                          src="/aral-violet-wedding/proposal-video.mp4"
-                          type="video/mp4"
-                        />
-                        <source src="/proposal-video.mp4" type="video/mp4" />
-                        <div className="p-8 text-center">
-                          <div className="mb-4">
-                            <Camera
-                              className="mx-auto text-sage-400 mb-2"
-                              size={32}
-                            />
-                            <h4 className="text-lg font-medium text-sage-700 mb-2">
-                              Proposal Video Coming Soon! 💍
-                            </h4>
-                          </div>
-                          <p className="text-sage-600 mb-4">
-                            Our surprise proposal video will be available here
-                            once uploaded.
-                          </p>
-                          <div className="bg-sage-100 rounded-lg p-4">
-                            <p className="text-sm text-sage-600">
-                              <strong>To add your video:</strong>
-                              <br />
-                              1. Add 'proposal-video.mp4' to the public folder
-                              <br />
-                              2. Or provide a YouTube/Vimeo link for embedding
-                              <br />
-                              3. Push to GitHub and your video will appear here!
+                      {/* YouTube Embed - Replace VIDEO_ID with your actual YouTube video ID */}
+                      <div className="relative pb-[56.25%] h-0"> {/* 16:9 aspect ratio */}
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full rounded-lg"
+                          src="https://www.youtube.com/embed/YOUR_VIDEO_ID?rel=0&modestbranding=1&controls=1"
+                          title="Aral & Violet - Surprise Proposal Video"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+
+                        {/* Fallback content when no video ID is provided */}
+                        <div className="absolute inset-0 bg-sage-50 flex items-center justify-center rounded-lg">
+                          <div className="text-center p-8">
+                            <div className="mb-4">
+                              <Camera className="mx-auto text-sage-400 mb-2" size={40} />
+                              <h4 className="text-xl font-medium text-sage-700 mb-2">
+                                Surprise Proposal Video 💍
+                              </h4>
+                            </div>
+                            <p className="text-sage-600 mb-4">
+                              "The moment that changed everything forever..."
                             </p>
+                            <div className="bg-white rounded-lg p-4 shadow-sm">
+                              <p className="text-sm text-sage-600 mb-2">
+                                <strong>🎥 To add your YouTube video:</strong>
+                              </p>
+                              <ol className="text-xs text-sage-500 text-left space-y-1">
+                                <li>1. Upload your proposal video to YouTube</li>
+                                <li>2. Copy the video ID from the URL</li>
+                                <li>3. Replace 'YOUR_VIDEO_ID' in the code</li>
+                                <li>4. Your video will appear here beautifully!</li>
+                              </ol>
+                            </div>
                           </div>
                         </div>
-                      </video>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
