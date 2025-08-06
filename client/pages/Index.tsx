@@ -503,23 +503,48 @@ Please RSVP at our wedding website
                 </Button>
               </form>
 
-              {/* Admin Download Button (only show if there are guests) */}
-              {guests.length > 0 && (
-                <div className="mt-8 pt-6 border-t border-sage-200">
-                  <div className="flex justify-between items-center">
-                    <p className="text-sm text-sage-600">
-                      {guests.length} RSVP{guests.length !== 1 ? 's' : ''} received
-                    </p>
-                    <Button 
-                      onClick={downloadGuestList}
-                      className="bg-sage-600 hover:bg-sage-700 text-white"
-                    >
-                      <Download className="mr-2" size={16} />
-                      Download Guest List
-                    </Button>
+              {/* Admin Section - Always Visible */}
+              <div className="mt-8 pt-6 border-t border-sage-200">
+                <div className="bg-olive-50 rounded-lg p-6 border border-olive-200">
+                  <h4 className="text-lg font-serif text-olive-700 mb-4 flex items-center gap-2">
+                    <Users className="text-olive-600" size={20} />
+                    Admin Dashboard
+                  </h4>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                    <div className="text-sm text-olive-700">
+                      <p className="font-medium mb-1">RSVP Status:</p>
+                      <p>
+                        {guests.length === 0 ? (
+                          "No RSVPs received yet"
+                        ) : (
+                          <>
+                            {guests.length} RSVP{guests.length !== 1 ? 's' : ''} received
+                            <br />
+                            <span className="text-xs text-olive-600">
+                              {guests.filter(g => g.attending).length} attending • {guests.filter(g => !g.attending).length} not attending
+                            </span>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button
+                        onClick={downloadGuestList}
+                        disabled={guests.length === 0}
+                        className="bg-sage-600 hover:bg-sage-700 text-white disabled:bg-sage-300"
+                      >
+                        <Download className="mr-2" size={16} />
+                        Download Guest List
+                      </Button>
+                      {guests.length === 0 && (
+                        <p className="text-xs text-sage-500 mt-1">
+                          Download will be available once guests submit RSVPs
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
-              )}
+              </div>
             </CardContent>
           </Card>
         </div>
