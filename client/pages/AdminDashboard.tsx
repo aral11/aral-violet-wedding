@@ -1101,13 +1101,42 @@ export default function AdminDashboard() {
 
     // Convert to base64 for storage
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       console.log("File read successfully");
       if (event.target?.result) {
         const base64String = event.target.result as string;
         console.log("Setting invitation PDF...");
-        setInvitationPDF(base64String);
-        alert("Wedding invitation uploaded successfully!");
+
+        try {
+          // Save to database using invitation API
+          await invitationApi.upload(base64String, file.name);
+          console.log("Invitation saved to database");
+
+          // Update local state
+          setInvitationPDF(base64String);
+
+          // Also save to localStorage as backup
+          localStorage.setItem("wedding_invitation_pdf", base64String);
+          localStorage.setItem("wedding_invitation_filename", file.name);
+
+          toast({
+            title: "Invitation Uploaded Successfully! 💌",
+            description: `"${file.name}" saved to database and synced across devices!`,
+            duration: 3000,
+          });
+        } catch (error) {
+          console.error("Error saving invitation:", error);
+          // Fallback to localStorage only
+          setInvitationPDF(base64String);
+          localStorage.setItem("wedding_invitation_pdf", base64String);
+          localStorage.setItem("wedding_invitation_filename", file.name);
+
+          toast({
+            title: "Invitation Uploaded! 💌",
+            description: `"${file.name}" saved locally. Database sync may be limited.`,
+            variant: "default",
+          });
+        }
       }
     };
     reader.onerror = (error) => {
